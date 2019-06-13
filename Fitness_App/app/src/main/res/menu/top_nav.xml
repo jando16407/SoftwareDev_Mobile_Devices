@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/top_settings"
+        android:title="@string/top_nav_set"
+        android:icon="@drawable/ic_action_settings_dark"
+        android:orderInCategory="200"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/top_resources"
+        android:title="@string/top_nav_res"
+        android:orderInCategory="300"
+        app:showAsAction="never"/>
+</menu>

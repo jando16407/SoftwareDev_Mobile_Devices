@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "434381172772",
+    "firebase_url": "https://fitnessapp-8d654.firebaseio.com",
+    "project_id": "fitnessapp-8d654",
+    "storage_bucket": "fitnessapp-8d654.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434381172772:android:23d204ecd0c284fc",
+        "android_client_info": {
+          "package_name": "com.jando.fitness_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "434381172772-k0iutk0jg4cj90ctp1vmhbcc1io39dhs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jando.fitness_app",
+            "certificate_hash": "078a75747541044d00df89618253c1845bc7b3fc"
+          }
+        },
+        {
+          "client_id": "434381172772-nab3ojvfhn78s3s6en73mdbmg9pk30ak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxMhgoRGrwprUX9s8iWlKd9eJPWpsjY9U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "434381172772-nab3ojvfhn78s3s6en73mdbmg9pk30ak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
