@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ForgotPassword" />
+        <activity android:name=".ForgotPassword"
+            android:theme="@style/AppThemeNoActionBar"/>
+
+        <activity android:name=".LoginActivity"
+            android:theme="@style/AppThemeNoActionBar"/>
+
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".LoginActivity" />
 
         <activity
             android:name=".HomeScreen"
@@ -30,7 +34,8 @@
             android:name=".NutritionActivity"
             android:label="@string/activity_nutrition_label" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppThemeNoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
