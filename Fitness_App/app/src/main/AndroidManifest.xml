@@ -9,9 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".ForgotPassword" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity" />
+
+        <activity
+            android:name=".HomeScreen"
+            android:label="@string/activity_home_screen" />
         <activity
             android:name=".ResourcesActivity"
             android:label="@string/activity_resources_label"/>
@@ -19,8 +24,12 @@
             android:name=".SettingsActivity"
             android:label="@string/activity_settings_label"/>
         <activity
-            android:name=".HomeScreen"
-            android:label="@string/activity_homescreen" />
+            android:name=".ExerciseActivity"
+            android:label="@string/activity_exercise_label" />
+        <activity
+            android:name=".NutritionActivity"
+            android:label="@string/activity_nutrition_label" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

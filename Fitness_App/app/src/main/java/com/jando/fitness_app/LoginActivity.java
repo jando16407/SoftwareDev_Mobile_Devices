@@ -33,7 +33,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
-
     private TextInputEditText editTextInputPassword;
     private Button buttonSignin;
     private Button Signout_btn;
@@ -53,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         //Views
         sign_in_button = findViewById(R.id.sign_in_button);
         progressDialog = new ProgressDialog(this);
@@ -63,22 +61,17 @@ public class LoginActivity extends AppCompatActivity {
         textViewSignup = findViewById(R.id.textViewSignup);
         textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
 
-
-
-
-// Configure sign-in to request the user's ID, email address, and basic
-// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("434381172772-nab3ojvfhn78s3s6en73mdbmg9pk30ak.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
-// Build a GoogleSignInClient with the options specified by gso.
+        // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
 
         firebaseAuth = FirebaseAuth.getInstance();
         mAuth = FirebaseAuth.getInstance();
-
 
         //Google Sign in button
         sign_in_button.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +80,6 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
-
 
         //Buttons listeners
         buttonSignin.setOnClickListener(new View.OnClickListener() {
@@ -121,18 +113,13 @@ public class LoginActivity extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null) {
             finish();
-            startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+            startActivity(new Intent(getApplicationContext(),HomeScreen.class));
             updateUI2(account);
             Toast.makeText(LoginActivity.this,"ALREADY LOG IN",Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
-
-
     private void userLogin() {
-
         String email = editTextEmail.getText().toString().trim();
         String password = editTextInputPassword.getText().toString().trim();
 
@@ -154,14 +141,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (task.isSuccessful()) {
                     finish();
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    startActivity(new Intent(getApplicationContext(), HomeScreen.class));
                 } else {
                     Toast.makeText(LoginActivity.this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-
 
     //signs in to Google
     private void signIn() {
@@ -182,7 +168,7 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                Toast.makeText(LoginActivity.this,"FAILEED",Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this,"FAILED",Toast.LENGTH_SHORT).show();
                 // Google Sign In failed, update UI appropriately
 
                 // [START_EXCLUDE]
@@ -191,6 +177,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+
     //Google
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         // [START_EXCLUDE silent]
@@ -205,41 +192,31 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this,"Login Successful",Toast.LENGTH_SHORT).show();
                             // Sign in success, update UI with the signed-in user's information
-
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
                             Toast.makeText(LoginActivity.this,"Login Failed",Toast.LENGTH_SHORT).show();
                             // If sign in fails, display a message to the user.
-
-
                             updateUI(null);
                         }
-
                     }
                 });
     }
 
     private void updateUI(FirebaseUser user) {
-
-
         finish();
-        Intent intent = new Intent(LoginActivity.this,ProfileActivity.class);
+        Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
         startActivity(intent);
-
     }
-    private void updateUI2(GoogleSignInAccount user) {
 
+    private void updateUI2(GoogleSignInAccount user) {
         //if(user != null)
         //Signout_btn.setVisibility(View.VISIBLE);
         //finish();
         //Intent intent = new Intent(LoginActivity.this,ProfileActivity.class);
         //startActivity(intent);
-
-
     }
     //Signs out of google and FireBase Auth
-
 
 }
 
