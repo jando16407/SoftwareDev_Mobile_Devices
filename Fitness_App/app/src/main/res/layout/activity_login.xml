@@ -53,7 +53,7 @@
         android:layout_marginBottom="8dp"
         android:ems="10"
         android:hint="@string/hint_email"
-        android:inputType="textPersonName"
+        android:inputType="textEmailAddress"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/editTextInputPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +61,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textViewSignup"
+        android:id="@+id/textViewSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

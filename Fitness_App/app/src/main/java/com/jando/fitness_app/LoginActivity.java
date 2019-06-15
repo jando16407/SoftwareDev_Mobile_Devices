@@ -1,6 +1,7 @@
 package com.jando.fitness_app;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.support.annotation.NonNull;
@@ -10,7 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -58,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextInputPassword = findViewById(R.id.editTextInputPassword);
         buttonSignin = findViewById(R.id.buttonSignin);
-        textViewSignup = findViewById(R.id.textViewSignup);
+        textViewSignup = findViewById(R.id.textViewSignUp);
         textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -102,6 +105,19 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent3 = new Intent(LoginActivity.this, ForgotPassword.class);
                 startActivity(intent3);
+            }
+        });
+
+        //closes keyboard when password editText is entered
+        editTextInputPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    InputMethodManager in =
+                            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(editTextInputPassword.getApplicationWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+                return false;
             }
         });
     }
