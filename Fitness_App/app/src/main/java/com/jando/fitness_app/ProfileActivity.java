@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/** NOT NEEDED DELETE FOR FINAL PROJECT **/
+
 public class ProfileActivity extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
@@ -54,14 +56,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-
         textViewUserEmail = findViewById(R.id.textViewUserEmail);
         textViewUserEmail.setText("Welcome :" + user.getEmail() + user.getDisplayName() + " " + user.getProviderId() + " " + user.getUid());
 
         buttonLogout = findViewById(R.id.buttonLogout);
-
-
-
 
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +73,6 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
-
 
     }
 

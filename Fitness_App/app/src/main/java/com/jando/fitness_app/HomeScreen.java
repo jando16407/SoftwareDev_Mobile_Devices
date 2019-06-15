@@ -25,7 +25,8 @@ public class HomeScreen extends AppCompatActivity {
         //Display home fragment on app start
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new HomeFragment()).commit();
-        setTitle("Home");
+        setTitle(getString(R.string.fragment_home_label));
+
     }
 
     /** Creates functionality of buttons on bottom navigation bar */
@@ -37,15 +38,15 @@ public class HomeScreen extends AppCompatActivity {
                     switch(menuItem.getItemId()){
                         case R.id.bot_nav_home:
                             selectedFragment = new HomeFragment();
-                            setTitle("Home");
+                            setTitle(getString(R.string.fragment_home_label));
                             break;
                         case R.id.bot_nav_account:
                             selectedFragment = new AccountFragment();
-                            setTitle("Account");
+                            setTitle(getString(R.string.fragment_account_label));
                             break;
                         case R.id.bot_nav_health:
                             selectedFragment = new HealthFragment();
-                            setTitle("Health");
+                            setTitle(getString(R.string.fragment_health_label));
                             break;
                         default:
                             return false;
@@ -78,12 +79,10 @@ public class HomeScreen extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
     private void openSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
-
     private void openResources() {
         Intent intent = new Intent(this, ResourcesActivity.class);
         startActivity(intent);
