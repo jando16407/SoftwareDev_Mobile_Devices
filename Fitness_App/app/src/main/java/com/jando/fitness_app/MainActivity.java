@@ -1,12 +1,16 @@
 package com.jando.fitness_app;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -44,8 +48,20 @@ public class MainActivity extends AppCompatActivity {
         buttonRegister = findViewById(R.id.buttonSignin);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextInputPassword);
-        textViewSignin = findViewById(R.id.textViewSignup);
+        textViewSignin = findViewById(R.id.textViewSignUp);
 
+        //closes keyboard when password editText is entered
+        editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    InputMethodManager in =
+                            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(editTextPassword.getApplicationWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+                return false;
+            }
+        });
 
         //buttons
         buttonRegister.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 registerUser();
             }
         });
+
         textViewSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,26 +86,38 @@ public class MainActivity extends AppCompatActivity {
         String password = editTextPassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+            editTextEmail.setError("Email Required");
+            editTextEmail.requestFocus();
             return;
         }
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            editTextEmail.setError("Invalid Email");
+            editTextEmail.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(password) || password.length() < 6) {
+            editTextPassword.setError("Password must be 6 characters long");
+            editTextPassword.requestFocus();
             return;
         }
 
         progressDialog.setMessage("Registering Please wait");
         progressDialog.show();
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Register Sucessfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,
+                            "Registered Successfully",
+                            Toast.LENGTH_SHORT).show();
                     finish();
                     goToHome();
                 } else {
-                    Toast.makeText(MainActivity.this, "Could not register.. Please try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,
+                            "Could not register. Please try again",
+                            Toast.LENGTH_SHORT).show();
                 }
                 progressDialog.dismiss();
             }
