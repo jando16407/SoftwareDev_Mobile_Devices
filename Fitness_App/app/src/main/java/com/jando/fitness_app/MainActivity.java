@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonRegister;
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private EditText editTextFirstName;
+    private EditText editTextLastName;
     private TextView textViewSignin;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         buttonRegister = findViewById(R.id.buttonSignin);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextInputPassword);
+        editTextFirstName = findViewById(R.id.editTextFirstName);
+        editTextLastName = findViewById(R.id.editTextLastName);
         textViewSignin = findViewById(R.id.textViewSignup);
 
 
@@ -67,7 +71,12 @@ public class MainActivity extends AppCompatActivity {
     private void registerUser() {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
-
+        final Bundle userInfo = new Bundle();
+        userInfo.putString("EMAIL", email);
+        userInfo.putString("PW", password);
+        userInfo.putString("FIRST_NAME", editTextFirstName.getText().toString().trim());
+        userInfo.putString("LAST_NAME", editTextLastName.getText().toString().trim());
+        addUserToDatabase(userInfo);
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
             return;
@@ -84,7 +93,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Register Sucessfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Register Successfully", Toast.LENGTH_SHORT).show();
+                    addUserToDatabase(userInfo);
                     finish();
                     goToHome();
                 } else {
@@ -98,5 +108,15 @@ public class MainActivity extends AppCompatActivity {
     private void goToHome() {
         Intent intent = new Intent(getApplicationContext(), HomeScreen.class);
         startActivity(intent);
+    }
+
+    private void addUserToDatabase(Bundle userInfo){
+        String email = userInfo.getString("EMAIL");
+        String password = userInfo.getString("PW");
+        String firstName = userInfo.getString("FIRST_NAME");
+        String lastName = userInfo.getString("LAST_NAME");
+        //progressDialog.setMessage("email:"+email+" pw:"+password+" name:"+firstName+" name:"+lastName);
+        //progressDialog.show();
+        /* Access firebase and push data */
     }
 }
