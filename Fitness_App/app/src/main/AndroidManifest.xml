@@ -9,39 +9,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".ForgotPassword"
-            android:theme="@style/AppThemeNoActionBar"/>
-
-        <activity android:name=".LoginActivity"
-            android:theme="@style/AppThemeNoActionBar"/>
-
+        <activity
+            android:name=".AccountSettingsActivity"
+            android:label="@string/activity_account_settings"/>
+        <activity
+            android:name=".ForgotPassword"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppThemeNoActionBar" />
         <activity android:name=".ProfileActivity" />
-
         <activity
             android:name=".HomeScreen"
             android:label="@string/activity_home_screen" />
         <activity
             android:name=".ResourcesActivity"
-            android:label="@string/activity_resources_label"/>
+            android:label="@string/activity_resources_label" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/activity_settings_label"/>
+            android:label="@string/activity_settings_label" />
         <activity
             android:name=".ExerciseActivity"
             android:label="@string/activity_exercise_label" />
         <activity
             android:name=".NutritionActivity"
             android:label="@string/activity_nutrition_label" />
-
-        <activity android:name=".MainActivity"
-            android:theme="@style/AppThemeNoActionBar" >
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
