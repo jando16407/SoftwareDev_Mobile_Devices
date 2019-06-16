@@ -92,37 +92,45 @@ public class MainActivity extends AppCompatActivity {
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Gets all information to be stored in database
-                final User user = new User(editTextUsername.getText().toString(),
-                        editTextPassword.getText().toString(),
-                        editTextEmail.getText().toString(),
-                        editTextFirstName.getText().toString(),
-                        editTextLastName.getText().toString(),
-                        editTextAge.getText().toString(),
-                        editTextWeight.getText().toString());
 
-                //Stores User object inside database using email as label
-                usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.child(user.getUsername()).exists()){
-                            Toast.makeText(MainActivity.this,
-                                    "Email Already Registered!",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            usersRef.child(user.getUsername()).setValue(user);
+                    //Gets all information to be stored in database
+                    final User user = new User(editTextUsername.getText().toString(),
+                            editTextPassword.getText().toString(),
+                            editTextEmail.getText().toString(),
+                            editTextFirstName.getText().toString(),
+                            editTextLastName.getText().toString(),
+                            editTextAge.getText().toString(),
+                            editTextWeight.getText().toString());
+
+                    //Stores User object inside database using email as label
+                    usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.child(user.getUsername()).exists()){
+                                Toast.makeText(MainActivity.this,
+                                        "Username Already Registered!",
+                                        Toast.LENGTH_SHORT).show();
+
+                            }
+                            else if(userEmailExists(dataSnapshot, user)){
+                                Toast.makeText(MainActivity.this,
+                                        "Email Already Registered!\nPlease Login from Login Page",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                //Registers user in FireBase authorization
+                                registerUser();
+                            }
                         }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(MainActivity.this,
-                                "Database Error",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-                
-                //Registers user in FireBase authorization
-                registerUser();
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Toast.makeText(MainActivity.this,
+                                    "Database Error",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
             }
         });
 
@@ -145,6 +153,15 @@ public class MainActivity extends AppCompatActivity {
         String username = editTextUsername.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
+
+        //Gets all information to be stored in database
+        final User user = new User(editTextUsername.getText().toString(),
+                editTextPassword.getText().toString(),
+                editTextEmail.getText().toString(),
+                editTextFirstName.getText().toString(),
+                editTextLastName.getText().toString(),
+                editTextAge.getText().toString(),
+                editTextWeight.getText().toString());
 
         //Errors if any field is incorrectly filled out
         if (TextUtils.isEmpty(firstname)) {
@@ -199,6 +216,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,
                             "Registered Successfully",
                             Toast.LENGTH_SHORT).show();
+                    //Stores User object inside database using username as label
+                    usersRef.child(user.getUsername()).setValue(user);
                     finish();
                     goToHome();
                 } else {
@@ -215,4 +234,18 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), HomeScreen.class);
         startActivity(intent);
     }
+
+    private boolean userEmailExists(DataSnapshot dataSnapshot, User user) {
+        //Iterate thorough children to find email matching
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            DataSnapshot email = ds.child("email");
+            if (email.getValue().toString().equals(user.getEmail())) {
+                //Toast.makeText(MainActivity.this, "Email is "+email.getValue().toString(), Toast.LENGTH_LONG).show();
+                return true;
+            }
+
+        }
+        return false;
+    }
+
 }
