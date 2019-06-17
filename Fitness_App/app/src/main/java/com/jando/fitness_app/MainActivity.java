@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
                     //Gets all information to be stored in database
                     final User user = new User(editTextUsername.getText().toString(),
-                            editTextPassword.getText().toString(),
                             editTextEmail.getText().toString(),
                             editTextFirstName.getText().toString(),
                             editTextLastName.getText().toString(),
@@ -156,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Gets all information to be stored in database
         final User user = new User(editTextUsername.getText().toString(),
-                editTextPassword.getText().toString(),
                 editTextEmail.getText().toString(),
                 editTextFirstName.getText().toString(),
                 editTextLastName.getText().toString(),
