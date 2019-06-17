@@ -46,4 +46,6 @@
     <string name="title_activity_forgot_password">ForgotPassword</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="account_page_box_account_settings">Account Settings</string>
+    <string name="activity_account_settings">Account Settings</string>
 </resources>
