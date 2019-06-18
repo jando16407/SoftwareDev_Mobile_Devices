@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         buttonSignin = findViewById(R.id.buttonSignin);
         textViewSignup = findViewById(R.id.textViewSignUp);
         textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
-
+        //change
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
