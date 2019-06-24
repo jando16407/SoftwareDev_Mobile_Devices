@@ -30,7 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LoginActivity extends AppCompatActivity {
+public class CareTakerLogin extends AppCompatActivity {
 
     private TextInputEditText editTextInputPassword;
     private Button buttonSignin;
@@ -50,17 +50,16 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-            //Views
-            sign_in_button = findViewById(R.id.sign_in_button);
-            progressDialog = new ProgressDialog(this);
-            editTextEmail = findViewById(R.id.editTextEmail);
-            editTextInputPassword = findViewById(R.id.editTextInputPassword);
-            buttonSignin = findViewById(R.id.buttonSignin);
-            textViewSignup = findViewById(R.id.textViewSignUp);
-            textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
-            textView_findElder = findViewById(R.id.textView_backtologin);
+        setContentView(R.layout.activity_care_taker_login);
+        //Views
+        sign_in_button = findViewById(R.id.sign_in_button);
+        progressDialog = new ProgressDialog(this);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextInputPassword = findViewById(R.id.editTextInputPassword);
+        buttonSignin = findViewById(R.id.buttonSignin);
+        textViewSignup = findViewById(R.id.textViewSignUp);
+        textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
+        textView_findElder = findViewById(R.id.textView_backtologin);
         //change
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -89,22 +88,8 @@ public class LoginActivity extends AppCompatActivity {
                 userLogin();
             }
         });
-        textViewSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), MainActivity.class);
-                //finish();
-                startActivity(intent);
-            }
-        });
 
-        textViewForgotpassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent3 = new Intent(LoginActivity.this, ForgotPassword.class);
-                startActivity(intent3);
-            }
-        });
+
 
         //closes keyboard when password editText is entered
         editTextInputPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -119,30 +104,32 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        textView_findElder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, CareTakerLogin.class);
-                //finish();
-                startActivity(intent);
-            }
-        });
 
     }
 
-    protected void onStart() {
+    //protected void onStart() {
         // Check for existing Google Sign In account, if the user is already signed in
         //the GoogleSignInAccount will be non-null.
-        super.onStart();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account != null) {
-            finish();
-            startActivity(new Intent(getApplicationContext(),HomeScreen.class));
-            updateUI2(account);
-            Toast.makeText(LoginActivity.this,"ALREADY LOG IN",Toast.LENGTH_SHORT).show();
-        }
+        //super.onStart();
+        //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+       // if(account != null) {
+        //    finish();
+         //   startActivity(new Intent(getApplicationContext(),HomeScreen.class));
+        //    updateUI2(account);
+        //    Toast.makeText(CareTakerLogin.this,"ALREADY LOG IN",Toast.LENGTH_SHORT).show();
+       // }
+    //}
+
+    protected void onDestroy() {
+        super.onDestroy();
+        mGoogleSignInClient.signOut();
+        firebaseAuth.signOut();
+        //Intent intent = new Intent(v.getContext(), LoginActivity.class);
+        finish();
+        //startActivity(intent);
     }
 
+    //email and password
     private void userLogin() {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextInputPassword.getText().toString().trim();
@@ -165,9 +152,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (task.isSuccessful()) {
                     finish();
-                    startActivity(new Intent(getApplicationContext(), HomeScreen.class));
+                    startActivity(new Intent(getApplicationContext(), ElderMapLocation.class));
                 } else {
-                    Toast.makeText(LoginActivity.this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CareTakerLogin.this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -192,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                Toast.makeText(LoginActivity.this,"FAILED",Toast.LENGTH_SHORT).show();
+                Toast.makeText(CareTakerLogin.this,"FAILED",Toast.LENGTH_SHORT).show();
                 // Google Sign In failed, update UI appropriately
 
                 // [START_EXCLUDE]
@@ -214,12 +201,12 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this,"Login Successful",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CareTakerLogin.this,"Login Successful",Toast.LENGTH_SHORT).show();
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
-                            Toast.makeText(LoginActivity.this,"Login Failed",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CareTakerLogin.this,"Login Failed",Toast.LENGTH_SHORT).show();
                             // If sign in fails, display a message to the user.
                             updateUI(null);
                         }
@@ -229,7 +216,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         finish();
-        Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
+        Intent intent = new Intent(CareTakerLogin.this,ElderMapLocation.class);
         startActivity(intent);
     }
 
@@ -243,4 +230,3 @@ public class LoginActivity extends AppCompatActivity {
     //Signs out of google and FireBase Auth
 
 }
-

@@ -1,24 +1,42 @@
 package com.jando.fitness_app;
 
-import android.accounts.Account;
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AccountFragment extends Fragment implements View.OnClickListener {
 
+    private Context mContext;
+    private TextView alertTextView;
+    private Button EmergencyBTN;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_account, container, false);
+        mContext = getActivity();
+
+        EmergencyBTN = v.findViewById(R.id.EmergencyBTN);
+        EmergencyBTN.setOnClickListener(this);
+
+
+        alertTextView = v.findViewById(R.id.alertTextView);
+
 
         Button userAccountSettings = v.findViewById(R.id.button_user_account_settings);
         userAccountSettings.setOnClickListener(this);
@@ -37,14 +55,58 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getActivity(), AccountSettingsActivity.class);
                 startActivity(intent);
                 break;
-                /*
-            case R.id.buttonNutrition:
+
+            case R.id.EmergencyBTN:
                 Toast.makeText(getContext(),
-                        "Nutrition Clicked",
+                        "Emergency Clicked",
                         Toast.LENGTH_SHORT).show();
-                intent = new Intent(getActivity(), NutritionActivity.class);
-                startActivity(intent);
-                break;*/
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setCancelable(true);
+                builder.setTitle("Emergency!");
+                builder.setMessage("Who do you want to call?");
+
+
+                builder.setNeutralButton("Care Taker", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String number = "8133250497";   // Alfredo number
+                        Intent callIntent = new Intent(Intent.ACTION_CALL); // or ACTION_DIAL
+                        callIntent.setData(Uri.parse("tel:"+number));
+
+                        startActivity(callIntent);
+
+
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.setPositiveButton("911", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String number = "18882378289";  //Best Buy Customer Service
+                        Intent callIntent = new Intent(Intent.ACTION_CALL); // or ACTION_DIAL
+                        callIntent.setData(Uri.parse("tel:"+number));
+
+                        startActivity(callIntent);
+
+
+                    }
+                });
+
+
+                builder.show();
+
+
+                break;
             default:
                 Toast.makeText(getContext(),
                         "Default Button Response",
