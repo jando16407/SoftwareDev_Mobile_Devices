@@ -31,7 +31,7 @@ public class LoginForAccountSettings extends AppCompatActivity {
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewForgotpassword;
-    private TextView textViewSignup;
+    //private TextView textViewSignup;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private SignInButton sign_in_button;
@@ -41,14 +41,14 @@ public class LoginForAccountSettings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_for_account_settings);
 
         //Views
         progressDialog = new ProgressDialog(this);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextInputPassword = findViewById(R.id.editTextInputPassword);
         buttonSignin = findViewById(R.id.buttonSignin);
-        textViewSignup = findViewById(R.id.textViewSignUp);
+        //textViewSignup = findViewById(R.id.textViewSignUp);
         textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
 
 
@@ -63,14 +63,14 @@ public class LoginForAccountSettings extends AppCompatActivity {
                 userLogin();
             }
         });
-        textViewSignup.setOnClickListener(new View.OnClickListener() {
+        /*textViewSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MainActivity.class);
                 //finish();
                 startActivity(intent);
             }
-        });
+        });*/
 
         textViewForgotpassword.setOnClickListener(new View.OnClickListener() {
             @Override
