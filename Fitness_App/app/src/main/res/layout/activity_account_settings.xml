@@ -35,45 +35,6 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="User Name:"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-            <EditText
-                android:id="@+id/editText2"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:ems="10"
-                android:text="show username"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
-
-            <Button
-                android:id="@+id/button0"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginStart="280dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="Edit"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
@@ -134,8 +95,21 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:ems="10"
-                android:text="Type Password"
+                android:hint="Type Password"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+            <EditText
+                android:id="@+id/editText66"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:ems="10"
+                android:hint="Type Password"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <Button
                 android:id="@+id/button2"
@@ -285,7 +259,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <EditText
-                android:id="@+id/editText14"
+                android:id="@+id/editText16"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginStart="10dp"

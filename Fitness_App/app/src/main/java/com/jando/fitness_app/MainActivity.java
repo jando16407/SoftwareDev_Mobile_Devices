@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -94,8 +95,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                     //Gets all information to be stored in database
-                    final User user = new User(editTextUsername.getText().toString(),
-                            editTextEmail.getText().toString(),
+                    final User user = new User(editTextEmail.getText().toString(),
                             editTextFirstName.getText().toString(),
                             editTextLastName.getText().toString(),
                             editTextAge.getText().toString(),
@@ -105,13 +105,14 @@ public class MainActivity extends AppCompatActivity {
                     usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            /*
                             if(dataSnapshot.child(user.getUsername()).exists()){
                                 Toast.makeText(MainActivity.this,
                                         "Username Already Registered!",
                                         Toast.LENGTH_SHORT).show();
 
                             }
-                            else if(userEmailExists(dataSnapshot, user)){
+                            else */if(userEmailExists(dataSnapshot, user)){
                                 Toast.makeText(MainActivity.this,
                                         "Email Already Registered!\nPlease Login from Login Page",
                                         Toast.LENGTH_SHORT).show();
@@ -149,13 +150,12 @@ public class MainActivity extends AppCompatActivity {
         String lastname = editTextLastName.getText().toString().trim();
         String age = editTextAge.getText().toString().trim();
         String weight = editTextWeight.getText().toString().trim();
-        String username = editTextUsername.getText().toString().trim();
+        //String username = editTextUsername.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
         //Gets all information to be stored in database
-        final User user = new User(editTextUsername.getText().toString(),
-                editTextEmail.getText().toString(),
+        final User user = new User(editTextEmail.getText().toString(),
                 editTextFirstName.getText().toString(),
                 editTextLastName.getText().toString(),
                 editTextAge.getText().toString(),
@@ -182,11 +182,13 @@ public class MainActivity extends AppCompatActivity {
             editTextWeight.requestFocus();
             return;
         }
+        /*
         if (TextUtils.isEmpty(username)) {
             editTextUsername.setError("Username Required");
             editTextUsername.requestFocus();
             return;
         }
+        */
         if (TextUtils.isEmpty(email)) {
             editTextEmail.setError("Email Required");
             editTextEmail.requestFocus();
@@ -214,8 +216,16 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,
                             "Registered Successfully",
                             Toast.LENGTH_SHORT).show();
-                    //Stores User object inside database using username as label
-                    usersRef.child(user.getUsername()).setValue(user);
+                    //Stores User object inside database using UID as label
+                    firebaseAuth = FirebaseAuth.getInstance();
+                    if(firebaseAuth.getCurrentUser() == null){
+                        Toast.makeText(MainActivity.this,"getCurrentUser == null",Toast.LENGTH_SHORT).show();
+                    }
+                    FirebaseUser f_user = firebaseAuth.getCurrentUser();
+                    Toast.makeText(MainActivity.this,
+                            "UID: "+f_user.getUid(),
+                            Toast.LENGTH_SHORT).show();
+                    usersRef.child(f_user.getUid()).setValue(user);
                     finish();
                     goToHome();
                 } else {
