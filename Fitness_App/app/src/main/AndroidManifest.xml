@@ -9,9 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".UserSettingsActivity"></activity>
         <activity
             android:name=".LoginForAccountSettings"
-            android:label="LoginForAccountSettings"/>
+            android:label="LoginForAccountSettings" />
         <activity
             android:name=".AccountSettingsActivity"
             android:label="@string/activity_account_settings" />
@@ -21,8 +22,7 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppThemeNoActionBar" />
-        <activity
-            android:name=".ProfileActivity" />
+        <activity android:name=".ProfileActivity" />
         <activity
             android:name=".HomeScreen"
             android:label="@string/activity_home_screen" />
