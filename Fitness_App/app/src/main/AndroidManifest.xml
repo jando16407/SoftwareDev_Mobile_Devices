@@ -15,7 +15,7 @@
             android:label="LoginForAccountSettings" />
         <activity
             android:name=".AccountSettingsActivity"
-            android:label="@string/activity_account_settings" />
+            />
         <activity
             android:name=".ForgotPassword"
             android:theme="@style/AppThemeNoActionBar" />
