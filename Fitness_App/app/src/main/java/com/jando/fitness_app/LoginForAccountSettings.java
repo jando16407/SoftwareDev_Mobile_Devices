@@ -23,6 +23,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ConcurrentModificationException;
+
 public class LoginForAccountSettings extends AppCompatActivity {
 
     private TextInputEditText editTextInputPassword;
@@ -53,6 +55,7 @@ public class LoginForAccountSettings extends AppCompatActivity {
 
 
         firebaseAuth = FirebaseAuth.getInstance();
+
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -100,6 +103,10 @@ public class LoginForAccountSettings extends AppCompatActivity {
 
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!email.equals(firebaseAuth.getCurrentUser().getEmail())){
+            Toast.makeText(this, "Wrong user email", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(password)) {
