@@ -31,9 +31,6 @@ public class UserSettingsActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth firebaseAuth;
-    private TextView textViewUserEmail;
-    private TextView textViewUserPassword1;
-    private TextView textViewUserPassword2;
     private TextView textViewUserAge;
     private TextView textViewUserWeight;
     private TextView textViewUserFirstName;
@@ -41,12 +38,10 @@ public class UserSettingsActivity extends AppCompatActivity {
     //private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
-    private Button buttonEmail;
     private Button buttonAge;
     private Button buttonWeight;
     private Button buttonFirstName;
     private Button buttonLastName;
-    private Button buttonPassword;
     final User userInfo = new User("", "", "", "", "");
     FirebaseUser user = null;
 
@@ -54,16 +49,7 @@ public class UserSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account_settings);
-
-        /*
-        //Gets Google info so it can log out
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("434381172772-nab3ojvfhn78s3s6en73mdbmg9pk30ak.apps.googleusercontent.com")
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-*/
+        setContentView(R.layout.activity_user_settings);
 
         //firebase info to log out
         firebaseAuth = FirebaseAuth.getInstance();
@@ -76,21 +62,10 @@ public class UserSettingsActivity extends AppCompatActivity {
 
         user = firebaseAuth.getCurrentUser();
 
-        //textViewUserName = findViewById(R.id.editText2);
-        //textViewUserName.setText(user.getu);
-        //firebaseAuth = FirebaseAuth.getInstance();
-        textViewUserEmail = findViewById(R.id.editText4);
-        textViewUserEmail.setText(user.getEmail());
-        textViewUserPassword1 = findViewById(R.id.editText6);
-        //textViewUserPassword1.setText("Type password to update");
-        textViewUserPassword2 = findViewById(R.id.editText66);
-        //textViewUserPassword2.setText("Type password to update");
         textViewUserAge = findViewById(R.id.editText8);
         textViewUserWeight = findViewById(R.id.editText10);
         textViewUserFirstName = findViewById(R.id.editText12);
         textViewUserLastName = findViewById(R.id.editText16);
-        buttonEmail = findViewById(R.id.button1);
-        buttonPassword = findViewById(R.id.button2);
         buttonAge = findViewById(R.id.button3);
         buttonWeight = findViewById(R.id.button4);
         buttonFirstName = findViewById(R.id.button5);
@@ -106,50 +81,33 @@ public class UserSettingsActivity extends AppCompatActivity {
         String lastname = textViewUserLastName.getText().toString().trim();
         String age = textViewUserAge.getText().toString().trim();
         String weight = textViewUserWeight.getText().toString().trim();
-        //String email;
-        String password1 = textViewUserPassword1.getText().toString().trim();
-        String password2 = textViewUserPassword2.getText().toString().trim();
 
 
 
-        /** Update email address */
-        buttonEmail.setOnClickListener(new View.OnClickListener() {
+        /** Update Age address */
+        buttonAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String email = textViewUserEmail.getText().toString().trim();
-                if (TextUtils.isEmpty(email)) {
-                    textViewUserEmail.setError("Please type the email to change");
-                    textViewUserEmail.requestFocus();
+                final String age = textViewUserAge.getText().toString().trim();
+                if (TextUtils.isEmpty(age)) {
+                    textViewUserAge.setError("Please type the age to change");
+                    textViewUserAge.requestFocus();
                     return;
                 }
-                else if(userInfo.getEmail().equals(email)){
-                    textViewUserEmail.setError("This is your current email address");
-                    textViewUserEmail.requestFocus();
+                else if(userInfo.getEmail().equals(age)){
+                    textViewUserAge.setError("This is your current age");
+                    textViewUserAge.requestFocus();
                 }
                 usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(userEmailExists(dataSnapshot, email)){
-                            textViewUserEmail.setError("This email address is already registered");
-                            textViewUserEmail.requestFocus();
+                        if(userEmailExists(dataSnapshot, age)){
+                            textViewUserAge.setError("This is your current age");
+                            textViewUserAge.requestFocus();
                         }
                         else{
-                            userInfo.setEmail(email);
-                            final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
-                            // AuthCredential credential = EmailAuthProvider
-                            //       .getCredential(f_user.getEmail(), f_user.getPasswor);
-                            f_user.updateEmail(email).addOnCompleteListener(new OnCompleteListener<Void>(){
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(UserSettingsActivity.this, "User email address updated",Toast.LENGTH_SHORT).show();
-                                        usersRef.child(f_user.getUid()).setValue(userInfo);
-                                    }
-                                    else{
-                                        Toast.makeText(UserSettingsActivity.this, "User email update Failed",Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                            userInfo.setAge(age);
+
                         }
                     }
                     @Override

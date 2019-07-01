@@ -39,12 +39,14 @@
                 android:onClick="GoToAccountSettingsPage"/>
 
             <Button
+                android:id="@+id/button_user_settings"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginTop="64dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="64dp"
                 android:layout_marginRight="16dp"
-                android:text="box2" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:text="User Information Settings" />
 
             <Button
                 android:layout_width="match_parent"

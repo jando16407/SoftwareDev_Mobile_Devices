@@ -119,9 +119,13 @@ public class AccountSettingsActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(AccountSettingsActivity.this,
                                             "User email is updated",Toast.LENGTH_SHORT).show();
+                                    usersRef.child(f_user.getUid()).child("email").setValue(email1);
                                 }
                             }
                         });
+
+
+
             }
         });
 
