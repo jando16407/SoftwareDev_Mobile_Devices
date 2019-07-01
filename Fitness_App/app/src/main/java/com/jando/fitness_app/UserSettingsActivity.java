@@ -80,11 +80,11 @@ public class UserSettingsActivity extends AppCompatActivity {
         String firstname = textViewUserFirstName.getText().toString().trim();
         String lastname = textViewUserLastName.getText().toString().trim();
         String age = textViewUserAge.getText().toString().trim();
-        String weight = textViewUserWeight.getText().toString().trim();
+        final String weight = textViewUserWeight.getText().toString().trim();
 
 
 
-        /** Update Age address */
+        /** Update Age */
         buttonAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,24 +98,76 @@ public class UserSettingsActivity extends AppCompatActivity {
                     textViewUserAge.setError("This is your current age");
                     textViewUserAge.requestFocus();
                 }
-                usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(userEmailExists(dataSnapshot, age)){
-                            textViewUserAge.setError("This is your current age");
-                            textViewUserAge.requestFocus();
-                        }
-                        else{
-                            userInfo.setAge(age);
+                final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+                usersRef.child(f_user.getUid()).child("age").setValue(age);
+                Toast.makeText(UserSettingsActivity.this,
+                        "User age is updated",Toast.LENGTH_SHORT).show();
 
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
-                    }
-                });
+        /** Update Weight */
+        buttonWeight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String weight = textViewUserWeight.getText().toString().trim();
+                if (TextUtils.isEmpty(weight)) {
+                    textViewUserWeight.setError("Please type the weight to change");
+                    textViewUserWeight.requestFocus();
+                    return;
+                }
+                else if(userInfo.getEmail().equals(weight)){
+                    textViewUserWeight.setError("This is your current weight");
+                    textViewUserWeight.requestFocus();
+                }
+                final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+                usersRef.child(f_user.getUid()).child("weight").setValue(weight);
+                Toast.makeText(UserSettingsActivity.this,
+                        "User weight is updated",Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        /** Update First Name */
+        buttonFirstName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String firstname = textViewUserFirstName.getText().toString().trim();
+                if (TextUtils.isEmpty(firstname)) {
+                    textViewUserFirstName.setError("Please type the first name to change");
+                    textViewUserFirstName.requestFocus();
+                    return;
+                }
+                else if(userInfo.getEmail().equals(firstname)){
+                    textViewUserFirstName.setError("This is your current first name");
+                    textViewUserFirstName.requestFocus();
+                }
+                final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+                usersRef.child(f_user.getUid()).child("firstname").setValue(firstname);
+                Toast.makeText(UserSettingsActivity.this,
+                        "User first name is updated",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        /** Update Last Name */
+        buttonLastName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String lastname = textViewUserLastName.getText().toString().trim();
+                if (TextUtils.isEmpty(lastname)) {
+                    textViewUserLastName.setError("Please type the last name to change");
+                    textViewUserLastName.requestFocus();
+                    return;
+                }
+                else if(userInfo.getEmail().equals(lastname)){
+                    textViewUserLastName.setError("This is your current last name");
+                    textViewUserLastName.requestFocus();
+                }
+                final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+
+                Toast.makeText(UserSettingsActivity.this,
+                        "User last name is updated",Toast.LENGTH_SHORT).show();
+                usersRef.child(f_user.getUid()).child("lastname").setValue(lastname);
             }
         });
 
