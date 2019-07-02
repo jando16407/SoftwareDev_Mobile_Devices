@@ -50,4 +50,5 @@
     <string name="activity_account_settings">Account Settings</string>
     <string name="re_log_in">RE_LOG IN</string>
     <string name="login_to_access_account_settings">Login to Access Account Settings</string>
+    <string name="title_activity_elder_map_location">Map</string>
 </resources>
