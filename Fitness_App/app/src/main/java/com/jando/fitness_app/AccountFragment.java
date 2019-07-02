@@ -39,7 +39,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
 
 
         Button userAccountSettings = v.findViewById(R.id.button_user_account_settings);
+        Button userInformationSettings = v.findViewById(R.id.button_user_settings);
         userAccountSettings.setOnClickListener(this);
+        userInformationSettings.setOnClickListener(this);
         return v;
     }
 
@@ -52,7 +54,14 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(getContext(),
                         "Account Settings Clicked",
                         Toast.LENGTH_SHORT).show();
-                intent = new Intent(getActivity(), AccountSettingsActivity.class);
+                intent = new Intent(getActivity(), LoginForAccountSettings.class);
+                startActivity(intent);
+                break;
+            case R.id.button_user_settings:
+                Toast.makeText(getContext(),
+                        "User Information Settings Clicked",
+                        Toast.LENGTH_SHORT).show();
+                intent = new Intent(getActivity(), UserSettingsActivity.class);
                 startActivity(intent);
                 break;
 

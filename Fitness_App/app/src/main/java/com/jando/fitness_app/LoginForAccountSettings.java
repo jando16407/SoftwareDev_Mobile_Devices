@@ -3,9 +3,9 @@ package com.jando.fitness_app;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import com.google.android.material.textfield.TextInputEditText;
-import androidx.appcompat.app.AppCompatActivity;
+import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -17,16 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LoginActivity extends AppCompatActivity {
+import java.util.ConcurrentModificationException;
+
+public class LoginForAccountSettings extends AppCompatActivity {
 
     private TextInputEditText editTextInputPassword;
     private Button buttonSignin;
@@ -34,8 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewForgotpassword;
-    private TextView textViewSignup;
-    private TextView textView_findElder;
+    //private TextView textViewSignup;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private SignInButton sign_in_button;
@@ -45,28 +43,19 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_for_account_settings);
 
-            //Views
-            sign_in_button = findViewById(R.id.sign_in_button);
-            progressDialog = new ProgressDialog(this);
-            editTextEmail = findViewById(R.id.editTextEmail);
-            editTextInputPassword = findViewById(R.id.editTextInputPassword);
-            buttonSignin = findViewById(R.id.buttonSignin);
-            textViewSignup = findViewById(R.id.textViewSignUp);
-            textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
-            textView_findElder = findViewById(R.id.textView_backtologin);
-        //change
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("434381172772-nab3ojvfhn78s3s6en73mdbmg9pk30ak.apps.googleusercontent.com")
-                .requestEmail()
-                .build();
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        //Views
+        progressDialog = new ProgressDialog(this);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextInputPassword = findViewById(R.id.editTextInputPassword);
+        buttonSignin = findViewById(R.id.buttonSignin);
+        //textViewSignup = findViewById(R.id.textViewSignUp);
+        textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
+
 
         firebaseAuth = FirebaseAuth.getInstance();
+
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -77,19 +66,19 @@ public class LoginActivity extends AppCompatActivity {
                 userLogin();
             }
         });
-        textViewSignup.setOnClickListener(new View.OnClickListener() {
+        /*textViewSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MainActivity.class);
                 //finish();
                 startActivity(intent);
             }
-        });
+        });*/
 
         textViewForgotpassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent3 = new Intent(LoginActivity.this, ForgotPassword.class);
+                Intent intent3 = new Intent(LoginForAccountSettings.this, ForgotPassword.class);
                 startActivity(intent3);
             }
         });
@@ -106,16 +95,6 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        textView_findElder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, CareTakerLogin.class);
-                //finish();
-                startActivity(intent);
-            }
-        });
-
     }
 
     private void userLogin() {
@@ -124,6 +103,10 @@ public class LoginActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!email.equals(firebaseAuth.getCurrentUser().getEmail())){
+            Toast.makeText(this, "Wrong user email", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(password)) {
@@ -140,9 +123,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (task.isSuccessful()) {
                     finish();
-                    startActivity(new Intent(getApplicationContext(), HomeScreen.class));
+                    startActivity(new Intent(getApplicationContext(), AccountSettingsActivity.class));
                 } else {
-                    Toast.makeText(LoginActivity.this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginForAccountSettings.this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -151,10 +134,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         finish();
-        Intent intent = new Intent(LoginActivity.this,HomeScreen.class);
+        Intent intent = new Intent(LoginForAccountSettings.this,HomeScreen.class);
         startActivity(intent);
     }
     //Signs out of google and FireBase Auth
-
 }
-

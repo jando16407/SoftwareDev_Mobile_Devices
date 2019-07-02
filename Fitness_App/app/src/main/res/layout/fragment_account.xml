@@ -39,31 +39,33 @@
                 android:onClick="GoToAccountSettingsPage"/>
 
             <Button
-                android:id="@+id/EmergencyBTN"
+                android:id="@+id/button_user_settings"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="64dp"
                 android:layout_marginRight="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:text="User Information Settings" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:id="@+id/EmergencyBTN"
+                android:layout_height="200dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="box3"
                 android:background="#DE1738"
                 android:text="Emergency"
                 android:textColor="#FFFFFF"
                 android:textSize="50dp" />
-
-            <TextView
+          <TextView
                 android:id="@+id/alertTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:visibility="invisible" />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="64dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:text="box3" />
 
             <Button
                 android:layout_width="match_parent"

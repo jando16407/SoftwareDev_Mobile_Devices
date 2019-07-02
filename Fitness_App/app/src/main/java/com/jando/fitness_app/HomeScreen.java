@@ -31,8 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import static android.content.Context.LOCATION_SERVICE;
-
-public class HomeScreen extends AppCompatActivity {
+public class HomeScreen extends AppCompatActivity{
 
 
     private FirebaseAuth firebaseAuth;
@@ -190,7 +189,5 @@ public class HomeScreen extends AppCompatActivity {
         Intent intent = new Intent(this, ResourcesActivity.class);
         startActivity(intent);
     }
-
-
 
 }
