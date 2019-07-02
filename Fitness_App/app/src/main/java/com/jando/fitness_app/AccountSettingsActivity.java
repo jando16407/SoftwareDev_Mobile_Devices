@@ -1,13 +1,14 @@
 package com.jando.fitness_app;
 
-import android.accounts.Account;
-import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import androidx.appcompat.app.AppCompatActivity;
+import android.accounts.Account;
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -28,7 +29,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jando.fitness_app.Model.User;
-
 public class AccountSettingsActivity extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
