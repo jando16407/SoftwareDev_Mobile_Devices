@@ -38,6 +38,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
         simpleStepDetector.registerListener(this);
 
         TvSteps = v.findViewById(R.id.textViewSteps);
+        TvSteps.setText(TEXT_NUM_STEPS + numSteps);
+
         Button BtnStart = v.findViewById(R.id.buttonStartSteps);
         Button BtnStop = v.findViewById(R.id.buttonStopSteps);
 
@@ -45,8 +47,9 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
 
             @Override
             public void onClick(View arg0) {
-                TvSteps.setText(TEXT_NUM_STEPS + numSteps);
-                sensorManager.registerListener(HomeFragment.this, accel, SensorManager.SENSOR_DELAY_FASTEST);
+                numSteps = 0;
+                sensorManager.registerListener(HomeFragment.this, accel,
+                        SensorManager.SENSOR_DELAY_FASTEST);
             }
         });
 
