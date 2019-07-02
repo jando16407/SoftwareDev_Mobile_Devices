@@ -48,8 +48,6 @@
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="account_page_box_account_settings">Account Settings</string>
     <string name="activity_account_settings">Account Settings</string>
-    <string name="title_activity_elder_map">Map</string>
-    <string name="title_activity_elder_map_location">Map</string>
     <string name="re_log_in">RE_LOG IN</string>
     <string name="login_to_access_account_settings">Login to Access Account Settings</string>
 </resources>
