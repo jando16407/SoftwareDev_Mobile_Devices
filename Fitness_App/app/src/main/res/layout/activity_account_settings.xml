@@ -57,7 +57,7 @@
                 android:layout_marginRight="16dp"
                 android:inputType="text"
                 android:ems="10"
-                android:text="show email address"
+                android:hint="show email address"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
             <EditText

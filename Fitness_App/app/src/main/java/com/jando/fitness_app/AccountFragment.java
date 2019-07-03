@@ -51,9 +51,16 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getActivity(), LoginForAccountSettings.class);
                 startActivity(intent);
                 break;
-            case R.id.EmergencyBTN:
+            case R.id.button_user_settings:
                 Toast.makeText(getContext(),
                         "User Information Settings Clicked",
+                        Toast.LENGTH_SHORT).show();
+                intent = new Intent(getActivity(), UserSettingsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.EmergencyBTN:
+                Toast.makeText(getContext(),
+                        "Emergency Clicked",
                         Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setCancelable(true);
