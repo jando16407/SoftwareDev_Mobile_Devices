@@ -189,7 +189,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
             }
         });
 
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 

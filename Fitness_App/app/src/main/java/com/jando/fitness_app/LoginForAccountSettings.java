@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -93,6 +94,8 @@ public class LoginForAccountSettings extends AppCompatActivity {
                 return false;
             }
         });
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void userLogin() {
@@ -136,4 +139,13 @@ public class LoginForAccountSettings extends AppCompatActivity {
         startActivity(intent);
     }
     //Signs out of google and FireBase Auth
+    /**Back button functionality */
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        else
+            return super.onOptionsItemSelected(item);
+    }
 }
