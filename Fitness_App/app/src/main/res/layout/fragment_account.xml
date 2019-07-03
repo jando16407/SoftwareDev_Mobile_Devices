@@ -28,15 +28,16 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <Button
-                android:id="@+id/button_user_account_settings"
+                android:id="@+id/EmergencyBTN"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="64dp"
                 android:layout_marginRight="16dp"
-                android:text="@string/account_page_box_account_settings"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:onClick="GoToAccountSettingsPage"/>
+                android:background="#DE1738"
+                android:text="Emergency"
+                android:textColor="#FFFFFF"
+                android:textSize="50dp" />
 
             <Button
                 android:id="@+id/button_user_settings"
@@ -49,16 +50,17 @@
                 android:text="User Information Settings" />
 
             <Button
-                android:id="@+id/EmergencyBTN"
+                android:id="@+id/button_user_account_settings"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="64dp"
                 android:layout_marginRight="16dp"
-                android:background="#DE1738"
-                android:text="Emergency"
-                android:textColor="#FFFFFF"
-                android:textSize="50dp" />
+                android:text="@string/account_page_box_account_settings"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:onClick="GoToAccountSettingsPage"/>
+
+
 
             <Button
                 android:layout_width="match_parent"
