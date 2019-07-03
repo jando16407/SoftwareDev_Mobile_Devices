@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundPrimary">
 
+    <Button
+        android:id="@+id/button_weather"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
+        android:text="This will be weather display + link to weather activity"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
+
     <TextView
         android:id="@+id/welcomeMessage"
         android:layout_width="wrap_content"
@@ -32,7 +42,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/welcomeMessage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/button_weather" />
 
     <Button
         android:id="@+id/buttonStartSteps"
@@ -62,12 +72,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="Steps taken today: "
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/welcomeMessage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/button_weather" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
