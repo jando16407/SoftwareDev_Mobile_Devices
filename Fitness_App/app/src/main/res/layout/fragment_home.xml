@@ -7,31 +7,19 @@
     android:background="@color/colorBackgroundPrimary">
 
     <TextView
-        android:id="@+id/welcomeMessage"
-        android:layout_width="wrap_content"
+        android:id="@+id/textViewSteps"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="@string/text_welcome_message"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="TextView"
+        android:textSize="28sp"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewSteps"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="8dp"
-        android:text="TextView"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/welcomeMessage"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -43,7 +31,7 @@
         android:layout_marginTop="8dp"
         android:text="Start"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewStepsLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSteps" />
 
     <Button
         android:id="@+id/buttonStopSteps"
@@ -55,19 +43,6 @@
         android:text="Stop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSteps" />
-
-    <TextView
-        android:id="@+id/textViewStepsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginBottom="8dp"
-        android:text="Steps taken today: "
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/welcomeMessage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

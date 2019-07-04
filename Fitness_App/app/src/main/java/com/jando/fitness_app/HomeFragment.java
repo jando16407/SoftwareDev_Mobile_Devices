@@ -13,7 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.IntBuffer;
+
+import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.SENSOR_SERVICE;
 
 public class HomeFragment extends Fragment implements SensorEventListener, StepCounterActivity{
@@ -38,16 +48,24 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
         simpleStepDetector.registerListener(this);
 
         TvSteps = v.findViewById(R.id.textViewSteps);
-        TvSteps.setText(TEXT_NUM_STEPS + numSteps);
-
         Button BtnStart = v.findViewById(R.id.buttonStartSteps);
         Button BtnStop = v.findViewById(R.id.buttonStopSteps);
+
+        if (readFile() != null) {
+            numSteps = Integer.parseInt(readFile());
+            TvSteps.setText(TEXT_NUM_STEPS + readFile());
+        } else {
+            numSteps = 0;
+            TvSteps.setText(TEXT_NUM_STEPS + numSteps);
+        }
 
         BtnStart.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
                 numSteps = 0;
+                writeFile();
+                TvSteps.setText(TEXT_NUM_STEPS + readFile());
                 sensorManager.registerListener(HomeFragment.this, accel,
                         SensorManager.SENSOR_DELAY_FASTEST);
             }
@@ -57,6 +75,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
 
             @Override
             public void onClick(View arg0) {
+                writeFile();
                 sensorManager.unregisterListener(HomeFragment.this);
             }
         });
@@ -76,10 +95,54 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
         }
     }
 
+    //every time a step is detected
     @Override
     public void step(long timeNs) {
         numSteps++;
-        TvSteps.setText(TEXT_NUM_STEPS + numSteps);
+        writeFile();
+        TvSteps.setText(TEXT_NUM_STEPS + readFile());
     }
 
+    public void writeFile() {
+        String intToSave = numSteps + "";
+
+        try {
+
+            FileOutputStream fileOutputStream = getContext().openFileOutput("LocalInfo.txt", MODE_PRIVATE);
+            fileOutputStream.write(intToSave.getBytes());
+            fileOutputStream.close();
+
+            Toast.makeText(getContext(), "Step saved successfully", Toast.LENGTH_LONG).show();
+
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String readFile() {
+        try {
+
+            FileInputStream fileInputStream = getContext().openFileInput("LocalInfo.txt");
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuffer stringBuffer = new StringBuffer();
+
+            String number;
+            while ((number = bufferedReader.readLine()) != null){
+                stringBuffer.append(number);
+            }
+
+            return stringBuffer.toString();
+
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+            return null;
+        } catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
