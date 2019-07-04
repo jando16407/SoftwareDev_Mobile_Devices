@@ -166,6 +166,8 @@ public class UserSettingsActivity extends AppCompatActivity {
             }
         });
 
+        //Adds back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -214,7 +216,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         });
     }
 
-    /** Cheeck if the given email is already registered on firebase */
+    /** Check if the given email is already registered on firebase */
     private boolean userEmailExists(DataSnapshot dataSnapshot, String email_address) {
         //Iterate thorough children to find email matching
         for (DataSnapshot ds : dataSnapshot.getChildren()) {

@@ -13,6 +13,8 @@
     <string name="activity_nutrition_label">Nutrition</string>
     <string name="activity_settings_label">Settings</string>
     <string name="activity_resources_label">Resources</string>
+    <string name="activity_account_settings_label">Account Settings</string>
+    <string name="activity_user_settings_label">User Settings</string>
 
     <string name="fragment_home_label">Home</string>
     <string name="fragment_account_label">Account</string>
@@ -20,8 +22,8 @@
 
     <string name="button_sign_in">Log In</string>
     <string name="button_sign_up">Sign up</string>
-    <string name="button_nutrition">Click for Nutrition</string>
-    <string name="button_exercise">Click for Exercises</string>
+    <string name="button_nutrition">Nutrition</string>
+    <string name="button_exercise">Exercises</string>
 
     <string name="text_welcome_message">Welcome!</string>
     <string name="text_already_registered">Already a member? Log in here!</string>

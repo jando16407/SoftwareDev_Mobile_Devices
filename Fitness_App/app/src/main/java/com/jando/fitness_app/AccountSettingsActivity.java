@@ -57,7 +57,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
             //startActivity(new Intent(this, LoginActivity.class));
         }
 
-
         user = firebaseAuth.getCurrentUser();
 
         textViewUserEmail1 = findViewById(R.id.editText4);
@@ -68,7 +67,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
         textViewUserPassword2 = findViewById(R.id.editText66);
         buttonEmail = findViewById(R.id.button1);
         buttonPassword = findViewById(R.id.button2);
-
 
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("Users");
@@ -120,9 +118,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
                                 }
                             }
                         });
-
-
-
             }
         });
 
@@ -189,7 +184,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
             }
         });
 
-
+        //Adds back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
