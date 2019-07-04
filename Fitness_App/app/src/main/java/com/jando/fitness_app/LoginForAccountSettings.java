@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -93,6 +94,20 @@ public class LoginForAccountSettings extends AppCompatActivity {
                 return false;
             }
         });
+
+        //Adds back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    /**Back button functionality */
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        else
+            return super.onOptionsItemSelected(item);
     }
 
     private void userLogin() {

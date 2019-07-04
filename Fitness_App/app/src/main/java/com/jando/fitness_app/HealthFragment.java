@@ -34,16 +34,10 @@ public class HealthFragment extends Fragment implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.buttonExercise:
-                Toast.makeText(getContext(),
-                        "Exercise Clicked",
-                        Toast.LENGTH_SHORT).show();
                 intent = new Intent(getActivity(), ExerciseActivity.class);
                 startActivity(intent);
                 break;
             case R.id.buttonNutrition:
-                Toast.makeText(getContext(),
-                        "Nutrition Clicked",
-                        Toast.LENGTH_SHORT).show();
                 intent = new Intent(getActivity(), NutritionActivity.class);
                 startActivity(intent);
                 break;
