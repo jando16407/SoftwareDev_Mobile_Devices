@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPassword extends AppCompatActivity {
 
-
     private EditText etPasswordEmail;
     private Button btnPasswordReset;
     private FirebaseAuth firebaseAuth;
@@ -34,26 +33,30 @@ public class ForgotPassword extends AppCompatActivity {
                 String useremail = etPasswordEmail.getText().toString().trim();
 
                 if(useremail.equals("")){
-                    Toast.makeText(ForgotPassword.this,"Please enter your register email",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForgotPassword.this,
+                            "Please enter your register email",
+                            Toast.LENGTH_SHORT).show();
                 }
                 else{
                     firebaseAuth.sendPasswordResetEmail(useremail).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
-                                Toast.makeText(ForgotPassword.this,"Password reset email sent",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ForgotPassword.this,
+                                        "Password reset email sent",
+                                        Toast.LENGTH_SHORT).show();
                                 finish();
                                 Intent intent = new Intent(ForgotPassword.this,LoginActivity.class);
                             }
                             else{
-                                Toast.makeText(ForgotPassword.this,"Error in sending password reset email",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ForgotPassword.this,
+                                        "Error in sending password reset email",
+                                        Toast.LENGTH_SHORT).show();
                             }
-
                         }
                     });
                 }
             }
         });
-
     }
 }

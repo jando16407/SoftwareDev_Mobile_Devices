@@ -27,7 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class HomeScreen extends AppCompatActivity {
 
-
     private FirebaseAuth firebaseAuth;
     LocationListener locationListener;
     LocationManager locationManager;
@@ -51,9 +50,8 @@ public class HomeScreen extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference mRef = database.getReference("Location");
 
-
         //location changes and adds latitude and longitude to database
-        //************************************************************************************************************************************
+        //****************************************************************************************//
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -65,7 +63,8 @@ public class HomeScreen extends AppCompatActivity {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Toast.makeText(HomeScreen.this, "Location changed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeScreen.this,
+                        "Location changed", Toast.LENGTH_SHORT).show();
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 firebaseAuth = FirebaseAuth.getInstance();
@@ -78,25 +77,22 @@ public class HomeScreen extends AppCompatActivity {
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-
             }
 
             @Override
             public void onProviderEnabled(String provider) {
-
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-
             }
         };
 
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 3, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 3, locationListener);
-//**************************************************************************************************************************************************
-
-
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                3000, 3, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                3000, 3, locationListener);
+//************************************************************************************************//
     }
 
     protected void onPause() {
@@ -104,13 +100,15 @@ public class HomeScreen extends AppCompatActivity {
         Toast.makeText(HomeScreen.this, "Paused", Toast.LENGTH_SHORT).show();
 
         locationManager.removeUpdates(locationListener);
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     protected void onResume() {
         super.onResume();
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    Activity#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -120,9 +118,10 @@ public class HomeScreen extends AppCompatActivity {
             // for Activity#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 3, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 3, locationListener);
-
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                3000, 3, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                3000, 3, locationListener);
     }
 
     /** Creates functionality of buttons on bottom navigation bar */
@@ -149,7 +148,6 @@ public class HomeScreen extends AppCompatActivity {
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             selectedFragment).commit();
-
                     return true;
                 }
             };
@@ -183,7 +181,4 @@ public class HomeScreen extends AppCompatActivity {
         Intent intent = new Intent(this, ResourcesActivity.class);
         startActivity(intent);
     }
-
-
-
 }

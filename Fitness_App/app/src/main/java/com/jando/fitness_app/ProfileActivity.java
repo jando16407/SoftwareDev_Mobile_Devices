@@ -23,8 +23,6 @@ public class ProfileActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth firebaseAuth;
-    private TextView textViewUserEmail;
-    private Button buttonLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +40,15 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null){
             Toast.makeText(this,"getCurrentUser == null",Toast.LENGTH_SHORT).show();
-            //finish();
-            //startActivity(new Intent(this, LoginActivity.class));
         }
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        textViewUserEmail = findViewById(R.id.textViewUserEmail);
-        textViewUserEmail.setText("Welcome :" + user.getEmail() + user.getDisplayName() + " " + user.getProviderId() + " " + user.getUid());
+        TextView textViewUserEmail = findViewById(R.id.textViewUserEmail);
+        textViewUserEmail.setText(user.getEmail() + user.getDisplayName() + " "
+                + user.getProviderId() + " " + user.getUid());
 
-        buttonLogout = findViewById(R.id.buttonLogout);
+        Button buttonLogout = findViewById(R.id.buttonLogout);
 
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,17 +59,9 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(), LoginActivity.class);
                 finish();
                 startActivity(intent);
-
             }
         });
-
     }
 
-    private void updateUI(FirebaseUser user) {
-
-        //finish();
-        //Intent intent = new Intent(LoginActivity.this,ProfileActivity.class);
-        //startActivity(intent);
-
-    }
+    private void updateUI(FirebaseUser user) { }
 }

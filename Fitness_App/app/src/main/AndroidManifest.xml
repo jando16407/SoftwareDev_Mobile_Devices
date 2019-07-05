@@ -34,24 +34,31 @@
 
         <activity
             android:name=".ElderMapLocation"
-            android:label="@string/title_activity_elder_map_location" />
-        <activity android:name=".CareTakerLogin" />
+            android:label="@string/title_activity_elder_map_location"></activity>
+        <activity
+            android:name=".CareTakerLogin" />
+        <activity
+            android:name=".ExerciseDescriptionActivity" />
+        <activity
+            android:name=".ExerciseDisplayActivity"
+            android:label="@string/activity_exercise_label" />
         <activity
             android:name=".UserSettingsActivity"
-            android:label="User Information Settings"/>
+            android:label="@string/activity_user_settings_label" />
         <activity
             android:name=".LoginForAccountSettings"
             android:label="Re-authentication" />
         <activity
             android:name=".AccountSettingsActivity"
-            android:label="Account Settings"/>
+            android:label="@string/activity_account_settings_label" />
         <activity
             android:name=".ForgotPassword"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppThemeNoActionBar" />
-        <activity android:name=".ProfileActivity" />
+        <activity
+            android:name=".ProfileActivity" />
         <activity
             android:name=".HomeScreen"
             android:label="@string/activity_home_screen" />

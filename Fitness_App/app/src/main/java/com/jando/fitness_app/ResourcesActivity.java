@@ -13,6 +13,7 @@ public class ResourcesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_resources);
 
         //Adds back button
+        assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

@@ -6,7 +6,7 @@ public class StepDetector {
     private static final int VEL_RING_SIZE = 10;
 
     // change this threshold according to your sensitivity preferences
-    private static final float STEP_THRESHOLD = 100f;
+    private static final float STEP_THRESHOLD = 35f;
 
     private static final int STEP_DELAY_NS = 250000000;
 
@@ -24,7 +24,6 @@ public class StepDetector {
     public void registerListener(StepCounterActivity listener) {
         this.listener = listener;
     }
-
 
     public void updateAccel(long timeNs, float x, float y, float z) {
         float[] currentAccel = new float[3];

@@ -4,13 +4,9 @@ public class User {
 
     private String email, firstname, lastname, age, weight;
 
-    public User() {
+    public User() { }
 
-    }
-
-    public User( String email, String firstname,
-                String lastname, String age, String weight) {
-        //this.username = username;
+    public User( String email, String firstname, String lastname, String age, String weight) {
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -18,13 +14,6 @@ public class User {
         this.weight = weight;
     }
 
-    /*public String getUsername() {
-        return username;
-    }
-    public void setUsername(String input) {
-        this.username = input;
-    }
-    */
     public String getFirstname() {
         return firstname;
     }
