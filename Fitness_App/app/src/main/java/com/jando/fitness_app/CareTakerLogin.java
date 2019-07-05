@@ -33,16 +33,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class CareTakerLogin extends AppCompatActivity {
 
     private TextInputEditText editTextInputPassword;
-    private Button buttonSignin;
-    private Button Signout_btn;
     private EditText editTextEmail;
-    private EditText editTextPassword;
-    private TextView textViewForgotpassword;
-    private TextView textViewSignup;
-    private TextView textView_findElder;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
-    private SignInButton sign_in_button;
     GoogleSignInClient mGoogleSignInClient;
     private int RC_SIGN_IN = 123;
     private FirebaseAuth mAuth;
@@ -52,14 +45,14 @@ public class CareTakerLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_care_taker_login);
         //Views
-        sign_in_button = findViewById(R.id.sign_in_button);
+        Button sign_in_button = findViewById(R.id.sign_in_button);
         progressDialog = new ProgressDialog(this);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextInputPassword = findViewById(R.id.editTextInputPassword);
-        buttonSignin = findViewById(R.id.buttonSignin);
-        textViewSignup = findViewById(R.id.textViewSignUp);
-        textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
-        textView_findElder = findViewById(R.id.textView_backtologin);
+        Button buttonSignin = findViewById(R.id.buttonSignin);
+        TextView textViewSignup = findViewById(R.id.textViewSignUp);
+        TextView textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
+        TextView textView_findElder = findViewById(R.id.textView_backtologin);
         //change
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -89,8 +82,6 @@ public class CareTakerLogin extends AppCompatActivity {
             }
         });
 
-
-
         //closes keyboard when password editText is entered
         editTextInputPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -103,8 +94,6 @@ public class CareTakerLogin extends AppCompatActivity {
                 return false;
             }
         });
-
-
     }
 
     //protected void onStart() {
@@ -124,9 +113,7 @@ public class CareTakerLogin extends AppCompatActivity {
         super.onDestroy();
         mGoogleSignInClient.signOut();
         firebaseAuth.signOut();
-        //Intent intent = new Intent(v.getContext(), LoginActivity.class);
         finish();
-        //startActivity (intent);
     }
 
     //email and password
@@ -145,16 +132,17 @@ public class CareTakerLogin extends AppCompatActivity {
 
         progressDialog.setMessage("Logging in ...");
         progressDialog.show();
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressDialog.dismiss();
-
                 if (task.isSuccessful()) {
                     finish();
                     startActivity(new Intent(getApplicationContext(), ElderMapLocation.class));
                 } else {
-                    Toast.makeText(CareTakerLogin.this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CareTakerLogin.this,
+                            "Wrong Username or Password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -181,7 +169,6 @@ public class CareTakerLogin extends AppCompatActivity {
             } catch (ApiException e) {
                 Toast.makeText(CareTakerLogin.this,"FAILED",Toast.LENGTH_SHORT).show();
                 // Google Sign In failed, update UI appropriately
-
                 // [START_EXCLUDE]
                 //updateUI(null);
                 // [END_EXCLUDE]
@@ -192,9 +179,7 @@ public class CareTakerLogin extends AppCompatActivity {
     //Google
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         // [START_EXCLUDE silent]
-
         // [END_EXCLUDE]
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -227,6 +212,4 @@ public class CareTakerLogin extends AppCompatActivity {
         //Intent intent = new Intent(LoginActivity.this,ProfileActivity.class);
         //startActivity(intent);
     }
-    //Signs out of google and FireBase Auth
-
 }

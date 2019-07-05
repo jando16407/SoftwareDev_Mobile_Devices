@@ -46,7 +46,8 @@ public class SettingsActivity extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         TextView textViewUserEmail = findViewById(R.id.textViewUserEmail);
-        textViewUserEmail.setText("Welcome :" + user.getEmail() + user.getDisplayName() + " " + user.getProviderId() + " " + user.getUid());
+        textViewUserEmail.setText(user.getEmail() + user.getDisplayName()
+                + " " + user.getProviderId() + " " + user.getUid());
 
         //Format for logout button
         Button buttonLogout = findViewById(R.id.buttonLogout);

@@ -31,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MainActivity extends AppCompatActivity {
 
     private Button buttonRegister;
-
     private EditText editTextFirstName;
     private EditText editTextLastName;
     private EditText editTextAge;
@@ -39,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextUsername;
     private EditText editTextEmail;
     private EditText editTextPassword;
-
     private TextView textViewSignin;
-
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
@@ -182,13 +179,6 @@ public class MainActivity extends AppCompatActivity {
             editTextWeight.requestFocus();
             return;
         }
-        /*
-        if (TextUtils.isEmpty(username)) {
-            editTextUsername.setError("Username Required");
-            editTextUsername.requestFocus();
-            return;
-        }
-        */
         if (TextUtils.isEmpty(email)) {
             editTextEmail.setError("Email Required");
             editTextEmail.requestFocus();
@@ -219,7 +209,8 @@ public class MainActivity extends AppCompatActivity {
                     //Stores User object inside database using UID as label
                     firebaseAuth = FirebaseAuth.getInstance();
                     if(firebaseAuth.getCurrentUser() == null){
-                        Toast.makeText(MainActivity.this,"getCurrentUser == null",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this,
+                                "getCurrentUser == null",Toast.LENGTH_SHORT).show();
                     }
                     FirebaseUser f_user = firebaseAuth.getCurrentUser();
                     Toast.makeText(MainActivity.this,
@@ -248,12 +239,9 @@ public class MainActivity extends AppCompatActivity {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             DataSnapshot email = ds.child("email");
             if (email.getValue().toString().equals(user.getEmail())) {
-                //Toast.makeText(MainActivity.this, "Email is "+email.getValue().toString(), Toast.LENGTH_LONG).show();
                 return true;
             }
-
         }
         return false;
     }
-
 }

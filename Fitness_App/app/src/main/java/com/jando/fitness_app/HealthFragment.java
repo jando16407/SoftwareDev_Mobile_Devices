@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 public class HealthFragment extends Fragment implements View.OnClickListener {
 
+    /** What happens when fragment is created */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -28,6 +29,7 @@ public class HealthFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
+    /** Button click handler */
     @Override
     public void onClick(View v) {
         Intent intent;

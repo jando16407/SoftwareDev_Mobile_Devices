@@ -28,18 +28,12 @@ import com.jando.fitness_app.Model.User;
 
 public class AccountSettingsActivity extends AppCompatActivity {
 
-    private GoogleSignInClient mGoogleSignInClient;
-    private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth firebaseAuth;
     private TextView textViewUserEmail1;
     private TextView textViewUserEmail2;
     private TextView textViewUserPassword1;
     private TextView textViewUserPassword2;
-    //private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase database;
     private DatabaseReference usersRef;
-    private Button buttonEmail;
-    private Button buttonPassword;
     final User userInfo = new User("", "", "", "", "");
     FirebaseUser user = null;
 
@@ -49,12 +43,10 @@ public class AccountSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_settings);
 
-        //firebase info to log out
+        //FireBase info to log out
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null){
             Toast.makeText(this,"getCurrentUser == null",Toast.LENGTH_SHORT).show();
-            //finish();
-            //startActivity(new Intent(this, LoginActivity.class));
         }
 
         user = firebaseAuth.getCurrentUser();
@@ -65,15 +57,15 @@ public class AccountSettingsActivity extends AppCompatActivity {
         textViewUserEmail2.setText(user.getEmail());
         textViewUserPassword1 = findViewById(R.id.editText6);
         textViewUserPassword2 = findViewById(R.id.editText66);
-        buttonEmail = findViewById(R.id.button1);
-        buttonPassword = findViewById(R.id.button2);
+        Button buttonEmail = findViewById(R.id.button1);
+        Button buttonPassword = findViewById(R.id.button2);
 
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("Users");
 
         displayUserInfo();
 
-        /** Update email address */
+        // Update email address
         buttonEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +113,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
             }
         });
 
-        /** Update password */
+        // Update password
         buttonPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,7 +147,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
                                 }
                             }
                         });
-
             }
         });
 
@@ -171,7 +162,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
                 return false;
             }
         });
-        //hide keyboard after typing email2
+
+        //hide keyboard after typing password2
         textViewUserPassword2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
@@ -185,6 +177,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         });
 
         //Adds back button
+        assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
@@ -201,36 +194,28 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     /** Display user info function */
     public void displayUserInfo(){
-        /** Display user information */
+        // Display user information
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Toast.makeText(AccountSettingsActivity.this,"Trying to find the user",Toast.LENGTH_SHORT).show();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     DataSnapshot email = ds.child("email");
-                    if (email.getValue().toString().equals(user.getEmail())) {
-                        //Toast.makeText(AccountSettingsActivity.this,"Found the user",Toast.LENGTH_SHORT).show();
-                    }
                 }
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
     }
 
-    /** Cheeck if the given email is already registered on firebase */
+    /** Check if the given email is already registered on FireBase */
     private boolean userEmailExists(DataSnapshot dataSnapshot, String email_address) {
         //Iterate thorough children to find email matching
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             DataSnapshot email = ds.child("email");
             if (email.getValue().toString().equals(email_address)) {
-                //Toast.makeText(AccountSettingsActivity.this, "Email is "+email.getValue().toString(), Toast.LENGTH_LONG).show();
                 return true;
             }
-
         }
         return false;
     }

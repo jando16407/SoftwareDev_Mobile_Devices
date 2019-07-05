@@ -13,6 +13,7 @@ public class NutritionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nutrition);
 
         //Adds back button
+        assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

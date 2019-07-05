@@ -13,14 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class AccountFragment extends Fragment implements View.OnClickListener {
 
     private Context mContext;
-    private TextView alertTextView;
-    private Button EmergencyBTN;
+
+    /** What happens when fragment is created */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -29,7 +28,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
 
         mContext = getActivity();
 
-        EmergencyBTN = v.findViewById(R.id.EmergencyBTN);
+        Button EmergencyBTN = v.findViewById(R.id.EmergencyBTN);
         EmergencyBTN.setOnClickListener(this);
 
         Button userAccountSettings = v.findViewById(R.id.button_user_account_settings);
@@ -39,6 +38,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
+    /** Button functionality */
     @Override
     public void onClick(View v) {
         Intent intent;
@@ -51,6 +51,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getActivity(), LoginForAccountSettings.class);
                 startActivity(intent);
                 break;
+
             case R.id.button_user_settings:
                 Toast.makeText(getContext(),
                         "User Information Settings Clicked",
@@ -58,6 +59,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 intent = new Intent(getActivity(), UserSettingsActivity.class);
                 startActivity(intent);
                 break;
+
             case R.id.EmergencyBTN:
                 Toast.makeText(getContext(),
                         "Emergency Clicked",
@@ -66,7 +68,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 builder.setCancelable(true);
                 builder.setTitle("Emergency!");
                 builder.setMessage("Who do you want to call?");
-
 
                 builder.setNeutralButton("Care Taker", new DialogInterface.OnClickListener() {
                     @Override
@@ -77,8 +78,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                         callIntent.setData(Uri.parse("tel:"+number));
 
                         startActivity(callIntent);
-
-
                     }
                 });
 
@@ -98,22 +97,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                         callIntent.setData(Uri.parse("tel:"+number));
 
                         startActivity(callIntent);
-
-
                     }
                 });
 
-
                 builder.show();
                 break;
-                /*
-            case R.id.buttonNutrition:
-                Toast.makeText(getContext(),
-                        "Nutrition Clicked",
-                        Toast.LENGTH_SHORT).show();
-                intent = new Intent(getActivity(), NutritionActivity.class);
-                startActivity(intent);
-                break;*/
+
             default:
                 Toast.makeText(getContext(),
                         "Default Button Response",
@@ -121,11 +110,5 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
-/*
-    private void GoToAccountSettingsPage(View view){
-        Intent intent = new Intent(HomeScreen.this, AccountSettingsActivity.class);
-        startActivity(intent);
-    }
-*/
 
 }

@@ -31,10 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button buttonSignin;
     private Button Signout_btn;
     private EditText editTextEmail;
-    private EditText editTextPassword;
-    private TextView textViewForgotpassword;
-    private TextView textViewSignup;
-    private TextView textView_findElder;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private SignInButton sign_in_button;
@@ -50,15 +46,13 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextInputPassword = findViewById(R.id.editTextInputPassword);
-        buttonSignin = findViewById(R.id.buttonSignin);
-        textViewSignup = findViewById(R.id.textViewSignUp);
-        textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
-        textView_findElder = findViewById(R.id.textView_backtologin);
-
+        Button buttonSignin = findViewById(R.id.buttonSignin);
+        TextView textViewSignup = findViewById(R.id.textViewSignUp);
+        TextView textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
+        TextView textView_findElder = findViewById(R.id.textView_backtologin);
 
         firebaseAuth = FirebaseAuth.getInstance();
         mAuth = FirebaseAuth.getInstance();
-
 
         //Buttons listeners
         buttonSignin.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +78,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        textView_findElder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, CareTakerLogin.class);
+                //finish();
+                startActivity(intent);
+            }
+        });
+
         //closes keyboard when password editText is entered
         editTextInputPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -94,16 +97,6 @@ public class LoginActivity extends AppCompatActivity {
                             InputMethodManager.HIDE_NOT_ALWAYS);
                 }
                 return false;
-            }
-        });
-
-
-        textView_findElder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, CareTakerLogin.class);
-                //finish();
-                startActivity(intent);
             }
         });
     }
@@ -123,7 +116,8 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog.setMessage("Logging in ...");
         progressDialog.show();
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressDialog.dismiss();
@@ -132,12 +126,12 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                     startActivity(new Intent(getApplicationContext(), HomeScreen.class));
                 } else {
-                    Toast.makeText(LoginActivity.this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this,
+                            "Wrong Username or Password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-
 
     private void updateUI(FirebaseUser user) {
         finish();
@@ -145,6 +139,5 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
     //Signs out of google and FireBase Auth
-
 }
 

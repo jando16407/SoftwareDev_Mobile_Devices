@@ -63,8 +63,8 @@ public class ExerciseDisplayActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         //Adds back button
+        assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

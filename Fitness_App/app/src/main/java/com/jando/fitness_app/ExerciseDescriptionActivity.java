@@ -46,7 +46,8 @@ public class ExerciseDescriptionActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String desc = dataSnapshot.child("Description").getValue().toString();
-                String diff = "Difficulty: " + dataSnapshot.child("Difficulty").getValue().toString();
+                String diff = "Difficulty: "
+                        + dataSnapshot.child("Difficulty").getValue().toString();
                 String img = dataSnapshot.child("ImageLink").getValue().toString();
 
                 //sets image to proper diagram
@@ -59,7 +60,6 @@ public class ExerciseDescriptionActivity extends AppCompatActivity {
 
             }
         });
-
         //Adds back button
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -78,12 +78,10 @@ public class ExerciseDescriptionActivity extends AppCompatActivity {
     private void setImageView(String img) {
         switch (img){
             case "crunches":
-                Toast.makeText(getApplicationContext(), "Crunches displayed", Toast.LENGTH_LONG).show();
                 imageView.setImageResource(R.drawable.crunches_400x400);
                 break;
             default:
-                return;
+                break;
         }
     }
-
 }

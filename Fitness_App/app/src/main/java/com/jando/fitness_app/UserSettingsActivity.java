@@ -30,7 +30,6 @@ public class UserSettingsActivity extends AppCompatActivity {
     private TextView textViewUserWeight;
     private TextView textViewUserFirstName;
     private TextView textViewUserLastName;
-    //private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
     private Button buttonAge;
@@ -46,7 +45,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_settings);
 
-        //firebase info to log out
+        //FireBase info to log out
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null){
             Toast.makeText(this,"getCurrentUser == null",Toast.LENGTH_SHORT).show();
@@ -79,7 +78,7 @@ public class UserSettingsActivity extends AppCompatActivity {
 
 
 
-        /** Update Age */
+        // Update Age
         buttonAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +100,7 @@ public class UserSettingsActivity extends AppCompatActivity {
             }
         });
 
-        /** Update Weight */
+        // Update Weight
         buttonWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +121,7 @@ public class UserSettingsActivity extends AppCompatActivity {
             }
         });
 
-        /** Update First Name */
+        // Update First Name
         buttonFirstName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,7 +143,7 @@ public class UserSettingsActivity extends AppCompatActivity {
             }
         });
 
-        /** Update Last Name */
+        // Update Last Name
         buttonLastName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,7 +164,6 @@ public class UserSettingsActivity extends AppCompatActivity {
                 usersRef.child(f_user.getUid()).child("lastname").setValue(lastname);
             }
         });
-
         //Adds back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -183,19 +181,21 @@ public class UserSettingsActivity extends AppCompatActivity {
 
     /** Display user info function */
     public void displayUserInfo(){
-        /** Display user information */
+        //Display user information
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Toast.makeText(UserSettingsActivity.this,"Trying to find the user",Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserSettingsActivity.this,
+                        "Trying to find the user",Toast.LENGTH_SHORT).show();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     DataSnapshot email = ds.child("email");
-                    //Toast.makeText(AccountSettingsActivity.this,ds.getValue().toString()+" and "+user.getUid(),Toast.LENGTH_SHORT).show();
-                    //if(ds.getValue().toString().equals(user.getUid())){
                     if (email.getValue().toString().equals(user.getEmail())) {
-                        Toast.makeText(UserSettingsActivity.this,"Found the user, "+ds.child("age").getValue().toString()+", "
-                                +ds.child("weight").getValue().toString()+", "+ds.child("firstname").getValue().toString()+", "
-                                +ds.child("lastname").getValue().toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserSettingsActivity.this,
+                                "Found the user, "+ds.child("age").getValue().toString()+", "
+                                + ds.child("weight").getValue().toString()
+                                + ", "+ds.child("firstname").getValue().toString()+", "
+                                + ds.child("lastname").getValue().toString(),
+                                Toast.LENGTH_SHORT).show();
                         textViewUserAge.setText(ds.child("age").getValue().toString());
                         textViewUserWeight.setText(ds.child("weight").getValue().toString());
                         textViewUserFirstName.setText(ds.child("firstname").getValue().toString());
@@ -208,24 +208,20 @@ public class UserSettingsActivity extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
 
-    /** Check if the given email is already registered on firebase */
+    /** Check if the given email is already registered on FireBase */
     private boolean userEmailExists(DataSnapshot dataSnapshot, String email_address) {
         //Iterate thorough children to find email matching
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             DataSnapshot email = ds.child("email");
             if (email.getValue().toString().equals(email_address)) {
-                //Toast.makeText(AccountSettingsActivity.this, "Email is "+email.getValue().toString(), Toast.LENGTH_LONG).show();
                 return true;
             }
-
         }
         return false;
     }
