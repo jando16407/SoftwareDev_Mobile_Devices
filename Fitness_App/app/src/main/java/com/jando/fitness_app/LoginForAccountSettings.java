@@ -87,16 +87,6 @@ public class LoginForAccountSettings extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    /**Back button functionality */
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        else
-            return super.onOptionsItemSelected(item);
-    }
-
     private void userLogin() {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextInputPassword.getText().toString().trim();
