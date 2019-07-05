@@ -17,7 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WeatherActivity"></activity>
+        <activity
+            android:name=".WeatherActivity"
+            android:label="Weather"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -34,11 +36,15 @@
             android:name=".ElderMapLocation"
             android:label="@string/title_activity_elder_map_location" />
         <activity android:name=".CareTakerLogin" />
-        <activity android:name=".UserSettingsActivity" />
+        <activity
+            android:name=".UserSettingsActivity"
+            android:label="User Information Settings"/>
         <activity
             android:name=".LoginForAccountSettings"
-            android:label="LoginForAccountSettings" />
-        <activity android:name=".AccountSettingsActivity" />
+            android:label="Re-authentication" />
+        <activity
+            android:name=".AccountSettingsActivity"
+            android:label="Account Settings"/>
         <activity
             android:name=".ForgotPassword"
             android:theme="@style/AppThemeNoActionBar" />
