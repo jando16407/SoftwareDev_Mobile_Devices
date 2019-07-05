@@ -42,7 +42,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
-
         context = getActivity();
 
         // Get an instance of the SensorManager
@@ -54,6 +53,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
         TvSteps = v.findViewById(R.id.textViewSteps);
         Button BtnStart = v.findViewById(R.id.buttonStartSteps);
         Button BtnStop = v.findViewById(R.id.buttonStopSteps);
+        Button BtnReset = v.findViewById(R.id.buttonResetSteps);
 
         if (readFile() != null) {
             numSteps = Integer.parseInt(readFile());
@@ -70,16 +70,21 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
 
             @Override
             public void onClick(View arg0) {
-                numSteps = 0;
-                writeFile();
-                TvSteps.setText(TEXT_NUM_STEPS + readFile());
                 sensorManager.registerListener(HomeFragment.this, accel,
                         SensorManager.SENSOR_DELAY_FASTEST);
             }
         });
 
-        BtnStop.setOnClickListener(new View.OnClickListener() {
+        BtnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                numSteps = 0;
+                writeFile();
+                TvSteps.setText(TEXT_NUM_STEPS + readFile());
+            }
+        });
 
+        BtnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 writeFile();
@@ -116,11 +121,10 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
 
         try {
 
-            FileOutputStream fileOutputStream = context.openFileOutput("LocalInfo.txt", MODE_PRIVATE);
+            FileOutputStream fileOutputStream =
+                    context.openFileOutput("LocalInfo.txt", MODE_PRIVATE);
             fileOutputStream.write(intToSave.getBytes());
             fileOutputStream.close();
-
-            Toast.makeText(getContext(), "Step saved successfully", Toast.LENGTH_LONG).show();
 
         } catch (FileNotFoundException e){
             e.printStackTrace();
@@ -135,10 +139,10 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
         try {
 
             FileInputStream fileInputStream = context.openFileInput("LocalInfo.txt");
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
 
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            StringBuffer stringBuffer = new StringBuffer();
+            StringBuilder stringBuffer = new StringBuilder();
 
             String number;
             while ((number = bufferedReader.readLine()) != null){

@@ -27,7 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ElderMapLocation extends FragmentActivity implements OnMapReadyCallback {
 
-
     private GoogleMap mMap;
     LocationManager locationManager;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
@@ -53,8 +52,6 @@ public class ElderMapLocation extends FragmentActivity implements OnMapReadyCall
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference mRef = database.getReference("Location");
 
@@ -68,31 +65,19 @@ public class ElderMapLocation extends FragmentActivity implements OnMapReadyCall
         firebaseAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = firebaseAuth.getCurrentUser();
 
-
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-
                 ElderLatitude= (double) dataSnapshot.child(user.getUid()).child("Latitude").getValue();
                 ElderLongitude= (double) dataSnapshot.child(user.getUid()).child("Longitude").getValue();
 
-                //Toast.makeText(ElderMapLocation.this,"Latitude:"+ElderLatitude + " Longitude:" + ElderLongitude, Toast.LENGTH_SHORT).show();
                 onMapReady(mMap);
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
-
     }
-
-
-
-
-
 
     /**
      * Manipulates the map once available.
@@ -105,9 +90,7 @@ public class ElderMapLocation extends FragmentActivity implements OnMapReadyCall
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         mMap = googleMap;
-
 
         mMap.clear();
         // Add a marker in Sydney and move the camera
@@ -116,16 +99,11 @@ public class ElderMapLocation extends FragmentActivity implements OnMapReadyCall
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 19.0f));
     }
 
-
-
     protected void onDestroy() {
         super.onDestroy();
         mGoogleSignInClient.signOut();
         firebaseAuth.signOut();
-        //Intent intent = new Intent(v.getContext(), LoginActivity.class);
         finish();
-        //startActivity(intent);
-
     }
 
     protected void onPause(){
@@ -133,15 +111,12 @@ public class ElderMapLocation extends FragmentActivity implements OnMapReadyCall
         mGoogleSignInClient.signOut();
         firebaseAuth.signOut();
         finish();
-
     }
+
     protected void onStop() {
         super.onStop();
         mGoogleSignInClient.signOut();
         firebaseAuth.signOut();
-        //Intent intent = new Intent(v.getContext(), LoginActivity.class);
         finish();
-        //startActivity(intent);
     }
-
 }
