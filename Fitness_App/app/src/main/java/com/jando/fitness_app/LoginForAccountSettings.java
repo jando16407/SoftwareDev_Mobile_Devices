@@ -139,4 +139,13 @@ public class LoginForAccountSettings extends AppCompatActivity {
         startActivity(intent);
     }
     //Signs out of google and FireBase Auth
+    /**Back button functionality */
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        else
+            return super.onOptionsItemSelected(item);
+    }
 }

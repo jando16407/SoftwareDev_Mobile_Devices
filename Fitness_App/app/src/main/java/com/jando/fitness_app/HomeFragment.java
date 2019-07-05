@@ -1,5 +1,6 @@
 package com.jando.fitness_app;
 
+import android.content.Intent;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -54,6 +55,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
         Button BtnStart = v.findViewById(R.id.buttonStartSteps);
         Button BtnStop = v.findViewById(R.id.buttonStopSteps);
         Button BtnReset = v.findViewById(R.id.buttonResetSteps);
+        Button WeatherButton = v.findViewById(R.id.button_weather);
 
         if (readFile() != null) {
             numSteps = Integer.parseInt(readFile());
@@ -92,8 +94,20 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
             }
         });
 
+        WeatherButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0){
+                Toast.makeText(getContext(),
+                        "Weather Clicked",
+                        Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return v;
     }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {

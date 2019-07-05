@@ -167,6 +167,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         //Adds back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     /**Back button functionality */
