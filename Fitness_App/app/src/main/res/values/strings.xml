@@ -53,4 +53,8 @@
     <string name="re_log_in">RE_LOG IN</string>
     <string name="login_to_access_account_settings">Login to Access Account Settings</string>
     <string name="title_activity_elder_map_location">Map</string>
+    <string name="current_weather">Current Weather</string>
+    <string name="display_current_weather">Display current Weather</string>
+    <string name="_12_hour_forecast">12 Hour Forecast</string>
+    <string name="display_12_hour_forecast">Display 12 hour forecast</string>
 </resources>
