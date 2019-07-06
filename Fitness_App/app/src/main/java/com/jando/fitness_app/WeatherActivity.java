@@ -2,16 +2,12 @@ package com.jando.fitness_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,7 +15,6 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,32 +26,47 @@ public class WeatherActivity extends AppCompatActivity {
 
     String j1 = null;
     String j2 = null;
+    String j3 = null;
     EditText locationName;
     String key;
     TextView weatherReport;
+    TextView currentWeatherTitle;
+    TextView currentWeatherDisplay;
+    TextView forecastTitle;
+    TextView forecastDisplay;
+    String longitude;
+    String latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
-        locationName = findViewById(R.id.locationName);
-        weatherReport = findViewById(R.id.resultView);
+        currentWeatherTitle = findViewById(R.id.currentWeatherTitle);
+        currentWeatherDisplay = findViewById(R.id.currentWeatherDisplay);
+        forecastTitle = findViewById(R.id.forecastTitle);
+        forecastDisplay = findViewById(R.id.forecastDisplay);
+        latitude = "28.07061679";
+        longitude = "-82.41369035";
+
+        //locationName = findViewById(R.id.locationName);
+        //weatherReport = findViewById(R.id.forecastDisplay);
+
+        weatherCheck();
+
 
         //Adds back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
-    public void weatherCheck (View view){
+    public void weatherCheck (){
         WeatherTask task = new WeatherTask();
 
-  //      InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-  //      mgr.hideSoftInputFromWindow(locationName.getWindowToken(), 0);
         /** Uncomment to use when API key is available
         try {
             // API key 1
-            //j1 = task.execute("https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&q="+locationName.getText().toString()+"&language=en-us&details=false&toplevel=false").get();
+            //j1 = task.execute("https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&q="+latitude+","+longitude+"&language=en-us&details=false&toplevel=false").get();
             } catch(InterruptedException e) {
                 Toast.makeText(WeatherActivity.this, "Error trying loc interruption", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
@@ -141,7 +151,7 @@ public class WeatherActivity extends AppCompatActivity {
 
 
             //weatherReport.setText(j1);
-   /*     } catch(InterruptedException e) {
+   /**     } catch(InterruptedException e) {
             Toast.makeText(WeatherActivity.this, "Error trying loc interruption", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -152,7 +162,7 @@ public class WeatherActivity extends AppCompatActivity {
 
     public class WeatherTask extends AsyncTask<String, Void, String> {
 
-        /** Get the location "Key"*/
+        /** Get the location "Key" from accuweather Location API */
         @Override
         protected String doInBackground(String... urls) {
             String result = "";
@@ -185,17 +195,20 @@ public class WeatherActivity extends AppCompatActivity {
             super.onPostExecute(j1);
 
             try {
+                /** Extract the actual location key */
                 JSONObject object = new JSONObject(j1);
                 // get the location key
                 for (int i = 0; i<object.length(); i++) {
                     key = object.getString("Key");
                 }
 //                weatherReport.setText(key);
+
+                /** Current weather */
                 /** Uncomment to use when API key is available
                 try {
-                    WeatherTask weather = new WeatherTask();
+                    WeatherTask currentWeather = new WeatherTask();
                     // API key 1
-                    j2 = weather.execute("https://dataservice.accuweather.com/currentconditions/v1/locationKey="+key+"?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&language=en-us&details=false").get();
+                    j2 = currentWeather.execute("https://dataservice.accuweather.com/currentconditions/v1/locationKey="+key+"?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&language=en-us&details=false").get();
                 */
                 j2 = "[\n" +
                         "  {\n" +
@@ -222,40 +235,288 @@ public class WeatherActivity extends AppCompatActivity {
                         "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/current-weather/2621246?lang=en-us\"\n" +
                         "  }\n" +
                         "]";
+
+                    /** Build the output */
                     JSONArray weatherArray = new JSONArray(j2);
-                String output = "";
+                    String output = "";
                     for (int i = 0; i<weatherArray.length(); i++) {
 
                         JSONObject weatherPart = weatherArray.getJSONObject(i);
-                        output += "Weather: " + weatherPart.getString("WeatherText") + "\n";
-                        output += "Temperature: " + weatherPart.getJSONObject("Temperature").
+                        output += "\t\t\t" + weatherPart.getString("WeatherText") + "\n";
+                        output += "\t\t\t" + weatherPart.getJSONObject("Temperature").
                                 getJSONObject("Imperial").getString("Value") + " " + weatherPart.getJSONObject("Temperature").
                                 getJSONObject("Imperial").getString("Unit") + " / " + weatherPart.getJSONObject("Temperature").
                                 getJSONObject("Metric").getString("Value") + " " + weatherPart.getJSONObject("Temperature").
                                 getJSONObject("Metric").getString("Unit")+"\n";
                     }
 
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
-                String epochString = "1562443200";
-                long epoch = Long.parseLong( epochString );
-                Date expiry = new Date( epoch*1000 );
-                output+="Date: "+sdf.format(expiry);
-                weatherReport.setText(output);
+                    /** Output to current weather display */
+                    currentWeatherDisplay.setText(output);
+
+                    /** Close the try block */
+                /** Uncomment to use when API key is available
+                 } catch (InterruptedException e) {
+                 e.printStackTrace();
+                 } catch (ExecutionException e) {
+                 e.printStackTrace();
+                 }
+          //       */
+
+                /** 12 Hour Forecast weather */
+                /** Uncomment to use when API key is available
+                try {
+                    WeatherTask forecast = new WeatherTask();
+                    // API key 1
+                    j3 = forecast.execute("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+key+"?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&language=en-us&details=false&metric=false").get();
+              //  */
+                    j3 = "[\n" +
+                            "  {\n" +
+                            "    \"DateTime\": \"2019-07-06T16:00:00-04:00\",\n" +
+                            "    \"EpochDateTime\": 1562443200,\n" +
+                            "    \"WeatherIcon\": 7,\n" +
+                            "    \"IconPhrase\": \"Cloudy\",\n" +
+                            "    \"HasPrecipitation\": false,\n" +
+                            "    \"IsDaylight\": true,\n" +
+                            "    \"Temperature\": {\n" +
+                            "      \"Value\": 90,\n" +
+                            "      \"Unit\": \"F\",\n" +
+                            "      \"UnitType\": 18\n" +
+                            "    },\n" +
+                            "    \"PrecipitationProbability\": 48,\n" +
+                            "    \"MobileLink\": \"http://m.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=16&lang=en-us\",\n" +
+                            "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=16&lang=en-us\"\n" +
+                            "  },\n" +
+                            "  {\n" +
+                            "    \"DateTime\": \"2019-07-06T17:00:00-04:00\",\n" +
+                            "    \"EpochDateTime\": 1562446800,\n" +
+                            "    \"WeatherIcon\": 7,\n" +
+                            "    \"IconPhrase\": \"Cloudy\",\n" +
+                            "    \"HasPrecipitation\": false,\n" +
+                            "    \"IsDaylight\": true,\n" +
+                            "    \"Temperature\": {\n" +
+                            "      \"Value\": 88,\n" +
+                            "      \"Unit\": \"F\",\n" +
+                            "      \"UnitType\": 18\n" +
+                            "    },\n" +
+                            "    \"PrecipitationProbability\": 44,\n" +
+                            "    \"MobileLink\": \"http://m.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=17&lang=en-us\",\n" +
+                            "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=17&lang=en-us\"\n" +
+                            "  },\n" +
+                            "  {\n" +
+                            "    \"DateTime\": \"2019-07-06T18:00:00-04:00\",\n" +
+                            "    \"EpochDateTime\": 1562450400,\n" +
+                            "    \"WeatherIcon\": 7,\n" +
+                            "    \"IconPhrase\": \"Cloudy\",\n" +
+                            "    \"HasPrecipitation\": false,\n" +
+                            "    \"IsDaylight\": true,\n" +
+                            "    \"Temperature\": {\n" +
+                            "      \"Value\": 86,\n" +
+                            "      \"Unit\": \"F\",\n" +
+                            "      \"UnitType\": 18\n" +
+                            "    },\n" +
+                            "    \"PrecipitationProbability\": 47,\n" +
+                            "    \"MobileLink\": \"http://m.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=18&lang=en-us\",\n" +
+                            "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=18&lang=en-us\"\n" +
+                            "  },\n" +
+                            "  {\n" +
+                            "    \"DateTime\": \"2019-07-06T19:00:00-04:00\",\n" +
+                            "    \"EpochDateTime\": 1562454000,\n" +
+                            "    \"WeatherIcon\": 15,\n" +
+                            "    \"IconPhrase\": \"Thunderstorms\",\n" +
+                            "    \"HasPrecipitation\": true,\n" +
+                            "    \"PrecipitationType\": \"Rain\",\n" +
+                            "    \"PrecipitationIntensity\": \"Moderate\",\n" +
+                            "    \"IsDaylight\": true,\n" +
+                            "    \"Temperature\": {\n" +
+                            "      \"Value\": 84,\n" +
+                            "      \"Unit\": \"F\",\n" +
+                            "      \"UnitType\": 18\n" +
+                            "    },\n" +
+                            "    \"PrecipitationProbability\": 51,\n" +
+                            "    \"MobileLink\": \"http://m.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=19&lang=en-us\",\n" +
+                            "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=19&lang=en-us\"\n" +
+                            "  },\n" +
+                            "  {\n" +
+                            "    \"DateTime\": \"2019-07-06T20:00:00-04:00\",\n" +
+                            "    \"EpochDateTime\": 1562457600,\n" +
+                            "    \"WeatherIcon\": 3,\n" +
+                            "    \"IconPhrase\": \"Partly sunny\",\n" +
+                            "    \"HasPrecipitation\": false,\n" +
+                            "    \"IsDaylight\": true,\n" +
+                            "    \"Temperature\": {\n" +
+                            "      \"Value\": 81,\n" +
+                            "      \"Unit\": \"F\",\n" +
+                            "      \"UnitType\": 18\n" +
+                            "    },\n" +
+                            "    \"PrecipitationProbability\": 40,\n" +
+                            "    \"MobileLink\": \"http://m.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=20&lang=en-us\",\n" +
+                            "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=20&lang=en-us\"\n" +
+                            "  },\n" +
+                            "  {\n" +
+                            "    \"DateTime\": \"2019-07-06T21:00:00-04:00\",\n" +
+                            "    \"EpochDateTime\": 1562461200,\n" +
+                            "    \"WeatherIcon\": 35,\n" +
+                            "    \"IconPhrase\": \"Partly cloudy\",\n" +
+                            "    \"HasPrecipitation\": false,\n" +
+                            "    \"IsDaylight\": false,\n" +
+                            "    \"Temperature\": {\n" +
+                            "      \"Value\": 79,\n" +
+                            "      \"Unit\": \"F\",\n" +
+                            "      \"UnitType\": 18\n" +
+                            "    },\n" +
+                            "    \"PrecipitationProbability\": 34,\n" +
+                            "    \"MobileLink\": \"http://m.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=21&lang=en-us\",\n" +
+                            "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=21&lang=en-us\"\n" +
+                            "  },\n" +
+                            "  {\n" +
+                            "    \"DateTime\": \"2019-07-06T22:00:00-04:00\",\n" +
+                            "    \"EpochDateTime\": 1562464800,\n" +
+                            "    \"WeatherIcon\": 35,\n" +
+                            "    \"IconPhrase\": \"Partly cloudy\",\n" +
+                            "    \"HasPrecipitation\": false,\n" +
+                            "    \"IsDaylight\": false,\n" +
+                            "    \"Temperature\": {\n" +
+                            "      \"Value\": 78,\n" +
+                            "      \"Unit\": \"F\",\n" +
+                            "      \"UnitType\": 18\n" +
+                            "    },\n" +
+                            "    \"PrecipitationProbability\": 40,\n" +
+                            "    \"MobileLink\": \"http://m.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=22&lang=en-us\",\n" +
+                            "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=22&lang=en-us\"\n" +
+                            "  },\n" +
+                            "  {\n" +
+                            "    \"DateTime\": \"2019-07-06T23:00:00-04:00\",\n" +
+                            "    \"EpochDateTime\": 1562468400,\n" +
+                            "    \"WeatherIcon\": 41,\n" +
+                            "    \"IconPhrase\": \"Partly cloudy w/ t-storms\",\n" +
+                            "    \"HasPrecipitation\": true,\n" +
+                            "    \"PrecipitationType\": \"Rain\",\n" +
+                            "    \"PrecipitationIntensity\": \"Moderate\",\n" +
+                            "    \"IsDaylight\": false,\n" +
+                            "    \"Temperature\": {\n" +
+                            "      \"Value\": 77,\n" +
+                            "      \"Unit\": \"F\",\n" +
+                            "      \"UnitType\": 18\n" +
+                            "    },\n" +
+                            "    \"PrecipitationProbability\": 51,\n" +
+                            "    \"MobileLink\": \"http://m.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=23&lang=en-us\",\n" +
+                            "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=1&hbhhour=23&lang=en-us\"\n" +
+                            "  },\n" +
+                            "  {\n" +
+                            "    \"DateTime\": \"2019-07-07T00:00:00-04:00\",\n" +
+                            "    \"EpochDateTime\": 1562472000,\n" +
+                            "    \"WeatherIcon\": 35,\n" +
+                            "    \"IconPhrase\": \"Partly cloudy\",\n" +
+                            "    \"HasPrecipitation\": false,\n" +
+                            "    \"IsDaylight\": false,\n" +
+                            "    \"Temperature\": {\n" +
+                            "      \"Value\": 76,\n" +
+                            "      \"Unit\": \"F\",\n" +
+                            "      \"UnitType\": 18\n" +
+                            "    },\n" +
+                            "    \"PrecipitationProbability\": 47,\n" +
+                            "    \"MobileLink\": \"http://m.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=2&hbhhour=0&lang=en-us\",\n" +
+                            "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=2&hbhhour=0&lang=en-us\"\n" +
+                            "  },\n" +
+                            "  {\n" +
+                            "    \"DateTime\": \"2019-07-07T01:00:00-04:00\",\n" +
+                            "    \"EpochDateTime\": 1562475600,\n" +
+                            "    \"WeatherIcon\": 35,\n" +
+                            "    \"IconPhrase\": \"Partly cloudy\",\n" +
+                            "    \"HasPrecipitation\": false,\n" +
+                            "    \"IsDaylight\": false,\n" +
+                            "    \"Temperature\": {\n" +
+                            "      \"Value\": 76,\n" +
+                            "      \"Unit\": \"F\",\n" +
+                            "      \"UnitType\": 18\n" +
+                            "    },\n" +
+                            "    \"PrecipitationProbability\": 36,\n" +
+                            "    \"MobileLink\": \"http://m.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=2&hbhhour=1&lang=en-us\",\n" +
+                            "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=2&hbhhour=1&lang=en-us\"\n" +
+                            "  },\n" +
+                            "  {\n" +
+                            "    \"DateTime\": \"2019-07-07T02:00:00-04:00\",\n" +
+                            "    \"EpochDateTime\": 1562479200,\n" +
+                            "    \"WeatherIcon\": 35,\n" +
+                            "    \"IconPhrase\": \"Partly cloudy\",\n" +
+                            "    \"HasPrecipitation\": false,\n" +
+                            "    \"IsDaylight\": false,\n" +
+                            "    \"Temperature\": {\n" +
+                            "      \"Value\": 75,\n" +
+                            "      \"Unit\": \"F\",\n" +
+                            "      \"UnitType\": 18\n" +
+                            "    },\n" +
+                            "    \"PrecipitationProbability\": 20,\n" +
+                            "    \"MobileLink\": \"http://m.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=2&hbhhour=2&lang=en-us\",\n" +
+                            "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=2&hbhhour=2&lang=en-us\"\n" +
+                            "  },\n" +
+                            "  {\n" +
+                            "    \"DateTime\": \"2019-07-07T03:00:00-04:00\",\n" +
+                            "    \"EpochDateTime\": 1562482800,\n" +
+                            "    \"WeatherIcon\": 35,\n" +
+                            "    \"IconPhrase\": \"Partly cloudy\",\n" +
+                            "    \"HasPrecipitation\": false,\n" +
+                            "    \"IsDaylight\": false,\n" +
+                            "    \"Temperature\": {\n" +
+                            "      \"Value\": 74,\n" +
+                            "      \"Unit\": \"F\",\n" +
+                            "      \"UnitType\": 18\n" +
+                            "    },\n" +
+                            "    \"PrecipitationProbability\": 20,\n" +
+                            "    \"MobileLink\": \"http://m.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=2&hbhhour=3&lang=en-us\",\n" +
+                            "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=2&hbhhour=3&lang=en-us\"\n" +
+                            "  }\n" +
+                            "]";
+
+                    /** Format the output */
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+                    String epochString = "1562443200";
+                    long epoch = Long.parseLong( epochString );
+                    /** Build the output */
+                    JSONArray forecastArray = new JSONArray(j3);
+                    String outputForecast = "";
+
+                    for (int i = 0; i<forecastArray.length(); i++){
+                        //outputForecast =
+                        Date date = new Date(Long.parseLong(forecastArray.getJSONObject(i).getString("EpochDateTime"))*1000);
+                        outputForecast += sdf.format(date)+"\n\n";
+                        outputForecast += "\t\t\t\t\t\t\t\t\t\t\t\t"+forecastArray.getJSONObject(i).getString("IconPhrase")+"\n";
+                        outputForecast += "\t\t\t\t\t\t\t\t\t\t\t\t" + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Value") + " "
+                                + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Unit")+"\n\n";
+                        //JSONObject weatherPart = weatherArray.getJSONObject(i);
+                      //  output += "\t\t\t" + weatherPart.getString("WeatherText") + "\n";
+                        /*output += "\t\t\t" + weatherPart.getJSONObject("Temperature").
+                                getJSONObject("Imperial").getString("Value") + " " + weatherPart.getJSONObject("Temperature").
+                                getJSONObject("Imperial").getString("Unit") + " / " + weatherPart.getJSONObject("Temperature").
+                                getJSONObject("Metric").getString("Value") + " " + weatherPart.getJSONObject("Temperature").
+                                getJSONObject("Metric").getString("Unit")+"\n";*/
+                    }
+
+
+
+
+                    Date expiry = new Date( epoch*1000 );
+                    //output+="Date: "+sdf.format(expiry);
+                /** Output to current weather display */
+                    forecastDisplay.setText(outputForecast);
+
+                /** Uncomment to use when API key is available
+                 } catch (InterruptedException e) {
+                 e.printStackTrace();
+                 } catch (ExecutionException e) {
+                 e.printStackTrace();
+                 }
+                 //*/
+
                   //  weatherReport.setText(j2);
-
-
-
                     // API key 2
                     // j2 = weather.execute("https://dataservice.accuweather.com/currentconditions/v1/locationKey="+key+"?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&language=en-us&details=false").get();
                     // API key 3
                     //j2 = weather.execute("https://dataservice.accuweather.com/currentconditions/v1/locationKey="+key+"?apikey=ai7pJYg85quTbfX7pJZd7KTLyodA3oYG&language=en-us&details=false").get();
-                /** Uncomment to use when API key is available
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-                */
+
+
+
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
