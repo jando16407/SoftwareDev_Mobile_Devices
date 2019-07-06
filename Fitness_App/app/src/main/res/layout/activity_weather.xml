@@ -6,4 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".WeatherActivity">
 
+    <EditText
+        android:id="@+id/locationName"
+        android:layout_width="294dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="City name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/resultView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:hint="Weather"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationName" />
+
+    <Button
+        android:id="@+id/weatherButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Button"
+        app:layout_constraintStart_toEndOf="@+id/locationName"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="weatherCheck"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
