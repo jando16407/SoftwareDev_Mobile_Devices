@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -238,16 +240,21 @@ public class WeatherActivity extends AppCompatActivity {
 
                     /** Build the output */
                     JSONArray weatherArray = new JSONArray(j2);
-                    String output = "";
+                    SpannableStringBuilder output = new SpannableStringBuilder();
                     for (int i = 0; i<weatherArray.length(); i++) {
 
                         JSONObject weatherPart = weatherArray.getJSONObject(i);
-                        output += "\t\t\t" + weatherPart.getString("WeatherText") + "\n";
-                        output += "\t\t\t" + weatherPart.getJSONObject("Temperature").
+                        String icon_name = "weather"+weatherPart.getString("WeatherIcon");
+                        int icon_id = getResources().getIdentifier(icon_name, "drawable", "com.jando.fitness_app");
+                        output.append("\t\t\t\t\t\t\t\t\t\t\t\t\t" + weatherPart.getString("WeatherText") + "\n");
+                        output.append("\t\t\t\t\t\t\t\t\t\t\t\t\t" + weatherPart.getJSONObject("Temperature").
                                 getJSONObject("Imperial").getString("Value") + " " + weatherPart.getJSONObject("Temperature").
                                 getJSONObject("Imperial").getString("Unit") + " / " + weatherPart.getJSONObject("Temperature").
                                 getJSONObject("Metric").getString("Value") + " " + weatherPart.getJSONObject("Temperature").
-                                getJSONObject("Metric").getString("Unit")+"\n";
+                                getJSONObject("Metric").getString("Unit")+"\t\t\t\t\t\t");
+                        output.append(" ");
+                        output.setSpan(new ImageSpan(WeatherActivity.this, icon_id), output.length()-1, output.length(), 0);
+                        output.append("\n");
                     }
 
                     /** Output to current weather display */
@@ -474,29 +481,31 @@ public class WeatherActivity extends AppCompatActivity {
                     long epoch = Long.parseLong( epochString );
                     /** Build the output */
                     JSONArray forecastArray = new JSONArray(j3);
-                    String outputForecast = "";
+                   // String outputForecast = "";
+                    SpannableStringBuilder outputForecast = new SpannableStringBuilder();
 
                     for (int i = 0; i<forecastArray.length(); i++){
                         //outputForecast =
                         Date date = new Date(Long.parseLong(forecastArray.getJSONObject(i).getString("EpochDateTime"))*1000);
-                        outputForecast += sdf.format(date)+"\n\n";
-                        outputForecast += "\t\t\t\t\t\t\t\t\t\t\t\t"+forecastArray.getJSONObject(i).getString("IconPhrase")+"\n";
-                        outputForecast += "\t\t\t\t\t\t\t\t\t\t\t\t" + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Value") + " "
-                                + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Unit")+"\n\n";
-                        //JSONObject weatherPart = weatherArray.getJSONObject(i);
-                      //  output += "\t\t\t" + weatherPart.getString("WeatherText") + "\n";
-                        /*output += "\t\t\t" + weatherPart.getJSONObject("Temperature").
-                                getJSONObject("Imperial").getString("Value") + " " + weatherPart.getJSONObject("Temperature").
-                                getJSONObject("Imperial").getString("Unit") + " / " + weatherPart.getJSONObject("Temperature").
-                                getJSONObject("Metric").getString("Value") + " " + weatherPart.getJSONObject("Temperature").
-                                getJSONObject("Metric").getString("Unit")+"\n";*/
+//                        outputForecast += sdf.format(date)+"\n\n";
+  //                      outputForecast += "\t\t\t\t\t\t\t\t\t\t\t\t"+forecastArray.getJSONObject(i).getString("IconPhrase")+"\n";
+    //                    outputForecast += "\t\t\t\t\t\t\t\t\t\t\t\t" + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Value") + " "
+      //                          + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Unit")+"\n\n";
+                        outputForecast.append(sdf.format(date)+"\n\n");
+                        outputForecast.append("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"+forecastArray.getJSONObject(i).getString("IconPhrase")+"\n");
+                        outputForecast.append("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Value") + " "
+                                        + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Unit")+"\t\t\t\t\t\t");
+                       // ImageSpan img = new ImageSpan(WeatherActivity.this, R.drawable.weather1);
+                        //builder.setSpan(" "+img, builder.length()-1, builder.length(), 0);
+                        outputForecast.append(" ");
+                        String icon_name = "weather"+forecastArray.getJSONObject(i).getString("WeatherIcon");
+                        int icon_id = getResources().getIdentifier(icon_name, "drawable", "com.jando.fitness_app");
+                        outputForecast.setSpan(new ImageSpan(WeatherActivity.this, icon_id), outputForecast.length()-1, outputForecast.length(), 0);
+                        outputForecast.append("\n\n");
+
                     }
 
 
-
-
-                    Date expiry = new Date( epoch*1000 );
-                    //output+="Date: "+sdf.format(expiry);
                 /** Output to current weather display */
                     forecastDisplay.setText(outputForecast);
 

@@ -32,7 +32,10 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:text="@string/current_weather"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="#0040FF"
+                android:textColorHighlight="@color/design_default_color_primary"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/currentWeatherDisplay"
@@ -56,7 +59,9 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:text="@string/_12_hour_forecast"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="#FF0040FF"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/forecastDisplay"
