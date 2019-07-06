@@ -1,5 +1,6 @@
 package com.jando.fitness_app;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -10,6 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +48,7 @@ public class WeatherActivity extends AppCompatActivity {
     TextView forecastDisplay;
     String longitude;
     String latitude;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +62,28 @@ public class WeatherActivity extends AppCompatActivity {
         latitude = "28.07061679";
         longitude = "-82.41369035";
 
+        /** Get the longitude and latitude */
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference mRef = database.getReference("Location");
+        firebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                latitude= (dataSnapshot.child(user.getUid()).child("Latitude").getValue()).toString();//.toString();
+                longitude= (dataSnapshot.child(user.getUid()).child("Longitude").getValue()).toString();//.toString();
+                Toast.makeText(WeatherActivity.this, "Latitude: "+latitude+"\nLongitude: "+longitude, Toast.LENGTH_SHORT).show();
+                weatherCheck();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
         //locationName = findViewById(R.id.locationName);
         //weatherReport = findViewById(R.id.forecastDisplay);
 
-        weatherCheck();
+
 
 
         //Adds back button
@@ -494,7 +523,7 @@ public class WeatherActivity extends AppCompatActivity {
                         outputForecast.append(sdf.format(date)+"\n\n");
                         outputForecast.append("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"+forecastArray.getJSONObject(i).getString("IconPhrase")+"\n");
                         outputForecast.append("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Value") + " "
-                                        + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Unit")+"\t\t\t\t\t\t");
+                                        + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Unit")+"\t\t\t\t\t\t\t\t\t\t\t\t");
                        // ImageSpan img = new ImageSpan(WeatherActivity.this, R.drawable.weather1);
                         //builder.setSpan(" "+img, builder.length()-1, builder.length(), 0);
                         outputForecast.append(" ");
