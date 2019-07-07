@@ -28,7 +28,7 @@ public class NutritionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nutrition);
- 
+
         textViewBMI = findViewById(R.id.textViewBMI);
         textViewCalorieM = findViewById(R.id.textViewCalorieM);
         textViewCalorieU = findViewById(R.id.textViewCalorieU);
@@ -97,9 +97,9 @@ public class NutritionActivity extends AppCompatActivity {
                     over = calories + CALORIES_PER_DAY_PER_POUND;
 
                     textViewBMI.setText("Your current BMI is: " + bmi);
-                    textViewCalorieM.setText("Daily calories to maintain weight: " + calories);
-                    textViewCalorieU.setText("Daily calories to lose 1 pound per week: " + under);
-                    textViewCalorieO.setText("Daily calories to gain 1 pound per week: " + over);
+                    textViewCalorieM.setText(calories + " kCals");
+                    textViewCalorieU.setText(under + " kCals");
+                    textViewCalorieO.setText(over + " kCals");
 
                 } catch(NullPointerException e) {
                     e.printStackTrace();
