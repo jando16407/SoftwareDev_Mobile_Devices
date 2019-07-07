@@ -1,13 +1,14 @@
 package com.jando.fitness_app;
 
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -46,8 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         TextView textViewUserEmail = findViewById(R.id.textViewUserEmail);
-        textViewUserEmail.setText(user.getEmail() + user.getDisplayName()
-                + " " + user.getProviderId() + " " + user.getUid());
+        textViewUserEmail.setText("Current Users Email: "+user.getEmail());
 
         //Format for logout button
         Button buttonLogout = findViewById(R.id.buttonLogout);
