@@ -3,8 +3,6 @@ package com.jando.fitness_app;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -16,17 +14,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import com.jando.fitness_app.Model.User;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.jando.fitness_app.Model.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextUsername;
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private EditText editTextCaretakerPhone;
 
     private TextView textViewSignin;
 
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextInputPassword);
+        editTextCaretakerPhone = findViewById(R.id.editTextCaretakerPhone);
 
         textViewSignin = findViewById(R.id.textViewSignUp);
 
@@ -99,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
                             editTextFirstName.getText().toString(),
                             editTextLastName.getText().toString(),
                             editTextAge.getText().toString(),
-                            editTextWeight.getText().toString());
+                            editTextWeight.getText().toString(),
+                            editTextCaretakerPhone.getText().toString());
 
                     //Stores User object inside database using email as label
                     usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -153,13 +156,15 @@ public class MainActivity extends AppCompatActivity {
         //String username = editTextUsername.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
+        String CaretakerPhonenumber = editTextCaretakerPhone.getText().toString().trim();
 
         //Gets all information to be stored in database
         final User user = new User(editTextEmail.getText().toString(),
                 editTextFirstName.getText().toString(),
                 editTextLastName.getText().toString(),
                 editTextAge.getText().toString(),
-                editTextWeight.getText().toString());
+                editTextWeight.getText().toString(),
+                editTextCaretakerPhone.getText().toString());
 
         //Errors if any field is incorrectly filled out
         if (TextUtils.isEmpty(firstname)) {
@@ -202,6 +207,11 @@ public class MainActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(password) || password.length() < 6) {
             editTextPassword.setError("Password must be 6 characters long");
             editTextPassword.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(CaretakerPhonenumber)) {
+            editTextCaretakerPhone.setError("Phone number Required");
+            editTextCaretakerPhone.requestFocus();
             return;
         }
 

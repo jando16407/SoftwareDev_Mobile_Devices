@@ -40,7 +40,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private DatabaseReference usersRef;
     private Button buttonEmail;
     private Button buttonPassword;
-    final User userInfo = new User("", "", "", "", "");
+    final User userInfo = new User("", "", "", "", "", "");
     FirebaseUser user = null;
 
     /** What happens when activity is started */
