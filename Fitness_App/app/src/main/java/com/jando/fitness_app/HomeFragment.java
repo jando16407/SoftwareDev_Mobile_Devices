@@ -21,6 +21,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +53,12 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
     private static final String TEXT_NUM_STEPS = "Number of Steps: ";
     private int numSteps = 0;
     private Context context;
+    private Button goToUserSettingsButton;
+    private TextView recommendation;
+    private DatabaseReference usersRef;
+    private FirebaseAuth firebaseAuth;
+    FirebaseUser user = null;
+    private FirebaseDatabase database;
 
     @Nullable
     @Override
@@ -58,12 +72,19 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
         accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         simpleStepDetector = new StepDetector();
         simpleStepDetector.registerListener(this);
+        /** Firebase stuff */
+        firebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        usersRef = database.getReference("Users");
+        user = firebaseAuth.getCurrentUser();
 
         TvSteps = v.findViewById(R.id.textViewSteps);
         Button BtnStart = v.findViewById(R.id.buttonStartSteps);
         Button BtnStop = v.findViewById(R.id.buttonStopSteps);
         Button BtnReset = v.findViewById(R.id.buttonResetSteps);
         Button WeatherButton = v.findViewById(R.id.button_weather);
+        goToUserSettingsButton = v.findViewById(R.id.goToUserSettings);
+        recommendation = v.findViewById(R.id.recommendation);
 
         if (readFile() != null) {
             numSteps = Integer.parseInt(readFile());
@@ -109,6 +130,16 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
                         "Weather Clicked",
                         Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        setWhattoDisplay();
+        goToUserSettingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0){
+                Toast.makeText(getContext(), "User Settings Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), UserSettingsActivity.class);
                 startActivity(intent);
             }
         });
@@ -288,5 +319,63 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
                 e.printStackTrace();
             }
         }
+    }
+
+    private void setWhattoDisplay(){
+        /** Get data from firebase and check if user finished user info settings */
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    DataSnapshot email = ds.child("email");
+                    if (email.getValue().toString().equals(user.getEmail())) {
+                       /* Toast.makeText(HomeFragment.this,
+                                "Found the user, "+ds.child("age").getValue().toString()+", "
+                                        + ds.child("weight").getValue().toString()
+                                        + ", "+ds.child("firstname").getValue().toString()+", "
+                                        + ds.child("lastname").getValue().toString(),
+                                Toast.LENGTH_SHORT).show();*/
+                       String bmi = "";
+                       String health_score = "";
+                       int HealthScore;
+
+                        if( ds.child("bmi").getValue() != null ){
+                            bmi= ds.child("bmi").getValue().toString();
+                        }
+                        if( ds.child("healthScore").getValue() != null ){
+                            health_score= ds.child("healthScore").getValue().toString();
+                        }
+                        if( !bmi.equals("") && !health_score.equals("") ){
+                            HealthScore = Integer.parseInt(health_score);
+                            goToUserSettingsButton.setVisibility(View.GONE);
+                            if( HealthScore < 30 ) {
+                                recommendation.setText("Your Recommended\n" +
+                                        "Exercise Intensity Level: 0 - 30\n\n" +
+                                        "* this is based on your user information");
+                            }
+                            else if( 30 <= HealthScore && HealthScore < 70 ) {
+                                recommendation.setText("Your Recommended\n" +
+                                        "Exercise Intensity Level: 30 - 70\n\n" +
+                                        "* this is based on your user information");
+                            }
+                            else if( 70 <= HealthScore ) {
+                                recommendation.setText("Your Recommended\n" +
+                                        "Exercise Intensity Level: 50 - 100\n\n" +
+                                        "* this is based on your user information");
+                            }
+                        }
+                        else {
+                            recommendation.setText("You have not finished user information settings.\n" +
+                                    "Please click the button to get you ready!");
+                            goToUserSettingsButton.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 }
