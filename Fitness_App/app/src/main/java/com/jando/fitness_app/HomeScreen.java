@@ -1,6 +1,7 @@
 package com.jando.fitness_app;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -33,6 +34,7 @@ public class HomeScreen extends AppCompatActivity {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
     /** What happens when activity is started */
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,13 +90,12 @@ public class HomeScreen extends AppCompatActivity {
             }
         };
 
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-                3000, 3, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                3000, 3, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 2, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 2, locationListener);
 //************************************************************************************************//
     }
 
+    @SuppressLint("MissingPermission")
     protected void onPause() {
         super.onPause();
         Toast.makeText(HomeScreen.this, "Paused", Toast.LENGTH_SHORT).show();
@@ -102,6 +103,7 @@ public class HomeScreen extends AppCompatActivity {
         locationManager.removeUpdates(locationListener);
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.M)
     protected void onResume() {
         super.onResume();
@@ -118,10 +120,8 @@ public class HomeScreen extends AppCompatActivity {
             // for Activity#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-                3000, 3, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                3000, 3, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 2, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 2, locationListener);
     }
 
     /** Creates functionality of buttons on bottom navigation bar */
