@@ -103,10 +103,12 @@ public class WeatherActivity extends AppCompatActivity {
     public void weatherCheck (){
         WeatherTask task = new WeatherTask();
 
-        /** Uncomment to use when API key is available
+    //    /** Uncomment to use when API key is available
         try {
             // API key 1
-            //j1 = task.execute("https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&q="+latitude+","+longitude+"&language=en-us&details=false&toplevel=false").get();
+            Toast.makeText(WeatherActivity.this, "Latitude: "+latitude+"\nLongitude: "+longitude, Toast.LENGTH_SHORT).show();
+            j1 = task.execute("https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&q="+latitude+"%2C"+longitude+"&language=en-us&details=false&toplevel=false").get();
+           // curl -X GET          "http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&q=28.0705672%2C-82.4136353&language=en-us&details=false&toplevel=false"
             // API key 2
             //j1 = task.execute("https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&q="+latitude+","+longitude+"&language=en-us&details=false&toplevel=false").get();
             // API key 3
@@ -121,7 +123,7 @@ public class WeatherActivity extends AppCompatActivity {
     //    */
 
             /** Return value from URL tried */
-  //     /** Uncomment to use fake data
+       /** Uncomment to use fake data
             j1 = "{\n" +
                     "  \"Version\": 1,\n" +
                     "  \"Key\": \"2621246\",\n" +
@@ -191,7 +193,7 @@ public class WeatherActivity extends AppCompatActivity {
                     "}";
        //*/
 
-   //   /** Uncomment to use fake data
+      /** Uncomment to use fake data
             task.onPostExecute(j1);
         // */
 
@@ -242,18 +244,20 @@ public class WeatherActivity extends AppCompatActivity {
 //                weatherReport.setText(key);
 
                 /** Current weather */
-                /** Uncomment to use when API key is available
+
+    //            /** Uncomment to use when API key is available
                 try {
                     WeatherTask currentWeather = new WeatherTask();
                     // API key 1
-                    ///j2 = currentWeather.execute("https://dataservice.accuweather.com/currentconditions/v1/locationKey="+key+"?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&language=en-us&details=false").get();// API key 2
+                    j2 = currentWeather.execute("https://dataservice.accuweather.com/currentconditions/v1/"+key+"?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&language=en-us&details=false").get();// API key 2
+                  //  curl -X GET                  "http://dataservice.accuweather.com/currentconditions/v1/2274169?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&language=en-us&details=false"
                     //API key 2
                     //j2 = currentWeather.execute("https://dataservice.accuweather.com/currentconditions/v1/locationKey="+key+"?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&language=en-us&details=false").get();
                     // API key 3
                     //j2 = currentWeather.execute("https://dataservice.accuweather.com/currentconditions/v1/locationKey="+key+"?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&language=en-us&details=false").get();
 
     //            */
-  //       /**
+         /** Uncomment to use fake data
                 j2 = "[\n" +
                         "  {\n" +
                         "    \"LocalObservationDateTime\": \"2019-07-06T14:22:00-04:00\",\n" +
@@ -304,7 +308,7 @@ public class WeatherActivity extends AppCompatActivity {
                     currentWeatherDisplay.setText(output);
 
                     /** Close the try block */
-                /** Uncomment to use when API key is available
+      //          /** Uncomment to use when API key is available
                  } catch (InterruptedException e) {
                  e.printStackTrace();
                  } catch (ExecutionException e) {
@@ -313,18 +317,18 @@ public class WeatherActivity extends AppCompatActivity {
           //       */
 
                 /** 12 Hour Forecast weather */
-                /** Uncomment to use when API key is available
+     //           /** Uncomment to use when API key is available
                 try {
                     WeatherTask forecast = new WeatherTask();
                     // API key 1
-                    //j3 = forecast.execute("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+key+"?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&language=en-us&details=false&metric=false").get();
+                    j3 = forecast.execute("https://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+key+"?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&language=en-us&details=false&metric=false").get();
                     // API key 2
                     //j3 = forecast.execute("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+key+"?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&language=en-us&details=false&metric=false").get();
                     //API key 3
                     //j3 = forecast.execute("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+key+"?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&language=en-us&details=false&metric=false").get();
 
               //  */
-   //       /**
+          /** Uncomment to use fake data
                     j3 = "[\n" +
                             "  {\n" +
                             "    \"DateTime\": \"2019-07-06T16:00:00-04:00\",\n" +
@@ -537,10 +541,6 @@ public class WeatherActivity extends AppCompatActivity {
                     for (int i = 0; i<forecastArray.length(); i++){
                         //outputForecast =
                         Date date = new Date(Long.parseLong(forecastArray.getJSONObject(i).getString("EpochDateTime"))*1000);
-//                        outputForecast += sdf.format(date)+"\n\n";
-  //                      outputForecast += "\t\t\t\t\t\t\t\t\t\t\t\t"+forecastArray.getJSONObject(i).getString("IconPhrase")+"\n";
-    //                    outputForecast += "\t\t\t\t\t\t\t\t\t\t\t\t" + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Value") + " "
-      //                          + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Unit")+"\n\n";
                         outputForecast.append(sdf.format(date)+"\n\n");
                         outputForecast.append("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"+forecastArray.getJSONObject(i).getString("IconPhrase")+"\n");
                         outputForecast.append("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + forecastArray.getJSONObject(i).getJSONObject("Temperature").getString("Value") + " "
@@ -559,7 +559,7 @@ public class WeatherActivity extends AppCompatActivity {
                 /** Output to current weather display */
                     forecastDisplay.setText(outputForecast);
 
-                /** Uncomment to use when API key is available
+    //            /** Uncomment to use when API key is available
                  } catch (InterruptedException e) {
                  e.printStackTrace();
                  } catch (ExecutionException e) {
