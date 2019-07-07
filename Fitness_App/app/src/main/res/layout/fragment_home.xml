@@ -10,11 +10,15 @@
     <Button
         android:id="@+id/button_weather"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="100dp"
         android:layout_marginTop="8dp"
-        android:text="This will be weather display + link to weather activity"
+        android:text="Weather"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="22sp"
         app:layout_constraintTop_toTopOf="parent"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
         tools:layout_editor_absoluteX="16dp" />
 
     <TextView
