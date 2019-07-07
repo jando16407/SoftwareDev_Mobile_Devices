@@ -144,7 +144,7 @@
 
 
             <TextView
-                android:id="@+id/careTakePhoneText"
+                android:id="@+id/careTakerPhoneText"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginStart="10dp"
@@ -156,7 +156,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <EditText
-                android:id="@+id/ca"
+                android:id="@+id/careTakerPhoneEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginStart="10dp"
@@ -164,13 +164,13 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:inputType="textPassword"
+                android:inputType="number"
                 android:ems="10"
-                android:hint="Type Password"
+                android:hint="caretaker phone number"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/careTakerPhoneButton"
                 android:layout_width="105dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="280dp"

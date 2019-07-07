@@ -33,6 +33,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private TextView textViewUserEmail2;
     private TextView textViewUserPassword1;
     private TextView textViewUserPassword2;
+    private TextView textViewUserCareTakerPhone;
     private DatabaseReference usersRef;
     final User userInfo = new User("", "", "", "", "", "");
     FirebaseUser user = null;
@@ -57,8 +58,10 @@ public class AccountSettingsActivity extends AppCompatActivity {
         textViewUserEmail2.setText(user.getEmail());
         textViewUserPassword1 = findViewById(R.id.editText6);
         textViewUserPassword2 = findViewById(R.id.editText66);
+        textViewUserCareTakerPhone = findViewById(R.id.careTakerPhoneEdit);
         Button buttonEmail = findViewById(R.id.button1);
         Button buttonPassword = findViewById(R.id.button2);
+        Button buttonCareTaker = findViewById(R.id.careTakerPhoneButton);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("Users");
@@ -150,6 +153,28 @@ public class AccountSettingsActivity extends AppCompatActivity {
             }
         });
 
+        // Update caretaker's phone number
+        buttonCareTaker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String phoneNumber = textViewUserCareTakerPhone.getText().toString().trim();
+                if (TextUtils.isEmpty(phoneNumber)) {
+                    textViewUserCareTakerPhone.setError("Please type caretaker's phone number");
+                    textViewUserCareTakerPhone.requestFocus();
+                    return;
+                }
+                if(phoneNumber.length() != 10){
+                    textViewUserCareTakerPhone.setError("Phone number must be 10 digits");
+                    textViewUserCareTakerPhone.requestFocus();
+                    return;
+                }
+                final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+                usersRef.child(f_user.getUid()).child("caretakerPhone").setValue(phoneNumber);
+                Toast.makeText(AccountSettingsActivity.this,
+                        "Caretaker phone number is updated",Toast.LENGTH_SHORT).show();
+            }
+        });
+
         //hide keyboard after typing email2
         textViewUserEmail2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -196,12 +221,34 @@ public class AccountSettingsActivity extends AppCompatActivity {
     public void displayUserInfo(){
         // Display user information
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Toast.makeText(AccountSettingsActivity.this,"Trying to find the user",Toast.LENGTH_SHORT).show();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    DataSnapshot email = ds.child("email");
+                try{
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        DataSnapshot email = ds.child("email");
+                        try {
+                            if (email.getValue().toString().equals(user.getEmail())) {
+                                textViewUserEmail1.setText(email.getValue().toString());
+                                if( ds.child("careTakerPhone").getValue() == null && !ds.child("caretakerPhone").getValue().toString().equals("")){
+                                    textViewUserCareTakerPhone.setText(ds.child("caretakerPhone").getValue().toString());
+                                }
+
+                            }
+
+                        }catch(NullPointerException e){
+                            Toast.makeText(AccountSettingsActivity.this,"Nullpointer exeption caught",Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                }catch(NullPointerException e){
+                    Toast.makeText(AccountSettingsActivity.this,"Caught nullptr execption",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
