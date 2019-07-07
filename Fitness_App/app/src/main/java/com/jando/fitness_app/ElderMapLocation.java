@@ -69,10 +69,14 @@ public class ElderMapLocation extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                ElderLatitude= (double) dataSnapshot.child(user.getUid()).child("Latitude").getValue();
-                ElderLongitude= (double) dataSnapshot.child(user.getUid()).child("Longitude").getValue();
+                try {
+                    ElderLatitude = (double) dataSnapshot.child(user.getUid()).child("Latitude").getValue();
+                    ElderLongitude = (double) dataSnapshot.child(user.getUid()).child("Longitude").getValue();
 
-                onMapReady(mMap);
+                    onMapReady(mMap);
+                }catch(NullPointerException e){
+                    e.printStackTrace();
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }

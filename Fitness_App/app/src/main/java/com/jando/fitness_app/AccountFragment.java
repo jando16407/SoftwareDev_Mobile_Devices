@@ -5,15 +5,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -92,9 +93,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+
+
                                String caretakerPhonenumber = (String) dataSnapshot.child(user.getUid()).child("caretakerPhone").getValue();
 
-                                Intent callIntent = new Intent(Intent.ACTION_CALL); // or ACTION_DIAL
+                                Intent callIntent = new Intent(Intent.ACTION_DIAL); // or ACTION_DIAL
                                 callIntent.setData(Uri.parse("tel:"+caretakerPhonenumber));
 
                                 startActivity(callIntent);
@@ -122,7 +125,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
 
                         String number = "18882378289";  //Best Buy Customer Service
-                        Intent callIntent = new Intent(Intent.ACTION_CALL); // or ACTION_DIAL
+                        Intent callIntent = new Intent(Intent.ACTION_DIAL); // or ACTION_DIAL
                         callIntent.setData(Uri.parse("tel:"+number));
 
                         startActivity(callIntent);

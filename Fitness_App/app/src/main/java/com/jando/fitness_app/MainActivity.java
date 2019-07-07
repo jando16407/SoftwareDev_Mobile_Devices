@@ -3,8 +3,6 @@ package com.jando.fitness_app;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -16,17 +14,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import com.jando.fitness_app.Model.User;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.jando.fitness_app.Model.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextLastName;
     private EditText editTextAge;
     private EditText editTextWeight;
-    private EditText editTextUsername;
+    private EditText editTextRepassword;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextCaretakerPhone;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         editTextLastName = findViewById(R.id.editTextLastName);
         editTextAge = findViewById(R.id.editTextAge);
         editTextWeight = findViewById(R.id.editTextWeight);
-        editTextUsername = findViewById(R.id.editTextUsername);
+        editTextRepassword = findViewById(R.id.editTextRepassword);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextInputPassword);
         editTextCaretakerPhone = findViewById(R.id.editTextCaretakerPhone);
@@ -150,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         String lastname = editTextLastName.getText().toString().trim();
         String age = editTextAge.getText().toString().trim();
         String weight = editTextWeight.getText().toString().trim();
-        //String username = editTextUsername.getText().toString().trim();
+        String Reenterpassword = editTextRepassword.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String caretakerPhone = editTextCaretakerPhone.getText().toString().trim();
@@ -199,11 +200,19 @@ public class MainActivity extends AppCompatActivity {
             editTextPassword.requestFocus();
             return;
         }
-        if (TextUtils.isEmpty(caretakerPhone)) {
-            editTextEmail.setError("Caretaker Phone Required");
-            editTextEmail.requestFocus();
+
+        if (TextUtils.isEmpty(Reenterpassword) || !Reenterpassword.equals(password)){
+            editTextRepassword.setError("Password Match Required");
+            editTextRepassword.requestFocus();
             return;
         }
+
+        if (TextUtils.isEmpty(caretakerPhone) || caretakerPhone.length() != 10) {
+            editTextCaretakerPhone.setError("Caretaker Phone Required");
+            editTextCaretakerPhone.requestFocus();
+            return;
+        }
+
 
         //Registers user with email and password
         progressDialog.setMessage("Registering Please wait");
@@ -248,8 +257,12 @@ public class MainActivity extends AppCompatActivity {
         //Iterate thorough children to find email matching
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             DataSnapshot email = ds.child("email");
-            if (email.getValue().toString().equals(user.getEmail())) {
-                return true;
+            try {
+                if (email.getValue().toString().equals(user.getEmail())) {
+                    return true;
+                }
+            } catch(NullPointerException e){
+                e.printStackTrace();
             }
         }
         return false;

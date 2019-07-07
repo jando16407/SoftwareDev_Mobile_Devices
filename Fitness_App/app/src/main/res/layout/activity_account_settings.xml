@@ -143,6 +143,47 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
 
+            <TextView
+                android:id="@+id/careTakerPhoneText"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Caretaker Phone Number:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <EditText
+                android:id="@+id/careTakerPhoneEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:inputType="number"
+                android:ems="10"
+                android:hint="caretaker phone number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+            <Button
+                android:id="@+id/careTakerPhoneButton"
+                android:layout_width="105dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="280dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Change"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
 
         </LinearLayout>
     </ScrollView>

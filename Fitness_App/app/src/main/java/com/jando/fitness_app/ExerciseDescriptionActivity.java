@@ -80,6 +80,33 @@ public class ExerciseDescriptionActivity extends AppCompatActivity {
             case "crunches":
                 imageView.setImageResource(R.drawable.crunches_400x400);
                 break;
+            case "cobrapose":
+                imageView.setImageResource(R.drawable.cobrapose_630x315);
+                break;
+            case "seatedcurls":
+                imageView.setImageResource(R.drawable.seatedcurls_243x320);
+                break;
+            case "tricepkickbacks":
+                imageView.setImageResource(R.drawable.tricepkickbacks_287x320);
+                break;
+            case "pelvictilts":
+                imageView.setImageResource(R.drawable.pelvictilts_540x360);
+                break;
+            case "seatedrows":
+                imageView.setImageResource(R.drawable.seatedrows_900x605);
+                break;
+            case "assistedpushups":
+                imageView.setImageResource(R.drawable.assistedpushups_540x360);
+                break;
+            case "dumbchestpress":
+                imageView.setImageResource(R.drawable.dumbchestpress_540x360);
+                break;
+            case "airsquat":
+                imageView.setImageResource(R.drawable.airsquat_540x360);
+                break;
+            case "lunges":
+                imageView.setImageResource(R.drawable.lunges_540x360);
+                break;
             default:
                 break;
         }
