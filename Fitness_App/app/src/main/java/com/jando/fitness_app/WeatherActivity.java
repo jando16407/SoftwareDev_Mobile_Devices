@@ -3,6 +3,7 @@ package com.jando.fitness_app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -25,6 +26,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -49,6 +55,8 @@ public class WeatherActivity extends AppCompatActivity {
     String longitude;
     String latitude;
     private FirebaseAuth firebaseAuth;
+    private Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,7 @@ public class WeatherActivity extends AppCompatActivity {
         forecastDisplay = findViewById(R.id.forecastDisplay);
         latitude = "28.07061679";
         longitude = "-82.41369035";
+        context = WeatherActivity.this;
 
         /** Get the longitude and latitude */
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -74,7 +83,7 @@ public class WeatherActivity extends AppCompatActivity {
 
                 latitude= (dataSnapshot.child(user.getUid()).child("Latitude").getValue()).toString();//.toString();
                 longitude= (dataSnapshot.child(user.getUid()).child("Longitude").getValue()).toString();//.toString();
-                Toast.makeText(WeatherActivity.this, "Latitude: "+latitude+"\nLongitude: "+longitude, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(WeatherActivity.this, "Latitude: "+latitude+"\nLongitude: "+longitude, Toast.LENGTH_SHORT).show();
                 weatherCheck();
             }
             @Override
@@ -84,7 +93,7 @@ public class WeatherActivity extends AppCompatActivity {
         //weatherReport = findViewById(R.id.forecastDisplay);
 
 
-
+        //Toast.makeText(WeatherActivity.this, "j2 = "+readCurrentWeather(), Toast.LENGTH_SHORT).show();
 
         //Adds back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -98,6 +107,10 @@ public class WeatherActivity extends AppCompatActivity {
         try {
             // API key 1
             //j1 = task.execute("https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&q="+latitude+","+longitude+"&language=en-us&details=false&toplevel=false").get();
+            // API key 2
+            //j1 = task.execute("https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&q="+latitude+","+longitude+"&language=en-us&details=false&toplevel=false").get();
+            // API key 3
+            //j1 = task.execute("https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&q="+latitude+","+longitude+"&language=en-us&details=false&toplevel=false").get();
             } catch(InterruptedException e) {
                 Toast.makeText(WeatherActivity.this, "Error trying loc interruption", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
@@ -105,12 +118,10 @@ public class WeatherActivity extends AppCompatActivity {
                 Toast.makeText(WeatherActivity.this, "Error trying loc exception", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
-        */
-            // API key 2 */
-            //j1 = task.execute("https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG="+locationName.getText().toString()+"&language=en-us&details=false&toplevel=false").get();
-            // API key 3 */
-           // j1 = task.execute("https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=ai7pJYg85quTbfX7pJZd7KTLyodA3oYG="+locationName.getText().toString()+"&language=en-us&details=false&toplevel=false").get();
+    //    */
+
             /** Return value from URL tried */
+  //     /** Uncomment to use fake data
             j1 = "{\n" +
                     "  \"Version\": 1,\n" +
                     "  \"Key\": \"2621246\",\n" +
@@ -178,17 +189,13 @@ public class WeatherActivity extends AppCompatActivity {
                     "    \"Radar\"\n" +
                     "  ]\n" +
                     "}";
+       //*/
+
+   //   /** Uncomment to use fake data
             task.onPostExecute(j1);
+        // */
 
 
-            //weatherReport.setText(j1);
-   /**     } catch(InterruptedException e) {
-            Toast.makeText(WeatherActivity.this, "Error trying loc interruption", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            Toast.makeText(WeatherActivity.this, "Error trying loc exception", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }*/
     }
 
     public class WeatherTask extends AsyncTask<String, Void, String> {
@@ -239,8 +246,14 @@ public class WeatherActivity extends AppCompatActivity {
                 try {
                     WeatherTask currentWeather = new WeatherTask();
                     // API key 1
-                    j2 = currentWeather.execute("https://dataservice.accuweather.com/currentconditions/v1/locationKey="+key+"?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&language=en-us&details=false").get();
-                */
+                    ///j2 = currentWeather.execute("https://dataservice.accuweather.com/currentconditions/v1/locationKey="+key+"?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&language=en-us&details=false").get();// API key 2
+                    //API key 2
+                    //j2 = currentWeather.execute("https://dataservice.accuweather.com/currentconditions/v1/locationKey="+key+"?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&language=en-us&details=false").get();
+                    // API key 3
+                    //j2 = currentWeather.execute("https://dataservice.accuweather.com/currentconditions/v1/locationKey="+key+"?apikey=ybpRsMsZ0gudQicb50c9Pgv793X2HeLH&language=en-us&details=false").get();
+
+    //            */
+  //       /**
                 j2 = "[\n" +
                         "  {\n" +
                         "    \"LocalObservationDateTime\": \"2019-07-06T14:22:00-04:00\",\n" +
@@ -266,7 +279,8 @@ public class WeatherActivity extends AppCompatActivity {
                         "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/current-weather/2621246?lang=en-us\"\n" +
                         "  }\n" +
                         "]";
-
+//*/
+                writeCurrentWeather(j2);
                     /** Build the output */
                     JSONArray weatherArray = new JSONArray(j2);
                     SpannableStringBuilder output = new SpannableStringBuilder();
@@ -303,8 +317,14 @@ public class WeatherActivity extends AppCompatActivity {
                 try {
                     WeatherTask forecast = new WeatherTask();
                     // API key 1
-                    j3 = forecast.execute("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+key+"?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&language=en-us&details=false&metric=false").get();
+                    //j3 = forecast.execute("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+key+"?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&language=en-us&details=false&metric=false").get();
+                    // API key 2
+                    //j3 = forecast.execute("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+key+"?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&language=en-us&details=false&metric=false").get();
+                    //API key 3
+                    //j3 = forecast.execute("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+key+"?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&language=en-us&details=false&metric=false").get();
+
               //  */
+   //       /**
                     j3 = "[\n" +
                             "  {\n" +
                             "    \"DateTime\": \"2019-07-06T16:00:00-04:00\",\n" +
@@ -503,7 +523,8 @@ public class WeatherActivity extends AppCompatActivity {
                             "    \"Link\": \"http://www.accuweather.com/en/us/east-lake-orient-park-fl/33610/hourly-weather-forecast/2621246?day=2&hbhhour=3&lang=en-us\"\n" +
                             "  }\n" +
                             "]";
-
+//*/
+                    writeForecast(j3);
                     /** Format the output */
                     SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
                     String epochString = "1562443200";
@@ -546,12 +567,6 @@ public class WeatherActivity extends AppCompatActivity {
                  }
                  //*/
 
-                  //  weatherReport.setText(j2);
-                    // API key 2
-                    // j2 = weather.execute("https://dataservice.accuweather.com/currentconditions/v1/locationKey="+key+"?apikey=7WX6jWHRE1KlP7ueFS8BePxjeq9pFMQG&language=en-us&details=false").get();
-                    // API key 3
-                    //j2 = weather.execute("https://dataservice.accuweather.com/currentconditions/v1/locationKey="+key+"?apikey=ai7pJYg85quTbfX7pJZd7KTLyodA3oYG&language=en-us&details=false").get();
-
 
 
 
@@ -560,6 +575,103 @@ public class WeatherActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    private void writeCurrentWeather(String j2) {
+        //String intToSave = numSteps + "";
+
+        try {
+
+            FileOutputStream fileOutputStream =
+                    context.openFileOutput("CurrentWeather.txt", MODE_PRIVATE);
+            fileOutputStream.write(j2.getBytes());
+            fileOutputStream.close();
+
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void writeForecast(String j3) {
+        //String intToSave = numSteps + "";
+
+        try {
+
+            FileOutputStream fileOutputStream =
+                    context.openFileOutput("Forecast.txt", MODE_PRIVATE);
+            fileOutputStream.write(j3.getBytes());
+            fileOutputStream.close();
+
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
+
+    private String readCurrentWeather() {
+        try {
+
+            FileInputStream fileInputStream = context.openFileInput("CurrentWeather.txt");
+
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuilder stringBuffer = new StringBuilder();
+
+            String number;
+            while ((number = bufferedReader.readLine()) != null){
+                stringBuffer.append(number);
+            }
+
+            return stringBuffer.toString();
+
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+            return null;
+        } catch (IOException e){
+            e.printStackTrace();
+            return null;
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String readForecast() {
+        try {
+
+            FileInputStream fileInputStream = context.openFileInput("Forecast.txt");
+
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuilder stringBuffer = new StringBuilder();
+
+            String number;
+            while ((number = bufferedReader.readLine()) != null){
+                stringBuffer.append(number);
+            }
+
+            return stringBuffer.toString();
+
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+            return null;
+        } catch (IOException e){
+            e.printStackTrace();
+            return null;
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 
 
     /**Back button functionality */
