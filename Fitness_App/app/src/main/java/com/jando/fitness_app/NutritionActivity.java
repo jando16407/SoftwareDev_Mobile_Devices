@@ -1,9 +1,14 @@
 package com.jando.fitness_app;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
+
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,10 +23,15 @@ import com.google.firebase.database.ValueEventListener;
 public class NutritionActivity extends AppCompatActivity {
 
     TextView textViewBMI, textViewCalorieM, textViewCalorieU, textViewCalorieO;
-    private final double CALORIES_PER_POUND_FAT = 3500;
-    private final double CALORIES_PER_DAY_PER_POUND = CALORIES_PER_POUND_FAT / 7;
+    private final int CALORIES_PER_POUND_FAT = 3500;
+    private final int CALORIES_PER_DAY_PER_POUND = CALORIES_PER_POUND_FAT / 7;
     private DatabaseReference databaseReference;
     FirebaseUser firebaseUser = null;
+    private Button goToUserSettingsButton;
+    private TextView textViewLabelE;
+    private TextView textViewLabelE1;
+    private TextView textViewLabelE2;
+
 
     /** What happens when activity is started */
     @Override
@@ -33,6 +43,10 @@ public class NutritionActivity extends AppCompatActivity {
         textViewCalorieM = findViewById(R.id.textViewCalorieM);
         textViewCalorieU = findViewById(R.id.textViewCalorieU);
         textViewCalorieO = findViewById(R.id.textViewCalorieO);
+        goToUserSettingsButton = findViewById(R.id.userSettingsButton);
+        textViewLabelE = findViewById(R.id.textViewLabelE);
+        textViewLabelE1 = findViewById(R.id.textViewLabelE1);
+        textViewLabelE2 = findViewById(R.id.textViewLabelE2);
 
         //FireBase checks to ensure user is logged in
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -47,6 +61,16 @@ public class NutritionActivity extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference("Users");
 
         displayUserInfo();
+
+        setWhattoDisplay();
+        goToUserSettingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0){
+                Toast.makeText(NutritionActivity.this, "User Settings Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(NutritionActivity.this, UserSettingsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //Adds back button
         assert getSupportActionBar() != null;
@@ -71,8 +95,8 @@ public class NutritionActivity extends AppCompatActivity {
                 String bmi = "";
                 String sex;
                 int age, days, height, weight;
-                double calories = 0;
-                double under, over;
+                int calories = 0;
+                int under, over;
 
                 try {
                     //Searches through users, finding user associated with fireBaseUser email
@@ -89,7 +113,7 @@ public class NutritionActivity extends AppCompatActivity {
                             weight = Integer.parseInt(ds.child("weight").getValue().toString());
 
                             //calculate calories
-                            calories = calculateCalories(sex, height, weight, age, days);
+                            calories = (int)calculateCalories(sex, height, weight, age, days);
                         }
                     }
 
@@ -139,6 +163,45 @@ public class NutritionActivity extends AppCompatActivity {
                 return 1.725;
         }
         return 1.2;
+    }
+
+    private void setWhattoDisplay(){
+        /** Get data from firebase and check if user finished user info settings */
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    DataSnapshot email = ds.child("email");
+                    if (email.getValue().toString().equals(firebaseUser.getEmail())) {
+                        try {
+                            String bmi = "";
+                            //int HealthScore;
+
+                            if (ds.child("bmi").getValue() != null) {
+                                bmi = ds.child("bmi").getValue().toString();
+                            }
+                            if (!bmi.equals("")) {
+                                goToUserSettingsButton.setVisibility(View.GONE);
+                            } else {
+                                textViewLabelE.setText("You have not finished user information settings.\nPlease click the button to get you ready!");
+                                textViewLabelE1.setText("");
+                                textViewLabelE2.setText("");
+                                textViewCalorieM.setText("");
+                                textViewCalorieO.setText("");
+                                textViewCalorieU.setText("");
+                                goToUserSettingsButton.setVisibility(View.VISIBLE);
+                            }
+                        } catch(NullPointerException e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
 }

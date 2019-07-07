@@ -344,21 +344,14 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
                                 HealthScore = Integer.parseInt(health_score);
                                 goToUserSettingsButton.setVisibility(View.GONE);
                                 if (HealthScore < 30) {
-                                    recommendation.setText("Your Recommended\n" +
-                                            "Exercise Intensity Level: 0 - 30\n\n" +
-                                            "* this is based on your user information");
+                                    recommendation.setText("Your Recommended\nExercise Intensity Level: 0 - 30\n\n* this is based on your user information");
                                 } else if (30 <= HealthScore && HealthScore < 70) {
-                                    recommendation.setText("Your Recommended\n" +
-                                            "Exercise Intensity Level: 30 - 70\n\n" +
-                                            "* this is based on your user information");
+                                    recommendation.setText("Your Recommended\nExercise Intensity Level: 30 - 70\n\n* this is based on your user information");
                                 } else if (70 <= HealthScore) {
-                                    recommendation.setText("Your Recommended\n" +
-                                            "Exercise Intensity Level: 50 - 100\n\n" +
-                                            "* this is based on your user information");
+                                    recommendation.setText("Your Recommended\nExercise Intensity Level: 50 - 100\n\n* this is based on your user information");
                                 }
                             } else {
-                                recommendation.setText("You have not finished user information settings.\n" +
-                                        "Please click the button to get you ready!");
+                                recommendation.setText("You have not finished user information settings.\nPlease click the button to get you ready!");
                                 goToUserSettingsButton.setVisibility(View.VISIBLE);
                             }
                         } catch(NullPointerException e){
