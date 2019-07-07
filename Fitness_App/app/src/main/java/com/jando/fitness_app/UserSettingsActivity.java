@@ -33,6 +33,7 @@ public class UserSettingsActivity extends AppCompatActivity {
     private TextView textViewUserHeight2;
     private Switch   switchSexMale;
     private Switch   switchSexFemale;
+    private TextView textViewUserExercise;
     private TextView textViewUserFirstName;
     private TextView textViewUserLastName;
     private FirebaseDatabase database;
@@ -41,10 +42,14 @@ public class UserSettingsActivity extends AppCompatActivity {
     private Button buttonWeight;
     private Button buttonHeight;
     private Button buttonSex;
+    private Button buttonExericise;
     private Button buttonFirstName;
     private Button buttonLastName;
     final User userInfo = new User("", "", "", "", "");
     FirebaseUser user = null;
+    public boolean gotWeight = false;
+    public boolean gotHeight = false;
+    public boolean gotSex = false;
 
     /** What happens when activity is started */
     @Override
@@ -69,12 +74,14 @@ public class UserSettingsActivity extends AppCompatActivity {
         textViewUserHeight2 = findViewById(R.id.heightEdit2);
         switchSexMale = findViewById(R.id.sexSwitchMale);
         switchSexFemale = findViewById(R.id.sexSwitchFemale);
+        textViewUserExercise = findViewById(R.id.exerciseEdit);
         textViewUserFirstName = findViewById(R.id.firstEdit);
         textViewUserLastName = findViewById(R.id.lastEdit);
         buttonAge = findViewById(R.id.ageButton);
         buttonWeight = findViewById(R.id.weightButton);
         buttonHeight = findViewById(R.id.heightButton);
         buttonSex = findViewById(R.id.sexButton);
+        buttonExericise = findViewById(R.id.exerciseButton);
         buttonFirstName = findViewById(R.id.firstButton);
         buttonLastName = findViewById(R.id.lastButton);
 
@@ -83,15 +90,6 @@ public class UserSettingsActivity extends AppCompatActivity {
         usersRef = database.getReference("Users");
 
         displayUserInfo();
-
-        String firstname = textViewUserFirstName.getText().toString().trim();
-        String lastname = textViewUserLastName.getText().toString().trim();
-        String age = textViewUserAge.getText().toString().trim();
-        final String weight = textViewUserWeight.getText().toString().trim();
-        final String height1 = textViewUserHeight1.getText().toString().trim();
-        final String height2 = textViewUserHeight2.getText().toString().trim();
-        final String sex;
-
 
 
 
@@ -113,6 +111,7 @@ public class UserSettingsActivity extends AppCompatActivity {
                 usersRef.child(f_user.getUid()).child("age").setValue(age);
                 Toast.makeText(UserSettingsActivity.this,
                         "User age is updated",Toast.LENGTH_SHORT).show();
+                checkBmi();
 
             }
         });
@@ -135,6 +134,7 @@ public class UserSettingsActivity extends AppCompatActivity {
                 usersRef.child(f_user.getUid()).child("weight").setValue(weight);
                 Toast.makeText(UserSettingsActivity.this,
                         "User weight is updated",Toast.LENGTH_SHORT).show();
+                checkBmi();
             }
         });
 
@@ -165,7 +165,7 @@ public class UserSettingsActivity extends AppCompatActivity {
                      usersRef.child(f_user.getUid()).child("height").setValue(height);
                     Toast.makeText(UserSettingsActivity.this,
                             "User height is updated: "+height,Toast.LENGTH_SHORT).show();
-
+                    checkBmi();
                 }
                 else {
                     textViewUserHeight1.setError("Please type the height to change");
@@ -211,6 +211,40 @@ public class UserSettingsActivity extends AppCompatActivity {
                 usersRef.child(f_user.getUid()).child("sex").setValue(sex);
                 Toast.makeText(UserSettingsActivity.this,
                         "User sex is updated",Toast.LENGTH_SHORT).show();
+                checkBmi();
+            }
+        });
+
+        // Update Exercise Days
+        buttonExericise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String exerciseDays;
+                if( textViewUserExercise.getText() != null && !textViewUserExercise.getText().toString().trim().equals("") ) {
+                    exerciseDays = textViewUserExercise.getText().toString().trim();
+                    if (TextUtils.isEmpty(exerciseDays)) {
+                        textViewUserExercise.setError("Please type the weight to change");
+                        textViewUserExercise.requestFocus();
+                        return;
+                    }
+                    else if( !exerciseDays.equals("0") && !exerciseDays.equals("1") && !exerciseDays.equals("2") && !exerciseDays.equals("3") &&
+                        !exerciseDays.equals("4") && !exerciseDays.equals("5") && !exerciseDays.equals("6") && !exerciseDays.equals("7") ){
+                        textViewUserExercise.setError("Please type number between 0-7");
+                        textViewUserExercise.requestFocus();
+                        return;
+                    }
+                    final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+                    usersRef.child(f_user.getUid()).child("exerciseDays").setValue(exerciseDays);
+                    Toast.makeText(UserSettingsActivity.this,
+                            "Exercise day is updated",Toast.LENGTH_SHORT).show();
+                    checkHealthScore();
+                }
+                else {
+                    textViewUserExercise.setError("Please type number of days you exercise");
+                    textViewUserExercise.requestFocus();
+                }
+
+
             }
         });
 
@@ -291,13 +325,18 @@ public class UserSettingsActivity extends AppCompatActivity {
                                 + ds.child("lastname").getValue().toString(),
                                 Toast.LENGTH_SHORT).show();
                         textViewUserAge.setText(ds.child("age").getValue().toString());
-                        textViewUserWeight.setText(ds.child("weight").getValue().toString());
+                        if( ds.child("weight").getValue() != null ){
+                            textViewUserWeight.setText(ds.child("weight").getValue().toString());
+                            gotWeight = true;
+                        }
+
                         int height;
                         if( ds.child("height").getValue() != null ) {
                             height = Integer.parseInt(ds.child("height").getValue().toString());
                             textViewUserHeight1.setText(Integer.toString(height/12));
                             textViewUserHeight2.setText(Integer.toString(height%12));
                             userInfo.setHeight(Integer.toString(height));
+                            gotHeight = true;
                         }
 
                         String sex;
@@ -305,12 +344,23 @@ public class UserSettingsActivity extends AppCompatActivity {
                             sex = ds.child("sex").getValue().toString();
                             if (sex.equals("M")) {
                                 switchSexMale.setChecked(true);
-                                switchSexMale.setChecked(false);
-                            } else if (sex.equals("F")) {
-                                switchSexMale.setChecked(true);
                                 switchSexFemale.setChecked(false);
+                                //Toast.makeText(UserSettingsActivity.this, "Is a male",Toast.LENGTH_SHORT).show();
+                                gotSex = true;
+                            } else if (sex.equals("F")) {
+                                switchSexMale.setChecked(false);
+                                switchSexFemale.setChecked(true);
+                                //Toast.makeText(UserSettingsActivity.this, "Is a female",Toast.LENGTH_SHORT).show();
+                                gotSex = true;
+                            }
+                            else {
+                                Toast.makeText(UserSettingsActivity.this, "Didn't get sex info",Toast.LENGTH_SHORT).show();
                             }
                             userInfo.setSex(sex);
+                        }
+                        String exerciseDays;
+                        if( ds.child("exerciseDays").getValue() != null ) {
+                            textViewUserExercise.setText(ds.child("exerciseDays").getValue().toString());
                         }
                         textViewUserFirstName.setText(ds.child("firstname").getValue().toString());
                         textViewUserLastName.setText(ds.child("lastname").getValue().toString());
@@ -321,7 +371,7 @@ public class UserSettingsActivity extends AppCompatActivity {
                         userInfo.setAge(textViewUserAge.getText().toString());
                         userInfo.setWeight(textViewUserWeight.getText().toString());
 
-
+                        checkBmi();
                     }
                 }
             }
@@ -331,6 +381,113 @@ public class UserSettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void checkBmi(){
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Toast.makeText(UserSettingsActivity.this, "Trying to find the user",Toast.LENGTH_SHORT).show();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    DataSnapshot email = ds.child("email");
+                    if (email.getValue().toString().equals(user.getEmail())) {
+                        if( ds.child("height").getValue() != null ) {
+                            if (ds.child("weight").getValue() != null) {
+                                    //int bmi = 703 * Integer.parseInt(userInfo.getWeight()) / (Integer.parseInt(userInfo.getHeight()) * Integer.parseInt(userInfo.getHeight()));
+                                int bmi = 703 * Integer.parseInt(ds.child("weight").getValue().toString()) / (Integer.parseInt(ds.child("height").getValue().toString()) * Integer.parseInt(ds.child("height").getValue().toString()));
+                                final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+                                usersRef.child(f_user.getUid()).child("bmi").setValue(bmi);
+                                Toast.makeText(UserSettingsActivity.this, "BMI updated",Toast.LENGTH_SHORT).show();
+                                checkHealthScore();
+                            }
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }});
+    }
+
+    private void checkHealthScore(){
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Toast.makeText(UserSettingsActivity.this, "Trying to find the user",Toast.LENGTH_SHORT).show();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    DataSnapshot email = ds.child("email");
+                    if (email.getValue().toString().equals(user.getEmail())) {
+                        if( ds.child("exerciseDays").getValue() != null ) {
+                            if (ds.child("bmi").getValue() != null) {
+                                int healthScore = 0;
+                                int exerciseDays = Integer.parseInt(ds.child("exerciseDays").getValue().toString());
+                                int bmi = Integer.parseInt(ds.child("bmi").getValue().toString());
+                                if( exerciseDays < 1 ){
+                                    if(bmi < 23 || 30 < bmi ){
+                                        healthScore = 0;
+                                    }
+                                    else if( 23 < bmi && bmi < 30 ){
+                                        healthScore = 10;
+                                    }
+                                }
+                                else if( exerciseDays < 2 ){
+                                    if(bmi < 23 || 30 < bmi ){
+                                        healthScore = 20;
+                                    }
+                                    else if( 23 < bmi && bmi < 30 ){
+                                        healthScore = 30;
+                                    }
+                                }
+                                else if( exerciseDays < 3 ){
+                                    if(bmi < 23 || 30 < bmi ){
+                                        healthScore = 30;
+                                    }
+                                    else if( 23 < bmi && bmi < 30 ){
+                                        healthScore = 40;
+                                    }
+                                }
+                                else if( exerciseDays < 4 ){
+                                    if(bmi < 23 || 30 < bmi ){
+                                        healthScore = 40;
+                                    }
+                                    else if( 23 < bmi && bmi < 30 ){
+                                        healthScore = 50;
+                                    }
+                                }
+                                else if( exerciseDays < 5 ){
+                                    if(bmi < 23 || 30 < bmi ){
+                                        healthScore = 60;
+                                    }
+                                    else if( 23 < bmi && bmi < 30 ){
+                                        healthScore = 80;
+                                    }
+                                }
+                                else if( exerciseDays < 6 ){
+                                    if(bmi < 23 || 30 < bmi ){
+                                        healthScore = 70;
+                                    }
+                                    else if( 23 < bmi && bmi < 30 ){
+                                        healthScore = 90;
+                                    }
+                                }
+                                else if( exerciseDays > 5 ){
+                                    if(bmi < 23 || 30 < bmi ){
+                                        healthScore = 80;
+                                    }
+                                    else if( 23 < bmi && bmi < 30 ){
+                                        healthScore = 100;
+                                    }
+                                }
+                                final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+                                usersRef.child(f_user.getUid()).child("healthScore").setValue(healthScore);
+                                Toast.makeText(UserSettingsActivity.this, "Health Score updated",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }});
+    }
     /** Check if the given email is already registered on FireBase */
     private boolean userEmailExists(DataSnapshot dataSnapshot, String email_address) {
         //Iterate thorough children to find email matching
