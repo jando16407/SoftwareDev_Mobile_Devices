@@ -1,10 +1,16 @@
 package com.jando.fitness_app;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ResourcesActivity extends AppCompatActivity {
+
+    private TextView TextViewGoogleMaps;
+    private TextView TextViewWeather;
+    private TextView TextViewFirebase;
 
     /** What happens when activity is started */
     @Override
@@ -15,6 +21,14 @@ public class ResourcesActivity extends AppCompatActivity {
         //Adds back button
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        TextViewGoogleMaps = findViewById(R.id.textViewGoogleMaps);
+        TextViewWeather = findViewById(R.id.textViewWeather);
+        TextViewFirebase = findViewById(R.id.textViewFirebase);
+
+
+
+
     }
 
     /**Back button functionality */
