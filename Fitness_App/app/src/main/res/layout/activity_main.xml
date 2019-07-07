@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundPrimary"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity">
 
     <EditText
         android:id="@+id/editTextCaretakerPhone"
@@ -13,7 +13,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:background="@drawable/edit_round"
@@ -25,7 +25,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextRepassword" />
 
     <Button
         android:id="@+id/buttonSignin"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="132dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:background="@color/colorWhite"
@@ -66,14 +66,16 @@
         android:layout_marginLeft="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/text_user_registration"
-        android:textSize="36sp"
         android:textColor="@color/colorBlack"
-        app:layout_constraintBottom_toTopOf="@+id/space"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.253" />
 
     <EditText
         android:id="@+id/editTextFirstName"
@@ -90,7 +92,8 @@
         app:layout_constraintBottom_toTopOf="@+id/editTextAge"
         app:layout_constraintEnd_toStartOf="@+id/space"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="132dp" />
 
     <EditText
         android:id="@+id/editTextLastName"
@@ -121,7 +124,7 @@
         android:inputType="number"
         android:nextFocusDown="@+id/editTextWeight"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextUsername"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
         app:layout_constraintEnd_toStartOf="@+id/space"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
@@ -136,36 +139,34 @@
         android:background="@drawable/edit_round"
         android:hint="@string/hint_enter_weight"
         android:inputType="number"
-        android:nextFocusDown="@+id/editTextUsername"
+        android:nextFocusDown="@+id/editTextRepassword"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextUsername"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/space" />
 
     <EditText
-        android:id="@+id/editTextUsername"
-        android:nextFocusDown="@+id/editTextEmail"
+        android:id="@+id/editTextRepassword"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/edit_round"
         android:ems="10"
-        android:hint="@string/hint_enter_username"
-        android:inputType="text"
+        android:hint="Re-Enter Password"
+        android:inputType="textPassword"
+        android:nextFocusDown="@+id/editTextEmail"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextInputPassword" />
 
     <EditText
         android:id="@+id/editTextEmail"
-        android:nextFocusDown="@+id/editTextInputPassword"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
@@ -178,15 +179,17 @@
         android:ems="10"
         android:hint="@string/hint_enter_email"
         android:inputType="textEmailAddress"
+        android:nextFocusDown="@+id/editTextInputPassword"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.413" />
 
     <EditText
         android:id="@+id/editTextInputPassword"
-        android:imeOptions="actionDone"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
@@ -197,6 +200,7 @@
         android:background="@drawable/edit_round"
         android:ems="10"
         android:hint="@string/hint_enter_password"
+        android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -209,7 +213,7 @@
         android:layout_width="8dp"
         android:layout_height="100dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextUsername"
+        app:layout_constraintBottom_toTopOf="@+id/editTextRepassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent" />

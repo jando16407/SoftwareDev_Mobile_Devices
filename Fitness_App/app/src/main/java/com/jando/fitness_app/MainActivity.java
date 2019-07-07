@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextLastName;
     private EditText editTextAge;
     private EditText editTextWeight;
-    private EditText editTextUsername;
+    private EditText editTextRepassword;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextCaretakerPhone;
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         editTextLastName = findViewById(R.id.editTextLastName);
         editTextAge = findViewById(R.id.editTextAge);
         editTextWeight = findViewById(R.id.editTextWeight);
-        editTextUsername = findViewById(R.id.editTextUsername);
+        editTextRepassword = findViewById(R.id.editTextRepassword);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextInputPassword);
         editTextCaretakerPhone = findViewById(R.id.editTextCaretakerPhone);
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         String lastname = editTextLastName.getText().toString().trim();
         String age = editTextAge.getText().toString().trim();
         String weight = editTextWeight.getText().toString().trim();
-        //String username = editTextUsername.getText().toString().trim();
+        String Reenterpassword = editTextRepassword.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String caretakerPhone = editTextCaretakerPhone.getText().toString().trim();
@@ -201,11 +201,18 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (TextUtils.isEmpty(caretakerPhone)) {
+        if (TextUtils.isEmpty(Reenterpassword) || !Reenterpassword.equals(password)){
+            editTextRepassword.setError("Password Match Required");
+            editTextRepassword.requestFocus();
+            return;
+        }
+
+        if (TextUtils.isEmpty(caretakerPhone) || caretakerPhone.length() != 10) {
             editTextCaretakerPhone.setError("Caretaker Phone Required");
             editTextCaretakerPhone.requestFocus();
             return;
         }
+
 
         //Registers user with email and password
         progressDialog.setMessage("Registering Please wait");
