@@ -45,6 +45,7 @@
                 android:layout_height="200dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="64dp"
+                android:textSize="28sp"
                 android:layout_marginRight="16dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:text="User Information Settings" />
@@ -57,6 +58,7 @@
                 android:layout_marginTop="64dp"
                 android:layout_marginRight="16dp"
                 android:text="@string/account_page_box_account_settings"
+                android:textSize="28sp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:onClick="GoToAccountSettingsPage"/>
 
