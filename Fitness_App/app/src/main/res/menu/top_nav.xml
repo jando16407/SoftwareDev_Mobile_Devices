@@ -4,7 +4,7 @@
     <item
         android:id="@+id/top_settings"
         android:title="@string/top_nav_set"
-        android:icon="@drawable/ic_action_settings_dark"
+        android:icon="@drawable/ic_action_logout_dark"
         android:orderInCategory="200"
         app:showAsAction="ifRoom"/>
     <item
