@@ -54,6 +54,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
     private int numSteps = 0;
     private Context context;
     private Button goToUserSettingsButton;
+    private Button checkOutExercises;
     private TextView recommendation;
     private DatabaseReference usersRef;
     private FirebaseAuth firebaseAuth;
@@ -84,6 +85,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
         Button BtnReset = v.findViewById(R.id.buttonResetSteps);
         Button WeatherButton = v.findViewById(R.id.button_weather);
         goToUserSettingsButton = v.findViewById(R.id.goToUserSettings);
+        checkOutExercises = v.findViewById(R.id.checkOutExercises);
         recommendation = v.findViewById(R.id.recommendation);
 
         if (readFile() != null) {
@@ -93,6 +95,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
             numSteps = 0;
             TvSteps.setText(TEXT_NUM_STEPS + numSteps);
         }
+
+        setWhattoDisplay();
 
         sensorManager.registerListener(HomeFragment.this, accel,
                 SensorManager.SENSOR_DELAY_FASTEST);
@@ -134,12 +138,20 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
             }
         });
 
-        setWhattoDisplay();
         goToUserSettingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0){
                 Toast.makeText(getContext(), "User Settings Clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), UserSettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        checkOutExercises.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0){
+                Toast.makeText(getContext(), "Exercise Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), ExerciseActivity.class);
                 startActivity(intent);
             }
         });
@@ -343,22 +355,17 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
                             if (!bmi.equals("") && !health_score.equals("")) {
                                 HealthScore = Integer.parseInt(health_score);
                                 goToUserSettingsButton.setVisibility(View.GONE);
+                                checkOutExercises.setVisibility(View.VISIBLE);
                                 if (HealthScore < 30) {
-                                    recommendation.setText("Your Recommended\n" +
-                                            "Exercise Intensity Level: 0 - 30\n\n" +
-                                            "* this is based on your user information");
+                                    recommendation.setText("Your Recommended\nExercise Intensity Level: 0 - 30\n\n* this is based on your user information");
                                 } else if (30 <= HealthScore && HealthScore < 70) {
-                                    recommendation.setText("Your Recommended\n" +
-                                            "Exercise Intensity Level: 30 - 70\n\n" +
-                                            "* this is based on your user information");
+                                    recommendation.setText("Your Recommended\nExercise Intensity Level: 30 - 70\n\n* this is based on your user information");
                                 } else if (70 <= HealthScore) {
-                                    recommendation.setText("Your Recommended\n" +
-                                            "Exercise Intensity Level: 50 - 100\n\n" +
-                                            "* this is based on your user information");
+                                    recommendation.setText("Your Recommended\nExercise Intensity Level: 50 - 100\n\n* this is based on your user information");
                                 }
                             } else {
-                                recommendation.setText("You have not finished user information settings.\n" +
-                                        "Please click the button to get you ready!");
+                                recommendation.setText("You have not finished user information settings.\nPlease click the button to get you ready!");
+                                checkOutExercises.setVisibility(View.GONE);
                                 goToUserSettingsButton.setVisibility(View.VISIBLE);
                             }
                         } catch(NullPointerException e){
