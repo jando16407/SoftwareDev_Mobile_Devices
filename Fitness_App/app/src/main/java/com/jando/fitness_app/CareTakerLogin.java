@@ -53,7 +53,7 @@ public class CareTakerLogin extends AppCompatActivity {
         setContentView(R.layout.activity_care_taker_login);
         //Views
 
-        sign_in_button = findViewById(R.id.sign_in_button);
+        //sign_in_button = findViewById(R.id.sign_in_button);
 
         //Button sign_in_button = findViewById(R.id.sign_in_button);
 
