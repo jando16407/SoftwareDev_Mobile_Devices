@@ -125,7 +125,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
 
                         String number = "18882378289";  //Best Buy Customer Service
-                        Intent callIntent = new Intent(Intent.ACTION_CALL); // or ACTION_DIAL
+                        Intent callIntent = new Intent(Intent.ACTION_DIAL); // or ACTION_DIAL
                         callIntent.setData(Uri.parse("tel:"+number));
 
                         startActivity(callIntent);
