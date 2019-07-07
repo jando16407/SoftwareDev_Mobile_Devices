@@ -52,7 +52,11 @@ public class CareTakerLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_care_taker_login);
         //Views
+
         sign_in_button = findViewById(R.id.sign_in_button);
+
+        //Button sign_in_button = findViewById(R.id.sign_in_button);
+
         progressDialog = new ProgressDialog(this);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextInputPassword = findViewById(R.id.editTextInputPassword);
@@ -74,12 +78,12 @@ public class CareTakerLogin extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         //Google Sign in button
-        sign_in_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
+        //sign_in_button.setOnClickListener(new View.OnClickListener() {
+            //@Override
+           // public void onClick(View v) {
+          //      signIn();
+           // }
+        //});
 
         //Buttons listeners
         buttonSignin.setOnClickListener(new View.OnClickListener() {
