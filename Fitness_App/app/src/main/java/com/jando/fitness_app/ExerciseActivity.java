@@ -36,10 +36,10 @@ public class ExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
-        //Creates items in list view
+        /**Creates items in list view*/
         populateExercises();
 
-        //list view click listener
+        /**list view click listener*/
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -54,7 +54,7 @@ public class ExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //Adds back button
+        /**Adds back button*/
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

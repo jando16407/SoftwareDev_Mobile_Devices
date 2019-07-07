@@ -44,9 +44,7 @@ public class HealthFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             default:
-                Toast.makeText(getContext(),
-                        "Default Button Response",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Default Button Response", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

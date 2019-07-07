@@ -1,7 +1,5 @@
 package com.jando.fitness_app;
 
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,7 +13,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,16 +25,9 @@ import com.google.firebase.database.ValueEventListener;
 public class ElderMapLocation extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    LocationManager locationManager;
-    private static final int REQUEST_LOCATION_PERMISSION = 1;
-    Marker marker;
-    LocationListener locationListener;
 
     //Firebase
-    private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth firebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private String userID;
     private double ElderLatitude;
     private double ElderLongitude;
     GoogleSignInClient mGoogleSignInClient;

@@ -106,14 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            /*
-                            if(dataSnapshot.child(user.getUsername()).exists()){
-                                Toast.makeText(MainActivity.this,
-                                        "Username Already Registered!",
-                                        Toast.LENGTH_SHORT).show();
-
-                            }
-                            else */if(userEmailExists(dataSnapshot, user)){
+                            if(userEmailExists(dataSnapshot, user)){
                                 Toast.makeText(MainActivity.this,
                                         "Email Already Registered!\nPlease Login from Login Page",
                                         Toast.LENGTH_SHORT).show();
@@ -139,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), LoginActivity.class);
-                //finish();
                 startActivity(intent);
             }
         });

@@ -38,11 +38,11 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homescreen);
 
-        //Declarations regarding bottom navigation bar
+        /**Declarations regarding bottom navigation bar*/
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_bar);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
-        //Display home fragment on app start
+        /**Display home fragment on app start*/
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new HomeFragment()).commit();
         setTitle(getString(R.string.fragment_home_label));
@@ -50,8 +50,8 @@ public class HomeScreen extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference mRef = database.getReference("Location");
 
-        //location changes and adds latitude and longitude to database
-        //****************************************************************************************//
+        /**location changes and adds latitude and longitude to database*/
+        /******************************************************************************************/
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -92,7 +92,7 @@ public class HomeScreen extends AppCompatActivity {
                 3000, 3, locationListener);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 3000, 3, locationListener);
-//************************************************************************************************//
+/***************************************************************************************************/
     }
 
     protected void onPause() {
