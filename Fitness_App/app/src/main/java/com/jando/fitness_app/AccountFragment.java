@@ -15,9 +15,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class AccountFragment extends Fragment implements View.OnClickListener {
 
     private Context mContext;
+    private FirebaseAuth firebaseAuth;
 
     /** What happens when fragment is created */
     @Nullable
@@ -73,11 +82,31 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        String number = "8133250497";   // Alfredo number
-                        Intent callIntent = new Intent(Intent.ACTION_CALL); // or ACTION_DIAL
-                        callIntent.setData(Uri.parse("tel:"+number));
+                        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        final DatabaseReference mRef = database.getReference("Users");
 
-                        startActivity(callIntent);
+                        firebaseAuth = FirebaseAuth.getInstance();
+                        final FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                        mRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                               String caretakerPhonenumber = (String) dataSnapshot.child(user.getUid()).child("caretakerPhone").getValue();
+
+                                Intent callIntent = new Intent(Intent.ACTION_CALL); // or ACTION_DIAL
+                                callIntent.setData(Uri.parse("tel:"+caretakerPhonenumber));
+
+                                startActivity(callIntent);
+
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
                     }
                 });
 
