@@ -34,7 +34,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private TextView textViewUserPassword1;
     private TextView textViewUserPassword2;
     private DatabaseReference usersRef;
-    final User userInfo = new User("", "", "", "", "");
+    final User userInfo = new User("", "", "", "", "", "");
     FirebaseUser user = null;
 
     /** What happens when activity is started */

@@ -45,7 +45,7 @@ public class UserSettingsActivity extends AppCompatActivity {
     private Button buttonExericise;
     private Button buttonFirstName;
     private Button buttonLastName;
-    final User userInfo = new User("", "", "", "", "");
+    final User userInfo = new User("", "", "", "", "", "");
     FirebaseUser user = null;
     public boolean gotWeight = false;
     public boolean gotHeight = false;

@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextUsername;
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private EditText editTextCaretakerPhone;
     private TextView textViewSignin;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextInputPassword);
+        editTextCaretakerPhone = findViewById(R.id.editTextCaretakerPhone);
 
         textViewSignin = findViewById(R.id.textViewSignUp);
 
@@ -96,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
                             editTextFirstName.getText().toString(),
                             editTextLastName.getText().toString(),
                             editTextAge.getText().toString(),
-                            editTextWeight.getText().toString());
+                            editTextWeight.getText().toString(),
+                            editTextCaretakerPhone.getText().toString());
 
                     //Stores User object inside database using email as label
                     usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -150,13 +153,15 @@ public class MainActivity extends AppCompatActivity {
         //String username = editTextUsername.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
+        String caretakerPhone = editTextCaretakerPhone.getText().toString().trim();
 
         //Gets all information to be stored in database
         final User user = new User(editTextEmail.getText().toString(),
                 editTextFirstName.getText().toString(),
                 editTextLastName.getText().toString(),
                 editTextAge.getText().toString(),
-                editTextWeight.getText().toString());
+                editTextWeight.getText().toString(),
+                editTextCaretakerPhone.getText().toString());
 
         //Errors if any field is incorrectly filled out
         if (TextUtils.isEmpty(firstname)) {
@@ -192,6 +197,11 @@ public class MainActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(password) || password.length() < 6) {
             editTextPassword.setError("Password must be 6 characters long");
             editTextPassword.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(caretakerPhone)) {
+            editTextEmail.setError("Caretaker Phone Required");
+            editTextEmail.requestFocus();
             return;
         }
 
