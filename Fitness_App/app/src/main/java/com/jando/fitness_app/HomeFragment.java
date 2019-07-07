@@ -72,6 +72,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
         accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         simpleStepDetector = new StepDetector();
         simpleStepDetector.registerListener(this);
+
         /** Firebase stuff */
         firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -149,7 +150,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
 
         return v;
     }
-
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
