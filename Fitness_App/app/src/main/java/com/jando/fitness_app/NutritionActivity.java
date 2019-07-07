@@ -28,7 +28,7 @@ public class NutritionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nutrition);
-
+ 
         textViewBMI = findViewById(R.id.textViewBMI);
         textViewCalorieM = findViewById(R.id.textViewCalorieM);
         textViewCalorieU = findViewById(R.id.textViewCalorieU);
