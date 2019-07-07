@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPassword extends AppCompatActivity {
 
+    /** declare values */
     private EditText etPasswordEmail;
     private Button btnPasswordReset;
     private FirebaseAuth firebaseAuth;

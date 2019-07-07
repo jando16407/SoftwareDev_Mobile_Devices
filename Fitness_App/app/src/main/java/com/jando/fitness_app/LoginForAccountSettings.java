@@ -27,14 +27,9 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginForAccountSettings extends AppCompatActivity {
 
     private TextInputEditText editTextInputPassword;
-    private Button Signout_btn;
     private EditText editTextEmail;
-    private EditText editTextPassword;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
-    private SignInButton sign_in_button;
-    private int RC_SIGN_IN = 123;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +44,6 @@ public class LoginForAccountSettings extends AppCompatActivity {
         TextView textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
-        mAuth = FirebaseAuth.getInstance();
 
         //Buttons listeners
         buttonSignin.setOnClickListener(new View.OnClickListener() {

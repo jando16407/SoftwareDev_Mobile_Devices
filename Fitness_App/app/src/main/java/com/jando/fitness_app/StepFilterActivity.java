@@ -1,5 +1,6 @@
 package com.jando.fitness_app;
 
+
 public class StepFilterActivity {
 
     private StepFilterActivity() { }

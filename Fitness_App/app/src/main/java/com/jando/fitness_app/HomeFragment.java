@@ -39,7 +39,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.IntBuffer;
 
 import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.SENSOR_SERVICE;
@@ -261,7 +260,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
 
     private void getButtonWeather(Button WeatherButton ){
         /** Display the current weather in the weather button */
-        //Toast.makeText(getContext(), "j2 = "+readCurrentWeather(), Toast.LENGTH_SHORT).show();
         String j2 = null;
         j2 = readCurrentWeather();
         if( j2 != null ) {
@@ -325,8 +323,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
                     }
                 }
 
-                /** Output to current weather display */
-                // WeatherButton.setText(output);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

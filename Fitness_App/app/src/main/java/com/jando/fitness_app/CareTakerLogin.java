@@ -20,7 +20,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,15 +44,10 @@ public class CareTakerLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_care_taker_login);
         //Views
-        //Button sign_in_button = findViewById(R.id.sign_in_button);
         progressDialog = new ProgressDialog(this);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextInputPassword = findViewById(R.id.editTextInputPassword);
         Button buttonSignin = findViewById(R.id.buttonSignin);
-        TextView textViewSignup = findViewById(R.id.textViewSignUp);
-        TextView textViewForgotpassword = findViewById(R.id.textViewforgotPassword);
-        TextView textView_findElder = findViewById(R.id.textView_backtologin);
-        //change
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -66,13 +60,6 @@ public class CareTakerLogin extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        //Google Sign in button
-        //sign_in_button.setOnClickListener(new View.OnClickListener() {
-         //   @Override
-        //    public void onClick(View v) {
-          //      signIn();
-          //  }
-        //});
 
         //Buttons listeners
         buttonSignin.setOnClickListener(new View.OnClickListener() {
@@ -95,19 +82,6 @@ public class CareTakerLogin extends AppCompatActivity {
             }
         });
     }
-
-    //protected void onStart() {
-    // Check for existing Google Sign In account, if the user is already signed in
-    //the GoogleSignInAccount will be non-null.
-    //super.onStart();
-    //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-    // if(account != null) {
-    //    finish();
-    //   startActivity(new Intent(getApplicationContext(),HomeScreen.class));
-    //    updateUI2(account);
-    //    Toast.makeText(CareTakerLogin.this,"ALREADY LOG IN",Toast.LENGTH_SHORT).show();
-    // }
-    //}
 
     protected void onDestroy() {
         super.onDestroy();
@@ -148,12 +122,6 @@ public class CareTakerLogin extends AppCompatActivity {
         });
     }
 
-    //signs in to Google
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
     //Google
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -169,17 +137,12 @@ public class CareTakerLogin extends AppCompatActivity {
             } catch (ApiException e) {
                 Toast.makeText(CareTakerLogin.this,"FAILED",Toast.LENGTH_SHORT).show();
                 // Google Sign In failed, update UI appropriately
-                // [START_EXCLUDE]
-                //updateUI(null);
-                // [END_EXCLUDE]
             }
         }
     }
 
     //Google
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        // [START_EXCLUDE silent]
-        // [END_EXCLUDE]
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -205,11 +168,4 @@ public class CareTakerLogin extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void updateUI2(GoogleSignInAccount user) {
-        //if(user != null)
-        //Signout_btn.setVisibility(View.VISIBLE);
-        //finish();
-        //Intent intent = new Intent(LoginActivity.this,ProfileActivity.class);
-        //startActivity(intent);
-    }
 }

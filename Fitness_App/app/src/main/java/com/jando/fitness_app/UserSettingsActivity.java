@@ -24,8 +24,6 @@ import com.jando.fitness_app.Model.User;
 
 public class UserSettingsActivity extends AppCompatActivity {
 
-    private GoogleSignInClient mGoogleSignInClient;
-    private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth firebaseAuth;
     private TextView textViewUserAge;
     private TextView textViewUserWeight;
@@ -57,12 +55,10 @@ public class UserSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_settings);
 
-        //FireBase info to log out
+        /**FireBase info to log out*/
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null){
             Toast.makeText(this,"getCurrentUser == null",Toast.LENGTH_SHORT).show();
-            //finish();
-            //startActivity(new Intent(this, LoginActivity.class));
         }
 
         user = firebaseAuth.getCurrentUser();
@@ -183,7 +179,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         buttonSex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String sex;// = textViewUserWeight.getText().toString().trim();
+                final String sex;
                 if(switchSexMale.isChecked()==true){
                     if(switchSexFemale.isChecked()==true){
                         switchSexMale.setError("Please check only one");
@@ -347,19 +343,16 @@ public class UserSettingsActivity extends AppCompatActivity {
                                 if (sex.equals("M")) {
                                     switchSexMale.setChecked(true);
                                     switchSexFemale.setChecked(false);
-                                    //Toast.makeText(UserSettingsActivity.this, "Is a male",Toast.LENGTH_SHORT).show();
                                     gotSex = true;
                                 } else if (sex.equals("F")) {
                                     switchSexMale.setChecked(false);
                                     switchSexFemale.setChecked(true);
-                                    //Toast.makeText(UserSettingsActivity.this, "Is a female",Toast.LENGTH_SHORT).show();
                                     gotSex = true;
                                 } else {
                                     Toast.makeText(UserSettingsActivity.this, "Didn't get sex info", Toast.LENGTH_SHORT).show();
                                 }
                                 userInfo.setSex(sex);
                             }
-                            String exerciseDays;
                             if (ds.child("exerciseDays").getValue() != null) {
                                 textViewUserExercise.setText(ds.child("exerciseDays").getValue().toString());
                             }
@@ -396,7 +389,6 @@ public class UserSettingsActivity extends AppCompatActivity {
                         if (email.getValue().toString().equals(user.getEmail())) {
                             if (ds.child("height").getValue() != null) {
                                 if (ds.child("weight").getValue() != null) {
-                                    //int bmi = 703 * Integer.parseInt(userInfo.getWeight()) / (Integer.parseInt(userInfo.getHeight()) * Integer.parseInt(userInfo.getHeight()));
                                     int bmi = 703 * Integer.parseInt(ds.child("weight").getValue().toString()) / (Integer.parseInt(ds.child("height").getValue().toString()) * Integer.parseInt(ds.child("height").getValue().toString()));
                                     final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
                                     usersRef.child(f_user.getUid()).child("bmi").setValue(bmi);
@@ -487,20 +479,5 @@ public class UserSettingsActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }});
-    }
-    /** Check if the given email is already registered on FireBase */
-    private boolean userEmailExists(DataSnapshot dataSnapshot, String email_address) {
-        //Iterate thorough children to find email matching
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-            DataSnapshot email = ds.child("email");
-            try {
-                if (email.getValue().toString().equals(email_address)) {
-                    return true;
-                }
-            } catch(NullPointerException  e ){
-                e.printStackTrace();
-            }
-        }
-        return false;
     }
 }

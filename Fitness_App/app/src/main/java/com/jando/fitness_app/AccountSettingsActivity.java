@@ -13,8 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +42,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_settings);
 
-        //FireBase info to log out
+        /**FireBase info to log out*/
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null){
             Toast.makeText(this,"getCurrentUser == null",Toast.LENGTH_SHORT).show();
@@ -68,7 +66,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
         displayUserInfo();
 
-        // Update email address
+        /** Update email address*/
         buttonEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +114,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
             }
         });
 
-        // Update password
+        /** Update password*/
         buttonPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,7 +151,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
             }
         });
 
-        // Update caretaker's phone number
+        /** Update caretaker's phone number*/
         buttonCareTaker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,7 +173,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
             }
         });
 
-        //hide keyboard after typing email2
+        /**hide keyboard after typing email2*/
         textViewUserEmail2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
@@ -188,7 +186,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
             }
         });
 
-        //hide keyboard after typing password2
+        /**hide keyboard after typing password2*/
         textViewUserPassword2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {

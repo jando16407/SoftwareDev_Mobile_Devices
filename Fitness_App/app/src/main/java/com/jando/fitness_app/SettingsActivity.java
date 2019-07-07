@@ -27,7 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        //Gets Google info so it can log out
+        /**Gets Google info so it can log out*/
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions
                 .DEFAULT_SIGN_IN)
                 .requestIdToken
@@ -36,12 +36,10 @@ public class SettingsActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        //FireBase info to log out
+        /**FireBase info to log out*/
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null) {
             Toast.makeText(this, "getCurrentUser == null", Toast.LENGTH_SHORT).show();
-            //finish();
-            //startActivity(new Intent(this, LoginActivity.class));
         }
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -49,7 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
         TextView textViewUserEmail = findViewById(R.id.textViewUserEmail);
         textViewUserEmail.setText("Current Users Email: "+user.getEmail());
 
-        //Format for logout button
+        /**Format for logout button*/
         Button buttonLogout = findViewById(R.id.buttonLogout);
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +61,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        //Adds back button
+        /**Adds back button*/
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

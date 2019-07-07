@@ -36,18 +36,18 @@ public class ExerciseDisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_display);
 
-        //Gets exercise type from bundle inside intent that started the activity
+        /**Gets exercise type from bundle inside intent that started the activity*/
         Bundle bundle = getIntent().getExtras();
         exerciseType = bundle.getString("EXERCISE_TYPE");
 
-        //Gets Exercise information from database
+        /**Gets Exercise information from database*/
         databaseReference = FirebaseDatabase.getInstance().getReference("Exercises")
                 .child(exerciseType);
         listView = findViewById(R.id.listViewDisplayExercises);
 
         populateExercises();
 
-        //list view click listener
+        /**list view click listener*/
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

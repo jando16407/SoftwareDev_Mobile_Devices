@@ -48,7 +48,7 @@ public class NutritionActivity extends AppCompatActivity {
         textViewLabelE1 = findViewById(R.id.textViewLabelE1);
         textViewLabelE2 = findViewById(R.id.textViewLabelE2);
 
-        //FireBase checks to ensure user is logged in
+        /**FireBase checks to ensure user is logged in*/
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() == null){
             Toast.makeText(this,
@@ -72,7 +72,7 @@ public class NutritionActivity extends AppCompatActivity {
             }
         });
 
-        //Adds back button
+        /**Adds back button*/
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -99,12 +99,12 @@ public class NutritionActivity extends AppCompatActivity {
                 int under, over;
 
                 try {
-                    //Searches through users, finding user associated with fireBaseUser email
+                    /**Searches through users, finding user associated with fireBaseUser email*/
                     for (DataSnapshot ds : dataSnapshot.getChildren()){
                         DataSnapshot email = ds.child("email");
                         if (email.getValue().toString().equals(firebaseUser.getEmail())){
 
-                            //gets all information necessary to calculate calories
+                            /**gets all information necessary to calculate calories*/
                             bmi = ds.child("bmi").getValue().toString();
                             sex = ds.child("sex").getValue().toString();
                             age = Integer.parseInt(ds.child("age").getValue().toString());
@@ -112,7 +112,7 @@ public class NutritionActivity extends AppCompatActivity {
                             height = Integer.parseInt(ds.child("height").getValue().toString());
                             weight = Integer.parseInt(ds.child("weight").getValue().toString());
 
-                            //calculate calories
+                            /**calculate calories*/
                             calories = (int)calculateCalories(sex, height, weight, age, days);
                         }
                     }
