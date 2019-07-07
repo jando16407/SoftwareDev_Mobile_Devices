@@ -248,8 +248,12 @@ public class MainActivity extends AppCompatActivity {
         //Iterate thorough children to find email matching
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             DataSnapshot email = ds.child("email");
-            if (email.getValue().toString().equals(user.getEmail())) {
-                return true;
+            try {
+                if (email.getValue().toString().equals(user.getEmail())) {
+                    return true;
+                }
+            } catch(NullPointerException e){
+                e.printStackTrace();
             }
         }
         return false;

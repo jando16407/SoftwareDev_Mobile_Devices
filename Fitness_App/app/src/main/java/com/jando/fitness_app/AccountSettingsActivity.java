@@ -260,8 +260,13 @@ public class AccountSettingsActivity extends AppCompatActivity {
         //Iterate thorough children to find email matching
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             DataSnapshot email = ds.child("email");
-            if (email.getValue().toString().equals(email_address)) {
-                return true;
+            try {
+                if (email.getValue().toString().equals(email_address)) {
+                    return true;
+                }
+            }
+            catch(NullPointerException e) {
+                e.printStackTrace();
             }
         }
         return false;

@@ -329,45 +329,40 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepC
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     DataSnapshot email = ds.child("email");
                     if (email.getValue().toString().equals(user.getEmail())) {
-                       /* Toast.makeText(HomeFragment.this,
-                                "Found the user, "+ds.child("age").getValue().toString()+", "
-                                        + ds.child("weight").getValue().toString()
-                                        + ", "+ds.child("firstname").getValue().toString()+", "
-                                        + ds.child("lastname").getValue().toString(),
-                                Toast.LENGTH_SHORT).show();*/
-                       String bmi = "";
-                       String health_score = "";
-                       int HealthScore;
+                        try {
+                            String bmi = "";
+                            String health_score = "";
+                            int HealthScore;
 
-                        if( ds.child("bmi").getValue() != null ){
-                            bmi= ds.child("bmi").getValue().toString();
-                        }
-                        if( ds.child("healthScore").getValue() != null ){
-                            health_score= ds.child("healthScore").getValue().toString();
-                        }
-                        if( !bmi.equals("") && !health_score.equals("") ){
-                            HealthScore = Integer.parseInt(health_score);
-                            goToUserSettingsButton.setVisibility(View.GONE);
-                            if( HealthScore < 30 ) {
-                                recommendation.setText("Your Recommended\n" +
-                                        "Exercise Intensity Level: 0 - 30\n\n" +
-                                        "* this is based on your user information");
+                            if (ds.child("bmi").getValue() != null) {
+                                bmi = ds.child("bmi").getValue().toString();
                             }
-                            else if( 30 <= HealthScore && HealthScore < 70 ) {
-                                recommendation.setText("Your Recommended\n" +
-                                        "Exercise Intensity Level: 30 - 70\n\n" +
-                                        "* this is based on your user information");
+                            if (ds.child("healthScore").getValue() != null) {
+                                health_score = ds.child("healthScore").getValue().toString();
                             }
-                            else if( 70 <= HealthScore ) {
-                                recommendation.setText("Your Recommended\n" +
-                                        "Exercise Intensity Level: 50 - 100\n\n" +
-                                        "* this is based on your user information");
+                            if (!bmi.equals("") && !health_score.equals("")) {
+                                HealthScore = Integer.parseInt(health_score);
+                                goToUserSettingsButton.setVisibility(View.GONE);
+                                if (HealthScore < 30) {
+                                    recommendation.setText("Your Recommended\n" +
+                                            "Exercise Intensity Level: 0 - 30\n\n" +
+                                            "* this is based on your user information");
+                                } else if (30 <= HealthScore && HealthScore < 70) {
+                                    recommendation.setText("Your Recommended\n" +
+                                            "Exercise Intensity Level: 30 - 70\n\n" +
+                                            "* this is based on your user information");
+                                } else if (70 <= HealthScore) {
+                                    recommendation.setText("Your Recommended\n" +
+                                            "Exercise Intensity Level: 50 - 100\n\n" +
+                                            "* this is based on your user information");
+                                }
+                            } else {
+                                recommendation.setText("You have not finished user information settings.\n" +
+                                        "Please click the button to get you ready!");
+                                goToUserSettingsButton.setVisibility(View.VISIBLE);
                             }
-                        }
-                        else {
-                            recommendation.setText("You have not finished user information settings.\n" +
-                                    "Please click the button to get you ready!");
-                            goToUserSettingsButton.setVisibility(View.VISIBLE);
+                        } catch(NullPointerException e){
+                            e.printStackTrace();
                         }
 
                     }

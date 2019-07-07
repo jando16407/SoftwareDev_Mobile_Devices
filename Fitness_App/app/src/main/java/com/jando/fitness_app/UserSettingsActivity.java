@@ -317,61 +317,64 @@ public class UserSettingsActivity extends AppCompatActivity {
                         "Trying to find the user",Toast.LENGTH_SHORT).show();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     DataSnapshot email = ds.child("email");
-                    if (email.getValue().toString().equals(user.getEmail())) {
-                        Toast.makeText(UserSettingsActivity.this,
-                                "Found the user, "+ds.child("age").getValue().toString()+", "
-                                + ds.child("weight").getValue().toString()
-                                + ", "+ds.child("firstname").getValue().toString()+", "
-                                + ds.child("lastname").getValue().toString(),
-                                Toast.LENGTH_SHORT).show();
-                        textViewUserAge.setText(ds.child("age").getValue().toString());
-                        if( ds.child("weight").getValue() != null ){
-                            textViewUserWeight.setText(ds.child("weight").getValue().toString());
-                            gotWeight = true;
-                        }
-
-                        int height;
-                        if( ds.child("height").getValue() != null ) {
-                            height = Integer.parseInt(ds.child("height").getValue().toString());
-                            textViewUserHeight1.setText(Integer.toString(height/12));
-                            textViewUserHeight2.setText(Integer.toString(height%12));
-                            userInfo.setHeight(Integer.toString(height));
-                            gotHeight = true;
-                        }
-
-                        String sex;
-                        if( ds.child("sex").getValue() != null ) {
-                            sex = ds.child("sex").getValue().toString();
-                            if (sex.equals("M")) {
-                                switchSexMale.setChecked(true);
-                                switchSexFemale.setChecked(false);
-                                //Toast.makeText(UserSettingsActivity.this, "Is a male",Toast.LENGTH_SHORT).show();
-                                gotSex = true;
-                            } else if (sex.equals("F")) {
-                                switchSexMale.setChecked(false);
-                                switchSexFemale.setChecked(true);
-                                //Toast.makeText(UserSettingsActivity.this, "Is a female",Toast.LENGTH_SHORT).show();
-                                gotSex = true;
+                    try {
+                        if (email.getValue().toString().equals(user.getEmail())) {
+                            Toast.makeText(UserSettingsActivity.this,
+                                    "Found the user, " + ds.child("age").getValue().toString() + ", "
+                                            + ds.child("weight").getValue().toString()
+                                            + ", " + ds.child("firstname").getValue().toString() + ", "
+                                            + ds.child("lastname").getValue().toString(),
+                                    Toast.LENGTH_SHORT).show();
+                            textViewUserAge.setText(ds.child("age").getValue().toString());
+                            if (ds.child("weight").getValue() != null) {
+                                textViewUserWeight.setText(ds.child("weight").getValue().toString());
+                                gotWeight = true;
                             }
-                            else {
-                                Toast.makeText(UserSettingsActivity.this, "Didn't get sex info",Toast.LENGTH_SHORT).show();
+
+                            int height;
+                            if (ds.child("height").getValue() != null) {
+                                height = Integer.parseInt(ds.child("height").getValue().toString());
+                                textViewUserHeight1.setText(Integer.toString(height / 12));
+                                textViewUserHeight2.setText(Integer.toString(height % 12));
+                                userInfo.setHeight(Integer.toString(height));
+                                gotHeight = true;
                             }
-                            userInfo.setSex(sex);
+
+                            String sex;
+                            if (ds.child("sex").getValue() != null) {
+                                sex = ds.child("sex").getValue().toString();
+                                if (sex.equals("M")) {
+                                    switchSexMale.setChecked(true);
+                                    switchSexFemale.setChecked(false);
+                                    //Toast.makeText(UserSettingsActivity.this, "Is a male",Toast.LENGTH_SHORT).show();
+                                    gotSex = true;
+                                } else if (sex.equals("F")) {
+                                    switchSexMale.setChecked(false);
+                                    switchSexFemale.setChecked(true);
+                                    //Toast.makeText(UserSettingsActivity.this, "Is a female",Toast.LENGTH_SHORT).show();
+                                    gotSex = true;
+                                } else {
+                                    Toast.makeText(UserSettingsActivity.this, "Didn't get sex info", Toast.LENGTH_SHORT).show();
+                                }
+                                userInfo.setSex(sex);
+                            }
+                            String exerciseDays;
+                            if (ds.child("exerciseDays").getValue() != null) {
+                                textViewUserExercise.setText(ds.child("exerciseDays").getValue().toString());
+                            }
+                            textViewUserFirstName.setText(ds.child("firstname").getValue().toString());
+                            textViewUserLastName.setText(ds.child("lastname").getValue().toString());
+
+
+                            userInfo.setFirstname(textViewUserFirstName.getText().toString());
+                            userInfo.setLastname(textViewUserLastName.getText().toString());
+                            userInfo.setAge(textViewUserAge.getText().toString());
+                            userInfo.setWeight(textViewUserWeight.getText().toString());
+
+                            checkBmi();
                         }
-                        String exerciseDays;
-                        if( ds.child("exerciseDays").getValue() != null ) {
-                            textViewUserExercise.setText(ds.child("exerciseDays").getValue().toString());
-                        }
-                        textViewUserFirstName.setText(ds.child("firstname").getValue().toString());
-                        textViewUserLastName.setText(ds.child("lastname").getValue().toString());
-
-
-                        userInfo.setFirstname(textViewUserFirstName.getText().toString());
-                        userInfo.setLastname(textViewUserLastName.getText().toString());
-                        userInfo.setAge(textViewUserAge.getText().toString());
-                        userInfo.setWeight(textViewUserWeight.getText().toString());
-
-                        checkBmi();
+                    } catch(NullPointerException e ){
+                        e.printStackTrace();
                     }
                 }
             }
@@ -388,17 +391,21 @@ public class UserSettingsActivity extends AppCompatActivity {
                 Toast.makeText(UserSettingsActivity.this, "Trying to find the user",Toast.LENGTH_SHORT).show();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     DataSnapshot email = ds.child("email");
-                    if (email.getValue().toString().equals(user.getEmail())) {
-                        if( ds.child("height").getValue() != null ) {
-                            if (ds.child("weight").getValue() != null) {
+                    try {
+                        if (email.getValue().toString().equals(user.getEmail())) {
+                            if (ds.child("height").getValue() != null) {
+                                if (ds.child("weight").getValue() != null) {
                                     //int bmi = 703 * Integer.parseInt(userInfo.getWeight()) / (Integer.parseInt(userInfo.getHeight()) * Integer.parseInt(userInfo.getHeight()));
-                                int bmi = 703 * Integer.parseInt(ds.child("weight").getValue().toString()) / (Integer.parseInt(ds.child("height").getValue().toString()) * Integer.parseInt(ds.child("height").getValue().toString()));
-                                final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
-                                usersRef.child(f_user.getUid()).child("bmi").setValue(bmi);
-                                Toast.makeText(UserSettingsActivity.this, "BMI updated",Toast.LENGTH_SHORT).show();
-                                checkHealthScore();
+                                    int bmi = 703 * Integer.parseInt(ds.child("weight").getValue().toString()) / (Integer.parseInt(ds.child("height").getValue().toString()) * Integer.parseInt(ds.child("height").getValue().toString()));
+                                    final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+                                    usersRef.child(f_user.getUid()).child("bmi").setValue(bmi);
+                                    Toast.makeText(UserSettingsActivity.this, "BMI updated", Toast.LENGTH_SHORT).show();
+                                    checkHealthScore();
+                                }
                             }
                         }
+                    } catch(NullPointerException e){
+                        e.printStackTrace();
                     }
                 }
             }
@@ -414,73 +421,65 @@ public class UserSettingsActivity extends AppCompatActivity {
                 Toast.makeText(UserSettingsActivity.this, "Trying to find the user",Toast.LENGTH_SHORT).show();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     DataSnapshot email = ds.child("email");
-                    if (email.getValue().toString().equals(user.getEmail())) {
-                        if( ds.child("exerciseDays").getValue() != null ) {
-                            if (ds.child("bmi").getValue() != null) {
-                                int healthScore = 0;
-                                int exerciseDays = Integer.parseInt(ds.child("exerciseDays").getValue().toString());
-                                int bmi = Integer.parseInt(ds.child("bmi").getValue().toString());
-                                if( exerciseDays < 1 ){
-                                    if(bmi < 23 || 30 < bmi ){
-                                        healthScore = 0;
+                    try {
+                        if (email.getValue().toString().equals(user.getEmail())) {
+                            if (ds.child("exerciseDays").getValue() != null) {
+                                if (ds.child("bmi").getValue() != null) {
+                                    int healthScore = 0;
+                                    int exerciseDays = Integer.parseInt(ds.child("exerciseDays").getValue().toString());
+                                    int bmi = Integer.parseInt(ds.child("bmi").getValue().toString());
+                                    if (exerciseDays < 1) {
+                                        if (bmi < 23 || 30 < bmi) {
+                                            healthScore = 0;
+                                        } else if (23 < bmi && bmi < 30) {
+                                            healthScore = 10;
+                                        }
+                                    } else if (exerciseDays < 2) {
+                                        if (bmi < 23 || 30 < bmi) {
+                                            healthScore = 20;
+                                        } else if (23 < bmi && bmi < 30) {
+                                            healthScore = 30;
+                                        }
+                                    } else if (exerciseDays < 3) {
+                                        if (bmi < 23 || 30 < bmi) {
+                                            healthScore = 30;
+                                        } else if (23 < bmi && bmi < 30) {
+                                            healthScore = 40;
+                                        }
+                                    } else if (exerciseDays < 4) {
+                                        if (bmi < 23 || 30 < bmi) {
+                                            healthScore = 40;
+                                        } else if (23 < bmi && bmi < 30) {
+                                            healthScore = 50;
+                                        }
+                                    } else if (exerciseDays < 5) {
+                                        if (bmi < 23 || 30 < bmi) {
+                                            healthScore = 60;
+                                        } else if (23 < bmi && bmi < 30) {
+                                            healthScore = 80;
+                                        }
+                                    } else if (exerciseDays < 6) {
+                                        if (bmi < 23 || 30 < bmi) {
+                                            healthScore = 70;
+                                        } else if (23 < bmi && bmi < 30) {
+                                            healthScore = 90;
+                                        }
+                                    } else if (exerciseDays > 5) {
+                                        if (bmi < 23 || 30 < bmi) {
+                                            healthScore = 80;
+                                        } else if (23 < bmi && bmi < 30) {
+                                            healthScore = 100;
+                                        }
                                     }
-                                    else if( 23 < bmi && bmi < 30 ){
-                                        healthScore = 10;
-                                    }
+                                    final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+                                    usersRef.child(f_user.getUid()).child("healthScore").setValue(healthScore);
+                                    Toast.makeText(UserSettingsActivity.this, "Health Score updated", Toast.LENGTH_SHORT).show();
                                 }
-                                else if( exerciseDays < 2 ){
-                                    if(bmi < 23 || 30 < bmi ){
-                                        healthScore = 20;
-                                    }
-                                    else if( 23 < bmi && bmi < 30 ){
-                                        healthScore = 30;
-                                    }
-                                }
-                                else if( exerciseDays < 3 ){
-                                    if(bmi < 23 || 30 < bmi ){
-                                        healthScore = 30;
-                                    }
-                                    else if( 23 < bmi && bmi < 30 ){
-                                        healthScore = 40;
-                                    }
-                                }
-                                else if( exerciseDays < 4 ){
-                                    if(bmi < 23 || 30 < bmi ){
-                                        healthScore = 40;
-                                    }
-                                    else if( 23 < bmi && bmi < 30 ){
-                                        healthScore = 50;
-                                    }
-                                }
-                                else if( exerciseDays < 5 ){
-                                    if(bmi < 23 || 30 < bmi ){
-                                        healthScore = 60;
-                                    }
-                                    else if( 23 < bmi && bmi < 30 ){
-                                        healthScore = 80;
-                                    }
-                                }
-                                else if( exerciseDays < 6 ){
-                                    if(bmi < 23 || 30 < bmi ){
-                                        healthScore = 70;
-                                    }
-                                    else if( 23 < bmi && bmi < 30 ){
-                                        healthScore = 90;
-                                    }
-                                }
-                                else if( exerciseDays > 5 ){
-                                    if(bmi < 23 || 30 < bmi ){
-                                        healthScore = 80;
-                                    }
-                                    else if( 23 < bmi && bmi < 30 ){
-                                        healthScore = 100;
-                                    }
-                                }
-                                final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
-                                usersRef.child(f_user.getUid()).child("healthScore").setValue(healthScore);
-                                Toast.makeText(UserSettingsActivity.this, "Health Score updated",Toast.LENGTH_SHORT).show();
                             }
                         }
+                    } catch( NullPointerException e){
+
+                        e.printStackTrace();
                     }
                 }
             }
@@ -493,8 +492,12 @@ public class UserSettingsActivity extends AppCompatActivity {
         //Iterate thorough children to find email matching
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             DataSnapshot email = ds.child("email");
-            if (email.getValue().toString().equals(email_address)) {
-                return true;
+            try {
+                if (email.getValue().toString().equals(email_address)) {
+                    return true;
+                }
+            } catch(NullPointerException  e ){
+                e.printStackTrace();
             }
         }
         return false;
