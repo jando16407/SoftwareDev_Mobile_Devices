@@ -305,10 +305,15 @@ public class UserSettingsActivity extends AppCompatActivity {
                             sex = ds.child("sex").getValue().toString();
                             if (sex.equals("M")) {
                                 switchSexMale.setChecked(true);
-                                switchSexMale.setChecked(false);
-                            } else if (sex.equals("F")) {
-                                switchSexMale.setChecked(true);
                                 switchSexFemale.setChecked(false);
+                                Toast.makeText(UserSettingsActivity.this, "Is a male",Toast.LENGTH_SHORT).show();
+                            } else if (sex.equals("F")) {
+                                switchSexMale.setChecked(false);
+                                switchSexFemale.setChecked(true);
+                                Toast.makeText(UserSettingsActivity.this, "Is a female",Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(UserSettingsActivity.this, "Didn't get sex info",Toast.LENGTH_SHORT).show();
                             }
                             userInfo.setSex(sex);
                         }
