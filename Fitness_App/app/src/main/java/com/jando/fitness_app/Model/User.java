@@ -2,7 +2,7 @@ package com.jando.fitness_app.Model;
 
 public class User {
 
-    private String email, firstname, lastname, age, weight;
+    private String email, firstname, lastname, age, weight, height, sex;
 
     public User() { }
 
@@ -12,6 +12,8 @@ public class User {
         this.lastname = lastname;
         this.age = age;
         this.weight = weight;
+        this.height = height;
+        this.sex = sex;
     }
 
     public String getFirstname() {
@@ -43,5 +45,13 @@ public class User {
     }
     public void setWeight(String input) {
             this.weight = input;
+    }
+    public String getHeight() { return height; }
+    public void setHeight(String input) { this.height = input; }
+    public String getSex() {
+        return sex;
+    }
+    public void setSex(String input) {
+        this.sex = input;
     }
 }

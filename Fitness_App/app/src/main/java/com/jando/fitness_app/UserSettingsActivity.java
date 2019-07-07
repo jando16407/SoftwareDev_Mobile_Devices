@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,12 +29,18 @@ public class UserSettingsActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private TextView textViewUserAge;
     private TextView textViewUserWeight;
+    private TextView textViewUserHeight1;
+    private TextView textViewUserHeight2;
+    private Switch   switchSexMale;
+    private Switch   switchSexFemale;
     private TextView textViewUserFirstName;
     private TextView textViewUserLastName;
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
     private Button buttonAge;
     private Button buttonWeight;
+    private Button buttonHeight;
+    private Button buttonSex;
     private Button buttonFirstName;
     private Button buttonLastName;
     final User userInfo = new User("", "", "", "", "");
@@ -56,14 +63,20 @@ public class UserSettingsActivity extends AppCompatActivity {
 
         user = firebaseAuth.getCurrentUser();
 
-        textViewUserAge = findViewById(R.id.editText8);
-        textViewUserWeight = findViewById(R.id.editText10);
-        textViewUserFirstName = findViewById(R.id.editText12);
-        textViewUserLastName = findViewById(R.id.editText16);
-        buttonAge = findViewById(R.id.button3);
-        buttonWeight = findViewById(R.id.button4);
-        buttonFirstName = findViewById(R.id.button5);
-        buttonLastName = findViewById(R.id.button6);
+        textViewUserAge = findViewById(R.id.ageEdit);
+        textViewUserWeight = findViewById(R.id.weightEdit);
+        textViewUserHeight1 = findViewById(R.id.heightEdit1);
+        textViewUserHeight2 = findViewById(R.id.heightEdit2);
+        switchSexMale = findViewById(R.id.sexSwitchMale);
+        switchSexFemale = findViewById(R.id.sexSwitchFemale);
+        textViewUserFirstName = findViewById(R.id.firstEdit);
+        textViewUserLastName = findViewById(R.id.lastEdit);
+        buttonAge = findViewById(R.id.ageButton);
+        buttonWeight = findViewById(R.id.weightButton);
+        buttonHeight = findViewById(R.id.heightButton);
+        buttonSex = findViewById(R.id.sexButton);
+        buttonFirstName = findViewById(R.id.firstButton);
+        buttonLastName = findViewById(R.id.lastButton);
 
 
         database = FirebaseDatabase.getInstance();
@@ -75,6 +88,10 @@ public class UserSettingsActivity extends AppCompatActivity {
         String lastname = textViewUserLastName.getText().toString().trim();
         String age = textViewUserAge.getText().toString().trim();
         final String weight = textViewUserWeight.getText().toString().trim();
+        final String height1 = textViewUserHeight1.getText().toString().trim();
+        final String height2 = textViewUserHeight2.getText().toString().trim();
+        final String sex;
+
 
 
 
@@ -118,6 +135,82 @@ public class UserSettingsActivity extends AppCompatActivity {
                 usersRef.child(f_user.getUid()).child("weight").setValue(weight);
                 Toast.makeText(UserSettingsActivity.this,
                         "User weight is updated",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //Update height
+        buttonHeight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final int height1;
+                final int height2;
+                final int height;
+                if( textViewUserHeight1.getText() != null && textViewUserHeight2.getText() != null && !textViewUserHeight1.getText().toString().trim().equals("") && !textViewUserHeight2.getText().toString().trim().equals("")) {
+                    Toast.makeText(UserSettingsActivity.this,
+                            "height1: "+textViewUserHeight1.getText().toString().trim()+", height2: "+textViewUserHeight2.getText().toString().trim(),Toast.LENGTH_SHORT).show();
+                    height1 = Integer.parseInt(textViewUserHeight1.getText().toString().trim());
+                    height2 = Integer.parseInt(textViewUserHeight2.getText().toString().trim());
+                    height = height1*12 + height2;
+                    if (TextUtils.isEmpty(Integer.toString(height1))) {
+                        textViewUserHeight1.setError("Please type the weight to change");
+                        textViewUserHeight1.requestFocus();
+                        return;
+                    }
+                    else if (TextUtils.isEmpty(Integer.toString(height2))) {
+                        textViewUserHeight2.setError("Please type the weight to change");
+                        textViewUserHeight2.requestFocus();
+                        return;
+                    }
+                     final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+                     usersRef.child(f_user.getUid()).child("height").setValue(height);
+                    Toast.makeText(UserSettingsActivity.this,
+                            "User height is updated: "+height,Toast.LENGTH_SHORT).show();
+
+                }
+                else {
+                    textViewUserHeight1.setError("Please type the height to change");
+                    textViewUserHeight1.requestFocus();
+
+                    return;
+                }
+
+
+            }
+        });
+
+        // Update Sex
+        buttonSex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String sex;// = textViewUserWeight.getText().toString().trim();
+                if(switchSexMale.isChecked()==true){
+                    if(switchSexFemale.isChecked()==true){
+                        switchSexMale.setError("Please check only one");
+                        switchSexMale.requestFocus();
+                        switchSexFemale.setError("Please check only one");
+                        switchSexFemale.requestFocus();
+                        return;
+                    }
+                    else {
+                        sex = "M";
+                    }
+                }
+                else {
+                    if(switchSexFemale.isChecked()==false) {
+                        switchSexMale.setError("Please check male or female");
+                        switchSexMale.requestFocus();
+                        switchSexFemale.setError("Please check male or female");
+                        switchSexFemale.requestFocus();
+                        return;
+                    }
+                    else {
+                        sex = "F";
+                    }
+                }
+                final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+                usersRef.child(f_user.getUid()).child("sex").setValue(sex);
+                Toast.makeText(UserSettingsActivity.this,
+                        "User sex is updated",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -199,13 +292,36 @@ public class UserSettingsActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                         textViewUserAge.setText(ds.child("age").getValue().toString());
                         textViewUserWeight.setText(ds.child("weight").getValue().toString());
+                        int height;
+                        if( ds.child("height").getValue() != null ) {
+                            height = Integer.parseInt(ds.child("height").getValue().toString());
+                            textViewUserHeight1.setText(Integer.toString(height/12));
+                            textViewUserHeight2.setText(Integer.toString(height%12));
+                            userInfo.setHeight(Integer.toString(height));
+                        }
+
+                        String sex;
+                        if( ds.child("sex").getValue() != null ) {
+                            sex = ds.child("sex").getValue().toString();
+                            if (sex.equals("M")) {
+                                switchSexMale.setChecked(true);
+                                switchSexMale.setChecked(false);
+                            } else if (sex.equals("F")) {
+                                switchSexMale.setChecked(true);
+                                switchSexFemale.setChecked(false);
+                            }
+                            userInfo.setSex(sex);
+                        }
                         textViewUserFirstName.setText(ds.child("firstname").getValue().toString());
                         textViewUserLastName.setText(ds.child("lastname").getValue().toString());
+
 
                         userInfo.setFirstname(textViewUserFirstName.getText().toString());
                         userInfo.setLastname(textViewUserLastName.getText().toString());
                         userInfo.setAge(textViewUserAge.getText().toString());
                         userInfo.setWeight(textViewUserWeight.getText().toString());
+
+
                     }
                 }
             }
