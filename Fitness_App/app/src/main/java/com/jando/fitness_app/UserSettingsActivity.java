@@ -45,6 +45,9 @@ public class UserSettingsActivity extends AppCompatActivity {
     private Button buttonLastName;
     final User userInfo = new User("", "", "", "", "");
     FirebaseUser user = null;
+    public boolean gotWeight = false;
+    public boolean gotHeight = false;
+    public boolean gotSex = false;
 
     /** What happens when activity is started */
     @Override
@@ -113,6 +116,7 @@ public class UserSettingsActivity extends AppCompatActivity {
                 usersRef.child(f_user.getUid()).child("age").setValue(age);
                 Toast.makeText(UserSettingsActivity.this,
                         "User age is updated",Toast.LENGTH_SHORT).show();
+                checkBmi();
 
             }
         });
@@ -135,6 +139,7 @@ public class UserSettingsActivity extends AppCompatActivity {
                 usersRef.child(f_user.getUid()).child("weight").setValue(weight);
                 Toast.makeText(UserSettingsActivity.this,
                         "User weight is updated",Toast.LENGTH_SHORT).show();
+                checkBmi();
             }
         });
 
@@ -165,7 +170,7 @@ public class UserSettingsActivity extends AppCompatActivity {
                      usersRef.child(f_user.getUid()).child("height").setValue(height);
                     Toast.makeText(UserSettingsActivity.this,
                             "User height is updated: "+height,Toast.LENGTH_SHORT).show();
-
+                    checkBmi();
                 }
                 else {
                     textViewUserHeight1.setError("Please type the height to change");
@@ -211,6 +216,7 @@ public class UserSettingsActivity extends AppCompatActivity {
                 usersRef.child(f_user.getUid()).child("sex").setValue(sex);
                 Toast.makeText(UserSettingsActivity.this,
                         "User sex is updated",Toast.LENGTH_SHORT).show();
+                checkBmi();
             }
         });
 
@@ -291,13 +297,18 @@ public class UserSettingsActivity extends AppCompatActivity {
                                 + ds.child("lastname").getValue().toString(),
                                 Toast.LENGTH_SHORT).show();
                         textViewUserAge.setText(ds.child("age").getValue().toString());
-                        textViewUserWeight.setText(ds.child("weight").getValue().toString());
+                        if( ds.child("weight").getValue() != null ){
+                            textViewUserWeight.setText(ds.child("weight").getValue().toString());
+                            gotWeight = true;
+                        }
+
                         int height;
                         if( ds.child("height").getValue() != null ) {
                             height = Integer.parseInt(ds.child("height").getValue().toString());
                             textViewUserHeight1.setText(Integer.toString(height/12));
                             textViewUserHeight2.setText(Integer.toString(height%12));
                             userInfo.setHeight(Integer.toString(height));
+                            gotHeight = true;
                         }
 
                         String sex;
@@ -306,11 +317,13 @@ public class UserSettingsActivity extends AppCompatActivity {
                             if (sex.equals("M")) {
                                 switchSexMale.setChecked(true);
                                 switchSexFemale.setChecked(false);
-                                Toast.makeText(UserSettingsActivity.this, "Is a male",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(UserSettingsActivity.this, "Is a male",Toast.LENGTH_SHORT).show();
+                                gotSex = true;
                             } else if (sex.equals("F")) {
                                 switchSexMale.setChecked(false);
                                 switchSexFemale.setChecked(true);
-                                Toast.makeText(UserSettingsActivity.this, "Is a female",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(UserSettingsActivity.this, "Is a female",Toast.LENGTH_SHORT).show();
+                                gotSex = true;
                             }
                             else {
                                 Toast.makeText(UserSettingsActivity.this, "Didn't get sex info",Toast.LENGTH_SHORT).show();
@@ -326,7 +339,7 @@ public class UserSettingsActivity extends AppCompatActivity {
                         userInfo.setAge(textViewUserAge.getText().toString());
                         userInfo.setWeight(textViewUserWeight.getText().toString());
 
-
+                        checkBmi();
                     }
                 }
             }
@@ -336,6 +349,35 @@ public class UserSettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void checkBmi(){
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Toast.makeText(UserSettingsActivity.this, "Trying to find the user",Toast.LENGTH_SHORT).show();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    DataSnapshot email = ds.child("email");
+                    if (email.getValue().toString().equals(user.getEmail())) {
+                        if( ds.child("height").getValue() != null ) {
+                            if (ds.child("weight").getValue() != null) {
+                                    //int bmi = 703 * Integer.parseInt(userInfo.getWeight()) / (Integer.parseInt(userInfo.getHeight()) * Integer.parseInt(userInfo.getHeight()));
+                                int bmi = 703 * Integer.parseInt(ds.child("weight").getValue().toString()) / (Integer.parseInt(ds.child("height").getValue().toString()) * Integer.parseInt(ds.child("height").getValue().toString()));
+                                final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+                                usersRef.child(f_user.getUid()).child("bmi").setValue(bmi);
+                                Toast.makeText(UserSettingsActivity.this, "BMI updated",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }});
+    /*    if( gotWeight && gotHeight ){
+            int bmi = 703 * Integer.parseInt(userInfo.getWeight()) / (Integer.parseInt(userInfo.getHeight()) * Integer.parseInt(userInfo.getHeight()));
+            final FirebaseUser f_user = firebaseAuth.getInstance().getCurrentUser();
+            usersRef.child(f_user.getUid()).child("bmi").setValue(bmi);
+        }*/
+    }
     /** Check if the given email is already registered on FireBase */
     private boolean userEmailExists(DataSnapshot dataSnapshot, String email_address) {
         //Iterate thorough children to find email matching
