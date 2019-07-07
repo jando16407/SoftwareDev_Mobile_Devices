@@ -3,8 +3,6 @@ package com.jando.fitness_app;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -16,17 +14,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import com.jando.fitness_app.Model.User;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.jando.fitness_app.Model.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -199,9 +200,10 @@ public class MainActivity extends AppCompatActivity {
             editTextPassword.requestFocus();
             return;
         }
+
         if (TextUtils.isEmpty(caretakerPhone)) {
-            editTextEmail.setError("Caretaker Phone Required");
-            editTextEmail.requestFocus();
+            editTextCaretakerPhone.setError("Caretaker Phone Required");
+            editTextCaretakerPhone.requestFocus();
             return;
         }
 
