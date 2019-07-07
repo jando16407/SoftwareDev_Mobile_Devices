@@ -65,7 +65,6 @@ public class UserSettingsActivity extends AppCompatActivity {
             //startActivity(new Intent(this, LoginActivity.class));
         }
 
-
         user = firebaseAuth.getCurrentUser();
 
         textViewUserAge = findViewById(R.id.ageEdit);
@@ -145,7 +144,9 @@ public class UserSettingsActivity extends AppCompatActivity {
                 final int height1;
                 final int height2;
                 final int height;
-                if( textViewUserHeight1.getText() != null && textViewUserHeight2.getText() != null && !textViewUserHeight1.getText().toString().trim().equals("") && !textViewUserHeight2.getText().toString().trim().equals("")) {
+                if( textViewUserHeight1.getText() != null && textViewUserHeight2.getText() != null
+                        && !textViewUserHeight1.getText().toString().trim().equals("")
+                        && !textViewUserHeight2.getText().toString().trim().equals("")) {
                     Toast.makeText(UserSettingsActivity.this,
                             "height1: "+textViewUserHeight1.getText().toString().trim()+", height2: "+textViewUserHeight2.getText().toString().trim(),Toast.LENGTH_SHORT).show();
                     height1 = Integer.parseInt(textViewUserHeight1.getText().toString().trim());
